@@ -1,2 +1,2 @@
-import TeacherMessageBox from './TeacherMessageBox'
+import TeacherMessageBox from './Teacher/TeacherMessageBox'
 export default TeacherMessageBox

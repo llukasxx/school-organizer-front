@@ -23,12 +23,8 @@ export class TeacherGroupList extends React.Component {
             </div>
           </div>
         </div>
-        <div>
-          <TeacherGroupInfo />
-        </div>
-        <div>
-          <TeacherMessageBox />
-        </div>
+        <TeacherGroupInfo />
+        <TeacherMessageBox />
       </div>
     )
   }

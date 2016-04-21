@@ -1,12 +1,12 @@
 /* @flow */
 import React, { Component } from 'react'
-import LoginForm from '../../containers/LoginForm'
+import Signin from '../../containers/Auth/Signin'
 
 export class HomeView extends Component {
   render () {
     return (
       <div className="col-md-6 col-md-offset-3">  
-        <LoginForm />
+        <Signin />
       </div>
     )
   }
