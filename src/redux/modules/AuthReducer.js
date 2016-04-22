@@ -1,21 +1,27 @@
+import axios from 'axios'
 // Constants
 // export const constants = { }
 const START_AUTH = 'school-organizer/auth/START_AUTH'
 const AUTH_FINISH = 'school-organizer/auth/AUTH_FINISH'
 const AUTH_ERROR = 'school-organizer/auth/AUTH_ERROR'
+
+const ROOT = 'http://jsonplaceholder.typicode.com'
 // Action Creators
 // export const actions = { }
 export function signInUser({email, password}) {
   return function(dispatch) {
     dispatch({ type: START_AUTH })
-    return function(dispatch) {
-      dispatch({ 
-        type: AUTH_FINISH, 
-        payload: 'Login success!' 
-      })
+    return (
+      axios.get(ROOT + '/posts')
+        .then(function (response) {
+          dispatch({ type: AUTH_FINISH, payload: response})
+        })
+        .catch(function (response) {
+          dispatch({ type: AUTH_ERROR, payload: response.error})
+        }))
     }
   }
-}
+
 
 // Reducer
 export const initialState = {}

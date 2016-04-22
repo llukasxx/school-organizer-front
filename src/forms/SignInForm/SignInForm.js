@@ -69,7 +69,7 @@ export class SignIn extends React.Component {
           {this.renderErrors(password)}
           <hr />
           <p className="text-center">
-            <button disabled={this.handleDisable()} className="btn btn-success btn-lg">Sign in</button>
+            <button disabled={this.handleDisable() || this.props.loading} className="btn btn-success btn-lg">Sign in</button>
           </p>
         </form>
       </div>
