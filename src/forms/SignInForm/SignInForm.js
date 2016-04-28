@@ -25,17 +25,31 @@ export class SignIn extends React.Component {
   constructor(props) {
     super(props)
   }
-  renderErrors(field) {
+  renderFormErrors(field) {
     if(field.error && field.touched) {
       return (
         <p>{field.error}</p>
       )
     }
   }
+  renderAuthError(error) {
+    if(error) {
+      return (
+        <div>
+          <br />
+          <div className="alert alert-danger" role="alert">
+            <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span className="sr-only">Error:</span>
+            {error}
+          </div>
+        </div>
+      ) 
+    }
+  }
   handleSubmit = (e) => {
     e.preventDefault()
     const {fields: {email, password}} = this.props
-    this.props.signInUser(email, password)
+    this.props.signInUser(email.value, password.value)
   }
   handleDisable = () => {
     const { fields: {email, password} } = this.props
@@ -50,6 +64,11 @@ export class SignIn extends React.Component {
     let target = document.getElementById('spinner')
     target.appendChild(spinner.el)
   }
+  componentWillMount() {
+    if(this.props.isLogged) {
+      this.props.redirectUser()
+    }
+  }
   render() {
     const { fields: {email, password} } = this.props
     return (
@@ -59,14 +78,15 @@ export class SignIn extends React.Component {
         <form onSubmit={this.handleSubmit}>
           <div className="input-group input-group-lg" style={{'marginBottom': '5px'}}>
             <span className="input-group-addon" id="sizing-addon1">@</span>
-            <input type="email" className="form-control" placeholder="Email" aria-describedby="sizing-addon1" {...email} />
+            <input disabled={this.props.loading} type="email" className="form-control" placeholder="Email" aria-describedby="sizing-addon1" {...email} />
           </div>
-          {this.renderErrors(email)}
+          {this.renderFormErrors(email)}
           <div className="input-group input-group-lg">
             <span className="input-group-addon glyphicon glyphicon-lock" id="sizing-addon1"></span>
-            <input type="password" className="form-control" placeholder="Password" aria-describedby="sizing-addon1" {...password} />
+            <input disabled={this.props.loading} type="password" className="form-control" placeholder="Password" aria-describedby="sizing-addon1" {...password} />
           </div>
-          {this.renderErrors(password)}
+          {this.renderFormErrors(password)}
+          {this.renderAuthError(this.props.authInfo)}
           <hr />
           <p className="text-center">
             <button disabled={this.handleDisable() || this.props.loading} className="btn btn-success btn-lg">Sign in</button>
@@ -79,9 +99,9 @@ export class SignIn extends React.Component {
 
 function mapStateToProps(state) {
   return { 
-    errorMessage: state.auth.error,
-    loginInfo: state.auth.loginInfo,
-    loading: state.auth.loading 
+    loading: state.auth.loading,
+    isLogged: state.auth.authenticated,
+    authInfo: state.auth.authInfo
   }
 }
 

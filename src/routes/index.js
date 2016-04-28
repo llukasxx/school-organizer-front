@@ -18,7 +18,7 @@ import RequireAuth from '../containers/Auth/RequireAuth'
 export default (store) => (
   <Route path='/' component={CoreLayout}>
     <IndexRoute component={HomeView} />
-    <Route path='teacher' component={TeacherDashboard}>
+    <Route path='teacher' component={RequireAuth(TeacherDashboard)}>
       <IndexRoute component={TeacherGroupList} />
       <Route path='groups' component={TeacherGroupList} />
       <Route path='messages' component={TeacherGroupList} />

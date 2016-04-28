@@ -1,26 +1,40 @@
 import axios from 'axios'
+import { push } from 'react-router-redux';
+
+import { ROOT_URL } from '../ApiConfig'
 // Constants
 // export const constants = { }
-const START_AUTH = 'school-organizer/auth/START_AUTH'
-const AUTH_FINISH = 'school-organizer/auth/AUTH_FINISH'
-const AUTH_ERROR = 'school-organizer/auth/AUTH_ERROR'
+export const START_AUTH = 'school-organizer/auth/START_AUTH'
+export const FINISH_AUTH = 'school-organizer/auth/FINISH_AUTH'
+export const AUTH_ERROR = 'school-organizer/auth/AUTH_ERROR'
 
-const ROOT = 'http://jsonplaceholder.typicode.com'
 // Action Creators
 // export const actions = { }
-export function signInUser({email, password}) {
+
+// sign in
+export function signInUser(email, password) {
   return function(dispatch) {
     dispatch({ type: START_AUTH })
     return (
-      axios.get(ROOT + '/posts')
+      axios.post(`${ROOT_URL}/api/v1/sessions`, {user: {email, password}})
         .then(function (response) {
-          dispatch({ type: AUTH_FINISH, payload: response})
+          console.log(response)
+          dispatch({ type: FINISH_AUTH, payload: response})
+          localStorage.setItem('token', response.data.auth_token)
+          dispatch(push('/teacher'))
         })
         .catch(function (response) {
-          dispatch({ type: AUTH_ERROR, payload: response.error})
+          dispatch({ type: AUTH_ERROR, payload: response.data.error})
         }))
-    }
   }
+}
+
+// redirect action
+export function redirectUser() {
+  return function(dispatch) {
+    return dispatch(push('/teacher'))
+  }
+}
 
 
 // Reducer
@@ -29,10 +43,10 @@ export default function (state = initialState, action) {
   switch (action.type) {
     case START_AUTH:
       return { ...state, loading: true };
-    case AUTH_FINISH:
-      return { ...state, loginInfo: action.payload, loading: false };
+    case FINISH_AUTH:
+      return { ...state, authInfo: "", loading: false, authenticated: true };
     case AUTH_ERROR:
-      return { ...state, loginInfo: action.payload, loading: false };
+      return { ...state, authInfo: action.payload, loading: false };
     default:
       return state
   }
