@@ -1,5 +1,7 @@
 /* @flow */
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import * as actions from '../../redux/modules/AuthReducer'
 
 export class TeacherDashboard extends Component {
   render () {
@@ -29,11 +31,10 @@ export class TeacherDashboard extends Component {
                 </li>           
               </ul>
               <ul className="nav navbar-nav navbar-right">
-                <li><a>Signed in as teacher<b></b></a></li>
                 <li>
-                  <a>
-                    <span className="label label-danger"><b>Log out</b></span>
-                  </a>
+                  <a>Signed in as {this.props.currentUser} <button 
+                                                            className="btn btn-sm btn-danger"
+                                                            onClick={this.props.signOutUser}>Log out</button></a>
                 </li>
               </ul>
             </div>
@@ -45,4 +46,10 @@ export class TeacherDashboard extends Component {
   }
 }
 
-export default TeacherDashboard
+function mapStateToProps(state) {
+  return {
+    currentUser: state.auth.currentUser
+  }
+}
+
+export default connect(mapStateToProps, actions)(TeacherDashboard)

@@ -7,6 +7,7 @@ import { ROOT_URL } from '../ApiConfig'
 export const START_AUTH = 'school-organizer/auth/START_AUTH'
 export const FINISH_AUTH = 'school-organizer/auth/FINISH_AUTH'
 export const AUTH_ERROR = 'school-organizer/auth/AUTH_ERROR'
+export const UNAUTH_USER = 'school-organizer/auth/UNAUTH_USER'
 
 // Action Creators
 // export const actions = { }
@@ -18,7 +19,6 @@ export function signInUser(email, password) {
     return (
       axios.post(`${ROOT_URL}/api/v1/sessions`, {user: {email, password}})
         .then(function (response) {
-          console.log(response)
           dispatch({ type: FINISH_AUTH, payload: response})
           localStorage.setItem('token', response.data.auth_token)
           dispatch(push('/teacher'))
@@ -26,6 +26,16 @@ export function signInUser(email, password) {
         .catch(function (response) {
           dispatch({ type: AUTH_ERROR, payload: response.data.error})
         }))
+  }
+}
+
+// signout user
+export function signOutUser() {
+  return function(dispatch) {
+    localStorage.removeItem('token')
+    return (
+      dispatch({ type: UNAUTH_USER }, push('/'))
+    )
   }
 }
 
@@ -47,6 +57,8 @@ export default function (state = initialState, action) {
       return { ...state, authInfo: "", loading: false, authenticated: true };
     case AUTH_ERROR:
       return { ...state, authInfo: action.payload, loading: false };
+    case UNAUTH_USER:
+      return { ...state, authInfo: action.payload, authenticated: false };
     default:
       return state
   }
