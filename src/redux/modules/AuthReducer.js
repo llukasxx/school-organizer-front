@@ -19,10 +19,9 @@ export function signInUser(email, password) {
     return (
       axios.post(`${ROOT_URL}/api/v1/sessions`, {user: {email, password}})
         .then(function (response) {
-          console.log(response)
           dispatch({ type: FINISH_AUTH, payload: response})
           setLocalStorage(response.data.auth_token, response.data.user, response.data.accountType)
-          dispatch(push('/teacher'))
+          dispatch(push('/' + response.data.accountType))
         })
         .catch(function (response) {
           dispatch({ type: AUTH_ERROR, payload: response.data.error})
@@ -54,7 +53,15 @@ export function signOutUser() {
 // redirect action
 export function redirectUser() {
   return function(dispatch) {
-    return dispatch(push('/teacher'))
+    const accType = localStorage.getItem('accountType')
+    switch(accType) {
+      case 'teacher':
+        return dispatch(push('/teacher'))
+      case 'student':
+        return dispatch(push('/student'))
+      default:
+        return dispatch(push('/'))
+    }
   }
 }
 

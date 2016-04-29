@@ -66,7 +66,7 @@ export class SignIn extends React.Component {
   }
   componentWillMount() {
     if(this.props.isLogged) {
-      this.props.redirectUser()
+      this.props.redirectUser(localStorage.getItem('accountType'))
     }
   }
   render() {
