@@ -8,7 +8,7 @@ export const START_AUTH = 'school-organizer/auth/START_AUTH'
 export const FINISH_AUTH = 'school-organizer/auth/FINISH_AUTH'
 export const AUTH_ERROR = 'school-organizer/auth/AUTH_ERROR'
 export const UNAUTH_USER = 'school-organizer/auth/UNAUTH_USER'
-
+export const CHECK_AUTH = 'school-organizer/auth/CHECK_AUTH'
 // Action Creators
 // export const actions = { }
 
@@ -19,8 +19,9 @@ export function signInUser(email, password) {
     return (
       axios.post(`${ROOT_URL}/api/v1/sessions`, {user: {email, password}})
         .then(function (response) {
+          console.log(response)
           dispatch({ type: FINISH_AUTH, payload: response})
-          localStorage.setItem('token', response.data.auth_token)
+          setLocalStorage(response.data.auth_token, response.data.user, response.data.accountType)
           dispatch(push('/teacher'))
         })
         .catch(function (response) {
@@ -29,12 +30,23 @@ export function signInUser(email, password) {
   }
 }
 
+function setLocalStorage(token, currentUser, accountType) {
+  localStorage.setItem('token', token)
+  localStorage.setItem('currentUser', currentUser)
+  localStorage.setItem('accountType', accountType)
+}
+function removeLocalStorage() {
+  localStorage.removeItem('token')
+  localStorage.removeItem('currentUser')
+  localStorage.removeItem('accountType')
+}
+
 // signout user
 export function signOutUser() {
+  removeLocalStorage()
   return function(dispatch) {
-    localStorage.removeItem('token')
     return (
-      dispatch({ type: UNAUTH_USER }, push('/'))
+      dispatch({ type: UNAUTH_USER })
     )
   }
 }
@@ -55,6 +67,8 @@ export default function (state = initialState, action) {
       return { ...state, loading: true };
     case FINISH_AUTH:
       return { ...state, authInfo: "", loading: false, authenticated: true };
+    case CHECK_AUTH:
+      return { ...state, authenticated: action.payload.authenticated };
     case AUTH_ERROR:
       return { ...state, authInfo: action.payload, loading: false };
     case UNAUTH_USER:

@@ -32,7 +32,7 @@ export class TeacherDashboard extends Component {
               </ul>
               <ul className="nav navbar-nav navbar-right">
                 <li>
-                  <a>Signed in as {this.props.currentUser} <button 
+                  <a>Signed in as <b>{localStorage.getItem('currentUser')}</b> <button 
                                                             className="btn btn-sm btn-danger"
                                                             onClick={this.props.signOutUser}>Log out</button></a>
                 </li>
