@@ -8,7 +8,6 @@ export const START_AUTH = 'school-organizer/auth/START_AUTH'
 export const FINISH_AUTH = 'school-organizer/auth/FINISH_AUTH'
 export const AUTH_ERROR = 'school-organizer/auth/AUTH_ERROR'
 export const UNAUTH_USER = 'school-organizer/auth/UNAUTH_USER'
-export const CHECK_AUTH = 'school-organizer/auth/CHECK_AUTH'
 // Action Creators
 // export const actions = { }
 
@@ -74,8 +73,6 @@ export default function (state = initialState, action) {
       return { ...state, loading: true };
     case FINISH_AUTH:
       return { ...state, authInfo: "", loading: false, authenticated: true };
-    case CHECK_AUTH:
-      return { ...state, authenticated: action.payload.authenticated };
     case AUTH_ERROR:
       return { ...state, authInfo: action.payload, loading: false };
     case UNAUTH_USER:

@@ -1,17 +1,19 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import * as actions from '../../redux/modules/GroupsReducer'
+
 
 import TeacherGroupInfo from '../../components/TeacherGroupInfo'
 import TeacherMessageBox from './TeacherMessageBox'
+import TeacherGroupListItem from '../../components/TeacherGroupListItem'
 
 
-type Props = {
 
-}
 export class TeacherGroupList extends React.Component {
-  props: Props;
-
+  componentDidMount() {
+    this.props.fetchTeacherGroups()
+  }
   render() {
     return (
       <div>
@@ -21,6 +23,9 @@ export class TeacherGroupList extends React.Component {
             <div className="panel-body">
               <p>Click on each if you want to see more info.</p>
             </div>
+            <ul className="list-group">
+              <TeacherGroupListItem />
+            </ul>
           </div>
         </div>
         <TeacherGroupInfo />
@@ -31,13 +36,12 @@ export class TeacherGroupList extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  return {}
-}
-const mapDispatchToProps = (dispatch) => {
-  return {}
+  return {
+    groups: state.teacherGroups
+  }
 }
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  actions
 )(TeacherGroupList)

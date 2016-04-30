@@ -1,6 +1,7 @@
 /* @flow */
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router'
 import * as actions from '../../redux/modules/AuthReducer'
 
 export class TeacherDashboard extends Component {
@@ -16,18 +17,18 @@ export class TeacherDashboard extends Component {
                 <span className="icon-bar"></span>
                 <span className="icon-bar"></span>
               </button>
-              <a className="navbar-brand"><b>Home</b></a>
+              <Link to={'/teacher'} className="navbar-brand"><b>Home</b></Link>
             </div>
             <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul className="nav navbar-nav">
                 <li>
-                  <a>Groups</a>
+                  <Link to={'/teacher/groups'}>Groups</Link>
                 </li>
                 <li>
-                  <a>Events</a>
+                  <Link to={'/teacher/events'}>Events</Link>
                 </li>
                 <li>
-                  <a>Messages</a>
+                  <Link to={'/teacher/messages'}>Messages</Link>
                 </li>           
               </ul>
               <ul className="nav navbar-nav navbar-right">

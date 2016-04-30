@@ -21,6 +21,7 @@ export default (store) => (
     <Route path='teacher' component={RequireAuth(TeacherDashboard)}>
       <IndexRoute component={TeacherGroupList} />
       <Route path='groups' component={TeacherGroupList} />
+      <Route path='events' component={TeacherGroupList} />
       <Route path='messages' component={TeacherGroupList} />
     </Route>
     <Route path='student' component={StudentDashboard}>
