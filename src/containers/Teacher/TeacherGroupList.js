@@ -11,6 +11,19 @@ import TeacherGroupListItem from '../../components/TeacherGroupListItem'
 
 
 export class TeacherGroupList extends React.Component {
+  constructor(props) {
+    super(props)
+    this.renderGroups = this.renderGroups.bind(this)
+  }
+  renderGroups(el) {
+    return (
+      <TeacherGroupListItem 
+        key={el.name} 
+        group={el} 
+        activeGroup={this.props.groups.activeGroup}
+        setActiveGroup={this.props.setActiveGroup}/>
+    )
+  }
   componentDidMount() {
     this.props.fetchTeacherGroups()
   }
@@ -24,7 +37,7 @@ export class TeacherGroupList extends React.Component {
               <p>Click on each if you want to see more info.</p>
             </div>
             <ul className="list-group">
-              <TeacherGroupListItem />
+              {this.props.groups.loaded ? this.props.groups.groupItems.map(this.renderGroups) : "Loading..." }
             </ul>
           </div>
         </div>

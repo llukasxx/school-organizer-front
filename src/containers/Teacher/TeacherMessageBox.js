@@ -2,12 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-type Props = {
 
-}
 export class TeacherMessageBox extends React.Component {
-  props: Props;
-
+  constructor(props) {
+    super(props)
+  }
   render() {
     return (
       <div className="col-md-5 col-sm-6 ">

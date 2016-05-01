@@ -2,6 +2,10 @@ import React from 'react'
 import { reduxForm } from 'redux-form'
 import * as actions from '../../redux/modules/AuthReducer'
 
+import MySpinner from '../../components/Spinner/Spinner'
+
+import { mediumSpinnerCenter } from '../../utils/SpinnerConfig'
+
 export const fields = ['email', 'password']
 
 const validate = (values) => {
@@ -59,11 +63,6 @@ export class SignIn extends React.Component {
       return true
     }
   }
-  componentDidMount() {
-    let spinner = new Spinner().spin()
-    let target = document.getElementById('spinner')
-    target.appendChild(spinner.el)
-  }
   componentWillMount() {
     if(this.props.isLogged) {
       this.props.redirectUser(localStorage.getItem('accountType'))
@@ -73,7 +72,6 @@ export class SignIn extends React.Component {
     const { fields: {email, password} } = this.props
     return (
       <div>
-        <div id="spinner" className={this.props.loading ? "" : "hidden"}></div>
         <h2 className="text-center">Welcome, please log in to continue.</h2>
         <form onSubmit={this.handleSubmit}>
           <div className="input-group input-group-lg" style={{'marginBottom': '5px'}}>
@@ -87,6 +85,7 @@ export class SignIn extends React.Component {
           </div>
           {this.renderFormErrors(password)}
           {this.renderAuthError(this.props.authInfo)}
+          {this.props.loading ? <MySpinner opts={mediumSpinnerCenter}/> : ""}
           <hr />
           <p className="text-center">
             <button disabled={this.handleDisable() || this.props.loading} className="btn btn-success btn-lg">Sign in</button>

@@ -5,6 +5,7 @@ import { ROOT_URL } from '../ApiConfig'
 const START_TEACHER_GROUPS_FETCH = 'school-organizer/groups/START_TEACHER_GROUPS_FETCH'
 const FETCH_TEACHER_GROUPS = 'school-organizer/groups/FETCH_TEACHER_GROUPS'
 const FETCH_TEACHER_GROUPS_ERROR = 'school-organizer/groups/FETCH_TEACHER_GROUPS_ERROR'
+const SET_ACTIVE_GROUP = 'school-organizer/groups/SET_ACTIVE_GROUP'
 // Action Creators
 export function fetchTeacherGroups() {
   return function(dispatch) {
@@ -14,6 +15,7 @@ export function fetchTeacherGroups() {
     })
       .then(function(response) {
         console.log(response)
+        dispatch({ type: SET_ACTIVE_GROUP, payload: response.data[0].name})
         dispatch({ type: FETCH_TEACHER_GROUPS, payload: response.data})
       })
       .catch(function(response) {
@@ -21,18 +23,25 @@ export function fetchTeacherGroups() {
       })
   }
 }
-// export const actions = { }
+
+export function setActiveGroup(group) {
+  return function(dispatch) {
+    dispatch({ type: SET_ACTIVE_GROUP, payload: group})
+  }
+}
 
 // Reducer
 export const initialState = {}
 export default function (state = initialState, action) {
   switch (action.type) {
     case START_TEACHER_GROUPS_FETCH:
-      return { ...state, loading: true}
+      return { ...state, groupItems: [], loaded: false}
     case FETCH_TEACHER_GROUPS:
-      return {...state, groups: action.payload, loading: false}
+      return {...state, groupItems: action.payload, loaded: true}
     case FETCH_TEACHER_GROUPS_ERROR:
-      return {...state, groups: action.payload, loading: false}
+      return {...state, groupItems: action.payload, loaded: true}
+    case SET_ACTIVE_GROUP:
+      return {...state, activeGroup: action.payload, loaded: true}
     default:
       return state
   }
