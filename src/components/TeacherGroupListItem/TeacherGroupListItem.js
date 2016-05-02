@@ -2,9 +2,6 @@ import React from 'react'
 import Radium from 'radium'
 import color from 'color'
 
-import MySpinner from '../Spinner/Spinner'
-import { smallSpinnerRight } from '../../utils/SpinnerConfig'
-
 export class TeacherGroupListItem extends React.Component {
   constructor(props) {
     super(props)
@@ -12,7 +9,7 @@ export class TeacherGroupListItem extends React.Component {
   }
   isActive() {
     return (
-      this.props.activeGroup == this.props.group.name ? true : false
+      this.props.activeGroup == this.props.group ? true : false
     )
   }
   render () {
@@ -21,10 +18,9 @@ export class TeacherGroupListItem extends React.Component {
         className={this.isActive() ? "list-group-item active" : "list-group-item"} 
         style={styles}
         onClick={() => {
-          this.props.setActiveGroup(this.props.group.name)
+          this.props.setActiveGroup(this.props.group)
         }}>
         <strong>{this.props.group.name}</strong>
-        {this.isActive() ? <MySpinner opts={smallSpinnerRight}/> : ""}
       </li>
     )
   }
@@ -34,7 +30,7 @@ export default Radium(TeacherGroupListItem)
 
 TeacherGroupListItem.propTypes = { 
   group: React.PropTypes.object.isRequired,
-  activeGroup: React.PropTypes.string.isRequired
+  activeGroup: React.PropTypes.object.isRequired
 }
 
 const styles = {

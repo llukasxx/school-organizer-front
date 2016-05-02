@@ -41,7 +41,9 @@ export class TeacherGroupList extends React.Component {
             </ul>
           </div>
         </div>
-        <TeacherGroupInfo />
+        <TeacherGroupInfo 
+          activeGroup={this.props.groups.activeGroup}
+          loaded={this.props.groups.loaded}/>
         <TeacherMessageBox />
       </div>
     )

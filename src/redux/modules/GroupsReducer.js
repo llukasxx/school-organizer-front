@@ -15,8 +15,8 @@ export function fetchTeacherGroups() {
     })
       .then(function(response) {
         console.log(response)
-        dispatch({ type: SET_ACTIVE_GROUP, payload: response.data[0].name})
-        dispatch({ type: FETCH_TEACHER_GROUPS, payload: response.data})
+        dispatch({ type: SET_ACTIVE_GROUP, payload: response.data.groups[0]})
+        dispatch({ type: FETCH_TEACHER_GROUPS, payload: response.data.groups})
       })
       .catch(function(response) {
         dispatch({ type: FETCH_TEACHER_GROUPS_ERROR, payload: response.data})
@@ -39,7 +39,7 @@ export default function (state = initialState, action) {
     case FETCH_TEACHER_GROUPS:
       return {...state, groupItems: action.payload, loaded: true}
     case FETCH_TEACHER_GROUPS_ERROR:
-      return {...state, groupItems: action.payload, loaded: true}
+      return {...state, groupItems: action.payload, loaded: false}
     case SET_ACTIVE_GROUP:
       return {...state, activeGroup: action.payload, loaded: true}
     default:
