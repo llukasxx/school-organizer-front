@@ -3,8 +3,17 @@ import React from 'react'
 import MySpinner from '../Spinner/Spinner'
 import { smallSpinnerRight } from '../../utils/SpinnerConfig'
 
+import LessonList from '../LessonList'
 
 export class TeacherGroupInfo extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = { activeTab: 'dates' }
+    this.changeActiveTab = this.changeActiveTab.bind(this)
+  }
+  changeActiveTab(tab) {
+    this.setState({activeTab: tab})
+  }
   render () {
     return (
       <div className="col-md-5 col-sm-6">
@@ -24,14 +33,23 @@ export class TeacherGroupInfo extends React.Component {
               <tbody>
                 <tr>
                   <td>
-                    <button  
-                        className="btn btn-warning"
-                        id="lessonDates">Dates:
+                    <button 
+                      onClick = {() => {this.changeActiveTab('dates')}}
+                      className="btn btn-warning"
+                      id="lessonDates">
+                      Dates:
                     </button>
-                   <button 
-                           className="btn btn-success"
-                           id="studentList">Students:
+                    <button 
+                      onClick = {() => {this.changeActiveTab('students')}}
+                      className="btn btn-success"
+                      id="studentList">
+                      Students:
                     </button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <LessonList lessons={this.props.activeGroup.lessons} activeTab={this.state.activeTab}/>
                   </td>
                 </tr>
               </tbody>
