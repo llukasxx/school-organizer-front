@@ -1,5 +1,7 @@
 import React from 'react'
 
+import LessonStudentList from './LessonStudentList'
+
 export class LessonListItem extends React.Component {
   constructor(props) {
     super(props)
@@ -10,22 +12,11 @@ export class LessonListItem extends React.Component {
     return ('yo')
   }
   renderLessonStudents() {
-    const students = this.props.lesson.students
-    let studentList = []
-    if(students.length > 0) {
-      students.map((el) => {
-        studentList.push(<li 
-                          className="list-group-item"
-                          key={el.id}>
-                          {el.first_name}
-                        </li>)
-      })
-      return studentList
-    } else {
-      return (
-        <li className="list-group-item">No students found</li>
-      )
-    }
+    return (
+      <LessonStudentList 
+        students={this.props.lesson.students}
+      />
+    )
   }
   render () {
     return (
