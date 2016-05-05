@@ -13,7 +13,8 @@ class LessonStudentList extends Component {
       students.map((el, index) => {
         studentList.push(<LessonStudentListItem 
                             student={el}
-                            key={index}/>)
+                            key={index}
+                            display={this.props.display}/>)
       })
       return studentList
     } else {
@@ -26,6 +27,8 @@ class LessonStudentList extends Component {
     return (
       <div>
         {this.renderLessonStudentListItem()}
+        <br />
+        {this.props.display == 'addGrades' ? <button className="btn btn-lg btn-success">Confirm all</button> : '' }
       </div>
     )
   }

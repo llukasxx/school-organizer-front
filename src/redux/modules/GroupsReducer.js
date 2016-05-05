@@ -19,6 +19,7 @@ export function fetchTeacherGroups() {
         dispatch({ type: FETCH_TEACHER_GROUPS, payload: response.data.groups})
       })
       .catch(function(response) {
+        console.log(response)
         dispatch({ type: FETCH_TEACHER_GROUPS_ERROR, payload: response.data})
       })
   }
