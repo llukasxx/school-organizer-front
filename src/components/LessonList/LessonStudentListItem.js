@@ -3,6 +3,10 @@ import React, { Component } from 'react'
 class LessonStudentListItem extends Component {
   constructor(props) {
     super(props)
+    this.state = {indvGrade: false, editGrade: false, sendMessage: false}
+    this.renderActionIcons = this.renderActionIcons.bind(this)
+    this.renderIndvGrade = this.renderIndvGrade.bind(this)
+    this.resetState = this.resetState.bind(this)
   }
   renderGradeForm() {
     return (
@@ -16,17 +20,67 @@ class LessonStudentListItem extends Component {
   renderActionIcons() {
     return (
       <div className="pull-right">
-        <span title="Add grade" style={{width: '1.5em', cursor: 'pointer'}} className="glyphicon glyphicon-plus" />
-        <span title="Edit grades" style={{width: '1.5em', cursor: 'pointer'}} className="glyphicon glyphicon-pencil" />
-        <span title="Send message" style={{width: '1.5em', cursor: 'pointer'}} className="glyphicon glyphicon-envelope" />
+        <span 
+          title="Add grade" 
+          style={{width: '1.5em', cursor: 'pointer'}} 
+          className="glyphicon glyphicon-plus" 
+          onClick={() => {this.setState({indvGrade: true})}}/>
+        <span 
+          title="Edit grades" 
+          style={{width: '1.5em', cursor: 'pointer'}} 
+          className="glyphicon glyphicon-pencil" 
+          onClick={() => {this.setState({editGrade: true})}}/>
+        <span 
+          title="Send message" 
+          style={{width: '1.5em', cursor: 'pointer'}} 
+          className="glyphicon glyphicon-envelope" 
+          onClick={() => {this.setState({sendMessage: true})}}/>
       </div>
     )
   }
+  renderIndvGrade() {
+    return (
+      <form style={{margin: 0, padding: 0}}>
+          <input type="text" 
+            placeholder="description"
+            className="form-control input-sm"
+            style={{width: '10em', height: '2.5em'}}/>
+          <input type="text" 
+            placeholder="grade"
+            className="form-control input-sm"
+            style={{width: '5em', height: '2.5em'}}/>
+          <br />
+          <button className="btn btn-sm btn-success">Confirm</button> | <button 
+                                                                          className="btn btn-sm btn-danger"
+                                                                          onClick={(e) => {
+                                                                            e.preventDefault()
+                                                                            this.resetState()
+                                                                          }}>
+                                                                          Cancel</button>
+        </form>
+    )
+  }
+  resetState() {
+    this.setState({
+      indvGrade: false,
+      editGrade: false,
+      sendMessage: false
+    })
+  }
+  componentWillReceiveProps(nextProps) {
+    this.resetState()
+  }
   render() {
     let toRender;
+    const {indvGrade, editGrade, sendMessage} = this.state
     switch(this.props.display) {
       case 'none':
         toRender = this.renderActionIcons;
+        if(indvGrade || editGrade || sendMessage) {
+          if(indvGrade) {
+            toRender = this.renderIndvGrade
+          }
+        }
         break;
       case 'addGrades':
         toRender = this.renderGradeForm;

@@ -29,24 +29,26 @@ export class TeacherGroupInfo extends React.Component {
             <table className="table">
               <thead>
                 <tr><th>Group name: {this.props.activeGroup.name}</th></tr>
-              </thead>
-              <tbody>
                 <tr>
-                  <td>
-                    <button 
-                      onClick = {() => {this.changeActiveTab('dates')}}
-                      className="btn btn-warning"
-                      id="lessonDates">
-                      Dates:
-                    </button>
-                    <button 
-                      onClick = {() => {this.changeActiveTab('students')}}
-                      className="btn btn-success"
-                      id="studentList">
-                      Students:
-                    </button>
-                  </td>
+                  <th>
+                    <ul className="nav nav-tabs">
+                      <li role="presentation" 
+                        className={this.state.activeTab == "dates" ? "active" : ""}
+                        onClick = {() => {this.changeActiveTab('dates')}}
+                        id="lessonDates">
+                        <a style={{cursor: 'pointer'}}>Dates</a>
+                      </li>
+                      <li role="presentation"
+                        className={this.state.activeTab == "students" ? "active" : ""}
+                        onClick = {() => {this.changeActiveTab('students')}}
+                        id="studentList">
+                        <a style={{cursor: 'pointer'}}>Students</a>
+                      </li>
+                    </ul>
+                  </th>
                 </tr>
+              </thead>
+                <tbody>
                 <tr>
                   <td>
                     <LessonList lessons={this.props.activeGroup.lessons} activeTab={this.state.activeTab}/>
