@@ -33,6 +33,7 @@ export class LessonListItem extends React.Component {
         <LessonStudentList 
           students={this.props.lesson.students}
           display={this.state.lessonStudentDisplay}
+          lessonId={this.props.lesson.id}
         />
       </div>
     )

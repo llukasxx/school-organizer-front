@@ -5,7 +5,9 @@ class LessonStudentListItem extends Component {
     super(props)
     this.state = {indvGrade: false, editGrade: false, sendMessage: false}
     this.renderActionIcons = this.renderActionIcons.bind(this)
+    this.renderGradeForm = this.renderGradeForm.bind(this)
     this.renderIndvGrade = this.renderIndvGrade.bind(this)
+    this.renderShowGrades = this.renderShowGrades.bind(this)
     this.resetState = this.resetState.bind(this)
   }
   renderGradeForm() {
@@ -13,7 +15,11 @@ class LessonStudentListItem extends Component {
         <form style={{display: 'inline', margin: 0, padding: 0}}>
           <input type="text" 
             className="form-control input-sm pull-right"
-            style={{width: '3em', height: '2.5em', display: 'inline'}}/>
+            style={{width: '3em', height: '2.5em', display: 'inline'}}
+            onChange={(e) => {
+              let value = e.target.value
+              this.props.handleGradeChange(this.props.student.id, value)
+            }}/>
         </form>
     )
   }
@@ -60,6 +66,29 @@ class LessonStudentListItem extends Component {
         </form>
     )
   }
+  renderShowGrades() {
+    const currentLessonId = this.props.lessonId
+    let currentGrades = []
+    this.props.student.student_grades.map(function(el) {
+      const gradeLessonId = el.lesson_id 
+      if(currentLessonId == gradeLessonId) {
+        currentGrades.push(el.grade)
+      }
+    })
+    if(currentGrades.length > 0) {
+      return (
+        <div>
+          {currentGrades.join(', ')}
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          No grades
+        </div>
+      )
+    }
+  }
   resetState() {
     this.setState({
       indvGrade: false,
@@ -84,6 +113,9 @@ class LessonStudentListItem extends Component {
         break;
       case 'addGrades':
         toRender = this.renderGradeForm;
+        break;
+      case 'showGrades':
+        toRender = this.renderShowGrades;
         break;
       default:
         toRender = this.renderActionIcons;
