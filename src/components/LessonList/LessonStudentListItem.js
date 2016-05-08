@@ -12,15 +12,18 @@ class LessonStudentListItem extends Component {
   }
   renderGradeForm() {
     return (
+      <div className="input-group">
         <form style={{display: 'inline', margin: 0, padding: 0}}>
+          <span className="input-group-addon" id="basic-addon1">Grade:</span>
           <input type="text" 
             className="form-control input-sm pull-right"
-            style={{width: '3em', height: '2.5em', display: 'inline'}}
+            style={{width: '5em', height: '2.3em', display: 'inline'}}
             onChange={(e) => {
               let value = e.target.value
               this.props.handleGradeChange(this.props.student.id, value)
             }}/>
         </form>
+      </div>
     )
   }
   renderActionIcons() {
@@ -46,24 +49,31 @@ class LessonStudentListItem extends Component {
   }
   renderIndvGrade() {
     return (
-      <form style={{margin: 0, padding: 0}}>
-          <input type="text" 
-            placeholder="description"
-            className="form-control input-sm"
-            style={{width: '10em', height: '2.5em'}}/>
-          <input type="text" 
-            placeholder="grade"
-            className="form-control input-sm"
-            style={{width: '5em', height: '2.5em'}}/>
-          <br />
-          <button className="btn btn-sm btn-success">Confirm</button> | <button 
-                                                                          className="btn btn-sm btn-danger"
-                                                                          onClick={(e) => {
-                                                                            e.preventDefault()
-                                                                            this.resetState()
-                                                                          }}>
-                                                                          Cancel</button>
-        </form>
+        <form style={{margin: 0, padding: 0}}>
+          <div className="input-group">
+            <span className="input-group-addon" id="basic-addon1">Description:</span>
+            <input type="text" 
+              placeholder="eg. test"
+              className="form-control input-sm"
+              style={{width: '10em', height: '2.5em'}}/>
+          </div>
+          <div className="input-group">
+            <span className="input-group-addon" id="basic-addon1">Grade:</span>
+            <input type="text" 
+              placeholder="eg. 5"
+              className="form-control input-sm"
+              style={{width: '5em', height: '2.5em'}}/>
+          </div>
+            <br />
+            <button className="btn btn-sm btn-success">Confirm</button> | <button 
+                                                                            className="btn btn-sm btn-danger"
+                                                                            onClick={(e) => {
+                                                                              e.preventDefault()
+                                                                              this.resetState()
+                                                                            }}>
+                                                                            Cancel</button>
+          </form>
+        
     )
   }
   renderShowGrades() {

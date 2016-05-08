@@ -8,6 +8,7 @@ class LessonStudentList extends Component {
     this.renderLessonStudentListItem = this.renderLessonStudentListItem.bind(this)
     this.handleGradeChange = this.handleGradeChange.bind(this)
     this.resetGrades = this.resetGrades.bind(this)
+    this.renderConfirmButton = this.renderConfirmButton.bind(this)
   }
   renderLessonStudentListItem() {
     const students = this.props.students
@@ -46,6 +47,26 @@ class LessonStudentList extends Component {
     })
     this.setState({grades: grades})
   }
+  renderConfirmButton() {
+    return (
+      <div>
+        <div className="input-group">
+          <span className="input-group-addon" id="basic-addon1">Grades description:</span>
+          <input type="text" className="form-control" placeholder="eg. test" aria-describedby="basic-addon1"/>
+        </div>
+        <hr />
+        <button className="btn btn-lg btn-success">Confirm all</button>
+        <button 
+          className="btn btn-lg btn-danger pull-right"
+          onClick={(e) => {
+            e.preventDefault()
+            this.props.handleStudentDisplay('none')
+          }}>
+          Cancel
+        </button>
+      </div>
+    )
+  }
   componentWillMount() {
     this.resetGrades()
   }
@@ -57,7 +78,7 @@ class LessonStudentList extends Component {
       <div>
         {this.renderLessonStudentListItem()}
         <br />
-        {this.props.display == 'addGrades' ? <button className="btn btn-lg btn-success">Confirm all</button> : '' }
+        {this.props.display == 'addGrades' ? this.renderConfirmButton() : '' }
       </div>
     )
   }
