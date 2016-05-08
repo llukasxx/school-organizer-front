@@ -3,12 +3,13 @@ import React, { Component } from 'react'
 class LessonStudentListItem extends Component {
   constructor(props) {
     super(props)
-    this.state = {indvGrade: false, editGrade: false, sendMessage: false}
+    this.state = {display: {indvGrade: false, editGrade: false, sendMessage: false}}
     this.renderActionIcons = this.renderActionIcons.bind(this)
     this.renderGradeForm = this.renderGradeForm.bind(this)
     this.renderIndvGrade = this.renderIndvGrade.bind(this)
     this.renderShowGrades = this.renderShowGrades.bind(this)
     this.resetState = this.resetState.bind(this)
+    this.toggleIndvState = this.toggleIndvState.bind(this)
   }
   renderGradeForm() {
     return (
@@ -33,17 +34,17 @@ class LessonStudentListItem extends Component {
           title="Add grade" 
           style={{width: '1.5em', cursor: 'pointer'}} 
           className="glyphicon glyphicon-plus" 
-          onClick={() => {this.setState({indvGrade: true})}}/>
+          onClick={() => {this.toggleIndvState({indvGrade: true})}}/>
         <span 
           title="Edit grades" 
           style={{width: '1.5em', cursor: 'pointer'}} 
           className="glyphicon glyphicon-pencil" 
-          onClick={() => {this.setState({editGrade: true})}}/>
+          onClick={() => {this.toggleIndvState({editGrade: true})}}/>
         <span 
           title="Send message" 
           style={{width: '1.5em', cursor: 'pointer'}} 
           className="glyphicon glyphicon-envelope" 
-          onClick={() => {this.setState({sendMessage: true})}}/>
+          onClick={() => {this.toggleIndvState({sendMessage: true})}}/>
       </div>
     )
   }
@@ -100,18 +101,24 @@ class LessonStudentListItem extends Component {
     }
   }
   resetState() {
-    this.setState({
-      indvGrade: false,
-      editGrade: false,
-      sendMessage: false
-    })
+    this.setState(
+      {display: {
+        indvGrade: false,
+        editGrade: false,
+        sendMessage: false
+      }})
+  }
+  toggleIndvState(newState) {
+    let defaultState = {indvGrade: false, editGrade: false, sendMessage: false}
+    let updatedState = Object.assign(defaultState, newState)
+    this.setState({display: updatedState})
   }
   componentWillReceiveProps(nextProps) {
     this.resetState()
   }
   render() {
     let toRender;
-    const {indvGrade, editGrade, sendMessage} = this.state
+    const {indvGrade, editGrade, sendMessage} = this.state.display
     switch(this.props.display) {
       case 'none':
         toRender = this.renderActionIcons;
