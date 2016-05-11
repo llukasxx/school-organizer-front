@@ -15,6 +15,8 @@ export class IndvGrade extends React.Component {
 
     return (
       <form style={{margin: 0, padding: 0}}>
+        <hr />
+        <h4>New grade</h4>
         <div className="input-group">
           <span className="input-group-addon" id="basic-addon1">Description:</span>
           <input type="text" 
@@ -32,8 +34,8 @@ export class IndvGrade extends React.Component {
             {...grade}/>
         </div>
           <br />
-          <button className="btn btn-sm btn-success">Confirm</button> | <button 
-                                                                          className="btn btn-sm btn-danger"
+          <button className="btn btn-success">Confirm</button> | <button 
+                                                                          className="btn btn-danger"
                                                                           onClick={(e) => {
                                                                             e.preventDefault()
                                                                             this.props.resetState()

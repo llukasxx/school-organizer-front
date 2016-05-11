@@ -84,6 +84,7 @@ class LessonStudentListItem extends Component {
           formKey={String(el.id)}
           initialValues={{grade: el.grade, description: el.description}}
           lastItem={currentGrades.length == (index+1) ? true : false}
+          firstItem={index == 0 ? true : false}
           resetParent={this.resetState}/>
       )
     })
@@ -156,8 +157,10 @@ class LessonStudentListItem extends Component {
     return (
       <li 
         className="list-group-item"
-        key={this.props.student.id}>
-        {this.props.student.first_name + ' ' + this.props.student.last_name}
+        key={this.props.student.id}
+        style={indvGrade || editGrade || sendMessage ? {border: 'solid'} : {}}>
+        <b>{this.props.student.first_name + ' ' + this.props.student.last_name}</b>
+
         {toRender()}
       </li>
     )
