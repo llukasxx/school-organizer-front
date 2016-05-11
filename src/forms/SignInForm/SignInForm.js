@@ -19,13 +19,7 @@ const validate = (values) => {
   return errors
 }
 
-type Props = {
-  handleSubmit: Function,
-  fields: Object,
-};
-
 export class SignIn extends React.Component {
-  props: Props;
   constructor(props) {
     super(props)
   }
@@ -80,7 +74,7 @@ export class SignIn extends React.Component {
           </div>
           {this.renderFormErrors(email)}
           <div className="input-group input-group-lg">
-            <span className="input-group-addon glyphicon glyphicon-lock" id="sizing-addon1"></span>
+            <span className="input-group-addon" id="sizing-addon1"><span className="glyphicon glyphicon-lock"/></span>
             <input disabled={this.props.loading} type="password" className="form-control" placeholder="Password" aria-describedby="sizing-addon1" {...password} />
           </div>
           {this.renderFormErrors(password)}

@@ -1,4 +1,7 @@
 import React, { Component } from 'react'
+import MultiGradeForm from '../../forms/GradeForm'
+import IndvGradeForm from '../../forms/IndvGradeForm'
+import EditGradeForm from '../../forms/EditGradeForm'
 
 class LessonStudentListItem extends Component {
   constructor(props) {
@@ -10,21 +13,17 @@ class LessonStudentListItem extends Component {
     this.renderShowGrades = this.renderShowGrades.bind(this)
     this.resetState = this.resetState.bind(this)
     this.toggleIndvState = this.toggleIndvState.bind(this)
+    this.renderEditGrades = this.renderEditGrades.bind(this)
+    this.extractProperGrades = this.extractProperGrades.bind(this)
   }
   renderGradeForm() {
+    const id = this.props.student.id
     return (
-      <div className="input-group">
-        <form style={{display: 'inline', margin: 0, padding: 0}}>
-          <span className="input-group-addon" id="basic-addon1">Grade:</span>
-          <input type="text" 
-            className="form-control input-sm pull-right"
-            style={{width: '5em', height: '2.3em', display: 'inline'}}
-            onChange={(e) => {
-              let value = e.target.value
-              this.props.handleGradeChange(this.props.student.id, value)
-            }}/>
-        </form>
-      </div>
+      <MultiGradeForm 
+        key={id}
+        formKey={String(id)}
+        gradesDescription={this.props.gradesDescription}
+      />
     )
   }
   renderActionIcons() {
@@ -49,43 +48,17 @@ class LessonStudentListItem extends Component {
     )
   }
   renderIndvGrade() {
+    const id = this.props.student.id
     return (
-        <form style={{margin: 0, padding: 0}}>
-          <div className="input-group">
-            <span className="input-group-addon" id="basic-addon1">Description:</span>
-            <input type="text" 
-              placeholder="eg. test"
-              className="form-control input-sm"
-              style={{width: '10em', height: '2.5em'}}/>
-          </div>
-          <div className="input-group">
-            <span className="input-group-addon" id="basic-addon1">Grade:</span>
-            <input type="text" 
-              placeholder="eg. 5"
-              className="form-control input-sm"
-              style={{width: '5em', height: '2.5em'}}/>
-          </div>
-            <br />
-            <button className="btn btn-sm btn-success">Confirm</button> | <button 
-                                                                            className="btn btn-sm btn-danger"
-                                                                            onClick={(e) => {
-                                                                              e.preventDefault()
-                                                                              this.resetState()
-                                                                            }}>
-                                                                            Cancel</button>
-          </form>
-        
+      <IndvGradeForm 
+        key={id}
+        formKey={String(id)}
+        resetState={this.resetState}
+      />
     )
   }
   renderShowGrades() {
-    const currentLessonId = this.props.lessonId
-    let currentGrades = []
-    this.props.student.student_grades.map(function(el) {
-      const gradeLessonId = el.lesson_id 
-      if(currentLessonId == gradeLessonId) {
-        currentGrades.push(el.grade)
-      }
-    })
+    let currentGrades = this.extractProperGrades()
     if(currentGrades.length > 0) {
       return (
         <div>
@@ -96,6 +69,36 @@ class LessonStudentListItem extends Component {
       return (
         <div>
           No grades
+        </div>
+      )
+    }
+  }
+  renderEditGrades() {
+    let currentGrades = this.extractProperGrades()
+    let gradeForms = []
+    currentGrades.map((el, index) => {
+      gradeForms.push(
+        <EditGradeForm
+          key={el.id} 
+          grade={el}
+          formKey={String(el.id)}
+          initialValues={{grade: el.grade, description: el.description}}
+          lastItem={currentGrades.length == (index+1) ? true : false}
+          resetParent={this.resetState}/>
+      )
+    })
+    if(gradeForms.length > 0) {
+      return gradeForms
+    } else {
+      return (
+        <div>
+          No grades found.
+          <button 
+            className="btn btn-warning"
+            onClick={(e) => {
+              e.preventDefault()
+              this.resetState()
+            }}>Go back</button>
         </div>
       )
     }
@@ -116,6 +119,17 @@ class LessonStudentListItem extends Component {
   componentWillReceiveProps(nextProps) {
     this.resetState()
   }
+  extractProperGrades() {
+    const currentLessonId = this.props.lessonId
+    let currentGrades = []
+    this.props.student.student_grades.map(function(el) {
+      const gradeLessonId = el.lesson_id 
+      if(currentLessonId == gradeLessonId) {
+        currentGrades.push(el)
+      }
+    })
+    return currentGrades
+  }
   render() {
     let toRender;
     const {indvGrade, editGrade, sendMessage} = this.state.display
@@ -125,6 +139,8 @@ class LessonStudentListItem extends Component {
         if(indvGrade || editGrade || sendMessage) {
           if(indvGrade) {
             toRender = this.renderIndvGrade
+          } else if(editGrade) {
+            toRender = this.renderEditGrades
           }
         }
         break;

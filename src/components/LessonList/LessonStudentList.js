@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import LessonStudentListItem from './LessonStudentListItem'
+
+
+
 import _ from 'lodash'
 
 class LessonStudentList extends Component {
@@ -20,7 +23,8 @@ class LessonStudentList extends Component {
                             key={index}
                             display={this.props.display}
                             lessonId={this.props.lessonId}
-                            handleGradeChange={this.handleGradeChange}/>)
+                            handleGradeChange={this.handleGradeChange}
+                            gradesDescription={this.state.gradesDescription}/>)
       })
       return studentList
     } else {
@@ -52,7 +56,14 @@ class LessonStudentList extends Component {
       <div>
         <div className="input-group">
           <span className="input-group-addon" id="basic-addon1">Grades description:</span>
-          <input type="text" className="form-control" placeholder="eg. test" aria-describedby="basic-addon1"/>
+          <input 
+            type="text" 
+            className="form-control" 
+            placeholder="eg. test" 
+            aria-describedby="basic-addon1"
+            onChange={(e) => {
+              this.setState({gradesDescription: e.target.value})
+            }}/>
         </div>
         <hr />
         <button className="btn btn-lg btn-success">Confirm all</button>
