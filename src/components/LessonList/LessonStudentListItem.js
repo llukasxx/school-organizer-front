@@ -59,16 +59,16 @@ class LessonStudentListItem extends Component {
   }
   renderShowGrades() {
     let currentGrades = this.extractProperGrades()
+    let grades = []
     if(currentGrades.length > 0) {
-      return (
-        <div>
-          {currentGrades.join(', ')}
-        </div>
-      )
+      currentGrades.map((el) => {
+        grades.push(<p key={el.id}>{el.description}, {el.grade}</p>)    
+      })
+      return grades
     } else {
       return (
         <div>
-          No grades
+          No grades found.
         </div>
       )
     }

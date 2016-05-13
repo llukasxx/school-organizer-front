@@ -2,10 +2,12 @@ import axios from 'axios'
 import { ROOT_URL } from '../ApiConfig'
 // Constants
 // export const constants = { }
-const START_TEACHER_GROUPS_FETCH = 'school-organizer/groups/START_TEACHER_GROUPS_FETCH'
-const FETCH_TEACHER_GROUPS = 'school-organizer/groups/FETCH_TEACHER_GROUPS'
-const FETCH_TEACHER_GROUPS_ERROR = 'school-organizer/groups/FETCH_TEACHER_GROUPS_ERROR'
-const SET_ACTIVE_GROUP = 'school-organizer/groups/SET_ACTIVE_GROUP'
+export const START_TEACHER_GROUPS_FETCH = 'school-organizer/groups/START_TEACHER_GROUPS_FETCH'
+export const FETCH_TEACHER_GROUPS = 'school-organizer/groups/FETCH_TEACHER_GROUPS'
+export const FETCH_TEACHER_GROUPS_ERROR = 'school-organizer/groups/FETCH_TEACHER_GROUPS_ERROR'
+export const SET_ACTIVE_GROUP = 'school-organizer/groups/SET_ACTIVE_GROUP'
+
+
 // Action Creators
 export function fetchTeacherGroups() {
   return function(dispatch) {
