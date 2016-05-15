@@ -54,6 +54,8 @@ class LessonStudentListItem extends Component {
         key={id}
         formKey={String(id)}
         resetState={this.resetState}
+        studentId={id}
+        lessonId={this.props.lessonId}
       />
     )
   }

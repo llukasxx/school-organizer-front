@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { ROOT_URL } from '../ApiConfig'
+import update from 'react/lib/update'
 // Constants
 // export const constants = { }
 export const START_TEACHER_GROUPS_FETCH = 'school-organizer/groups/START_TEACHER_GROUPS_FETCH'
@@ -7,8 +8,12 @@ export const FETCH_TEACHER_GROUPS = 'school-organizer/groups/FETCH_TEACHER_GROUP
 export const FETCH_TEACHER_GROUPS_ERROR = 'school-organizer/groups/FETCH_TEACHER_GROUPS_ERROR'
 export const SET_ACTIVE_GROUP = 'school-organizer/groups/SET_ACTIVE_GROUP'
 
+// Grades actions
+export const FETCH_GRADE = 'school-organizer/groups/FETCH_GRADE'
+
 
 // Action Creators
+// GROUPS
 export function fetchTeacherGroups() {
   return function(dispatch) {
     dispatch({ type: START_TEACHER_GROUPS_FETCH})
@@ -33,6 +38,24 @@ export function setActiveGroup(group) {
   }
 }
 
+//GRADES
+export function sendGrade(newGrade) {
+  return function(dispatch) {
+    axios.post(`${ROOT_URL}/api/v1/students/grades`, {grade: newGrade}, {
+      headers: { authorization: localStorage.getItem('token') }
+    })
+      .then(function(response) {
+        console.log(response.data)
+
+        dispatch({ type: FETCH_GRADE, lessonId: response.data.lesson_id, studentId: response.data.student_id})
+      })
+      .catch(function(response) {
+        console.log(response)
+      })
+  }
+}
+
+
 // Reducer
 export const initialState = {}
 export default function (state = initialState, action) {
@@ -45,6 +68,8 @@ export default function (state = initialState, action) {
       return {...state, groupItems: action.payload, loaded: false}
     case SET_ACTIVE_GROUP:
       return {...state, activeGroup: action.payload, loaded: true}
+    case FETCH_GRADE:
+      return {...state}
     default:
       return state
   }

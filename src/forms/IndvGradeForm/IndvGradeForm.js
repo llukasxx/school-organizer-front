@@ -1,5 +1,6 @@
 import React from 'react'
 import { reduxForm } from 'redux-form'
+import * as actions from '../../redux/modules/GroupsReducer'
 
 export const fields = ['grade', 'description']
 
@@ -9,7 +10,18 @@ const validate = (values) => {
 }
 
 export class IndvGrade extends React.Component {
-
+  constructor(props) {
+    super(props)
+    this.handleDisable = this.handleDisable.bind(this)
+  }
+  handleDisable() {
+    const { fields: { grade, description } } = this.props
+    if(grade.value.length > 0 && description.value.length > 0) {
+      return false
+    } else {
+      return true
+    }
+  }
   render() {
     const { fields: { grade, description }, handleSubmit } = this.props
 
@@ -34,13 +46,28 @@ export class IndvGrade extends React.Component {
             {...grade}/>
         </div>
           <br />
-          <button className="btn btn-success">Confirm</button> | <button 
-                                                                          className="btn btn-danger"
-                                                                          onClick={(e) => {
-                                                                            e.preventDefault()
-                                                                            this.props.resetState()
-                                                                          }}>
-                                                                          Cancel</button>
+          <button 
+            className="btn btn-success" 
+            style={{marginRight: '10px'}}
+            disabled={this.handleDisable()}
+            onClick={(e) => {
+              e.preventDefault()
+              let grade = {
+                grade: this.props.fields.grade.value, 
+                description: this.props.fields.description.value,
+                student_id: this.props.studentId,
+                lesson_id: this.props.lessonId
+              }
+              this.props.sendGrade(grade)
+            }}>
+            Confirm
+          </button> 
+          <button 
+            className="btn btn-danger"
+            onClick={(e) => {
+              e.preventDefault()
+              this.props.resetState()
+            }}>Cancel</button>
         </form>
     )
   }
@@ -50,6 +77,6 @@ IndvGrade = reduxForm({
   form: 'IndvGrade',
   fields,
   validate
-})(IndvGrade)
+}, null, actions)(IndvGrade)
 
 export default IndvGrade
