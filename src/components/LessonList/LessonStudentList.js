@@ -14,6 +14,7 @@ class LessonStudentList extends Component {
     this.renderConfirmButton = this.renderConfirmButton.bind(this)
   }
   renderLessonStudentListItem() {
+    console.log(this.props.students)
     const students = this.props.students
     let studentList = []
     if(students.length > 0) {

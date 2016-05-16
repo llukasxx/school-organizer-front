@@ -1,6 +1,11 @@
 import axios from 'axios'
 import { ROOT_URL } from '../ApiConfig'
 import update from 'react/lib/update'
+
+//normalizr
+import { normalize, Schema, arrayOf } from 'normalizr'
+import { camelizeKeys } from 'humps'
+
 // Constants
 // export const constants = { }
 export const START_TEACHER_GROUPS_FETCH = 'school-organizer/groups/START_TEACHER_GROUPS_FETCH'
@@ -23,7 +28,14 @@ export function fetchTeacherGroups() {
       .then(function(response) {
         console.log(response)
         dispatch({ type: SET_ACTIVE_GROUP, payload: response.data.groups[0]})
-        dispatch({ type: FETCH_TEACHER_GROUPS, payload: response.data.groups})
+
+        const camelized = camelizeKeys(response.data)
+
+        dispatch({ type: FETCH_TEACHER_GROUPS, 
+                   payload: response.data.groups, 
+                   response: normalize(camelized, { groups: arrayOf(group) })
+                 })
+        
       })
       .catch(function(response) {
         console.log(response)
@@ -46,8 +58,8 @@ export function sendGrade(newGrade) {
     })
       .then(function(response) {
         console.log(response.data)
-
-        dispatch({ type: FETCH_GRADE, lessonId: response.data.lesson_id, studentId: response.data.student_id})
+        let camelized = camelizeKeys(response.data)
+        dispatch({ type: FETCH_GRADE, response: normalize(camelized, { studentGrades: studentGrade })})
       })
       .catch(function(response) {
         console.log(response)
@@ -74,3 +86,34 @@ export default function (state = initialState, action) {
       return state
   }
 }
+
+
+// Schemas
+const group = new Schema('groups')
+const lesson = new Schema('lessons')
+const student = new Schema('students')
+const studentGrade = new Schema('studentGrades')
+const lessonDates = new Schema('lessonDates')
+
+group.define({
+  lessons: arrayOf(lesson)
+})
+
+lesson.define({
+  students: arrayOf(student),
+  lessonDates: arrayOf(lessonDates)
+})
+
+student.define({
+  studentGrades: arrayOf(studentGrade),
+  lesson: lesson
+})
+
+studentGrade.define({
+  student: student,
+  lesson: lesson
+})
+
+lessonDates.define({
+  lesson: lesson
+})
