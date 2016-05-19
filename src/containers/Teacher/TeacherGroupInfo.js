@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
+import { connect } from 'react-redux'
 
-import MySpinner from '../Spinner/Spinner'
+import MySpinner from '../../components/Spinner/Spinner'
 import { smallSpinnerRight } from '../../utils/SpinnerConfig'
 
-import LessonList from '../LessonList'
+import LessonList from './LessonList'
 
 export class TeacherGroupInfo extends React.Component {
   constructor(props) {
@@ -25,7 +26,7 @@ export class TeacherGroupInfo extends React.Component {
             </div>
           </div>
           <div className="panel-body">
-          {this.props.loaded ?
+          {this.props.loaded && this.props.activeGroup ?
             <table className="table">
               <thead>
                 <tr><th>Group name: {this.props.activeGroup.name}</th></tr>
@@ -51,7 +52,9 @@ export class TeacherGroupInfo extends React.Component {
                 <tbody>
                 <tr>
                   <td>
-                    <LessonList lessons={this.props.activeGroup.lessons} activeTab={this.state.activeTab}/>
+                    <LessonList 
+                      lessons={this.props.activeGroup.lessons}
+                      activeTab={this.state.activeTab}/>
                   </td>
                 </tr>
               </tbody>
@@ -64,5 +67,12 @@ export class TeacherGroupInfo extends React.Component {
   }
 }
 
-export default TeacherGroupInfo
+const mapStateToProps = (state) => {
+  return {
+    activeGroup: state.teacherGroups.activeGroup,
+    loaded: state.teacherGroups.loaded
+  }
+}
+
+export default connect(mapStateToProps, null)(TeacherGroupInfo)
 

@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { ROOT_URL } from '../ApiConfig'
-import update from 'react/lib/update'
 
 //normalizr
 import { normalize, Schema, arrayOf } from 'normalizr'
@@ -12,7 +11,7 @@ export const START_TEACHER_GROUPS_FETCH = 'school-organizer/groups/START_TEACHER
 export const FETCH_TEACHER_GROUPS = 'school-organizer/groups/FETCH_TEACHER_GROUPS'
 export const FETCH_TEACHER_GROUPS_ERROR = 'school-organizer/groups/FETCH_TEACHER_GROUPS_ERROR'
 export const SET_ACTIVE_GROUP = 'school-organizer/groups/SET_ACTIVE_GROUP'
-
+export const ADD_GRADE = 'school-organizer/groups/ADD_GRADE'
 // Grades actions
 export const FETCH_GRADE = 'school-organizer/groups/FETCH_GRADE'
 
@@ -27,15 +26,15 @@ export function fetchTeacherGroups() {
     })
       .then(function(response) {
         console.log(response)
-        dispatch({ type: SET_ACTIVE_GROUP, payload: response.data.groups[0]})
-
         const camelized = camelizeKeys(response.data)
-
-        dispatch({ type: FETCH_TEACHER_GROUPS, 
-                   payload: response.data.groups, 
-                   response: normalize(camelized, { groups: arrayOf(group) })
+        const normalizedResponse = normalize(camelized, { groups: arrayOf(group) })
+        const firstGroup = Object.keys(normalizedResponse.entities.groups)[0]
+        if(firstGroup) {
+          dispatch({ type: SET_ACTIVE_GROUP, payload: normalizedResponse.entities.groups[firstGroup]})
+        }
+        dispatch({ type: FETCH_TEACHER_GROUPS,
+                   response: normalizedResponse
                  })
-        
       })
       .catch(function(response) {
         console.log(response)
@@ -57,9 +56,12 @@ export function sendGrade(newGrade) {
       headers: { authorization: localStorage.getItem('token') }
     })
       .then(function(response) {
-        console.log(response.data)
         let camelized = camelizeKeys(response.data)
-        dispatch({ type: FETCH_GRADE, response: normalize(camelized, { studentGrades: studentGrade })})
+        let normalized = normalize(camelized, { 
+          student: student
+        })
+        dispatch({ type: FETCH_GRADE, response: normalized})
+        dispatch({ type: ADD_GRADE, grade: normalized})
       })
       .catch(function(response) {
         console.log(response)
@@ -73,14 +75,14 @@ export const initialState = {}
 export default function (state = initialState, action) {
   switch (action.type) {
     case START_TEACHER_GROUPS_FETCH:
-      return { ...state, groupItems: [], loaded: false}
+      return { ...state, loaded: false}
     case FETCH_TEACHER_GROUPS:
-      return {...state, groupItems: action.payload, loaded: true}
+      return {...state, loaded: true}
     case FETCH_TEACHER_GROUPS_ERROR:
-      return {...state, groupItems: action.payload, loaded: false}
+      return {...state, loaded: true}
     case SET_ACTIVE_GROUP:
       return {...state, activeGroup: action.payload, loaded: true}
-    case FETCH_GRADE:
+    case ADD_GRADE:
       return {...state}
     default:
       return state
@@ -110,10 +112,7 @@ student.define({
 })
 
 studentGrade.define({
-  student: student,
-  lesson: lesson
 })
 
 lessonDates.define({
-  lesson: lesson
 })

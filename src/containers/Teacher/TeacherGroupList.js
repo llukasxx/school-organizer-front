@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
+import _ from 'lodash'
 import * as actions from '../../redux/modules/GroupsReducer'
 
+import { groupsArraySelector } from '../../selectors'
 
-import TeacherGroupInfo from '../../components/TeacherGroupInfo'
+import TeacherGroupInfo from './TeacherGroupInfo'
 import TeacherMessageBox from './TeacherMessageBox'
 import TeacherGroupListItem from '../../components/TeacherGroupListItem'
 
@@ -20,7 +21,7 @@ export class TeacherGroupList extends React.Component {
       <TeacherGroupListItem 
         key={el.name} 
         group={el} 
-        activeGroup={this.props.groups.activeGroup}
+        activeGroup={this.props.activeGroup}
         setActiveGroup={this.props.setActiveGroup}/>
     )
   }
@@ -37,22 +38,26 @@ export class TeacherGroupList extends React.Component {
               <p>Click on each if you want to see more info.</p>
             </div>
             <ul className="list-group">
-              {this.props.groups.loaded ? this.props.groups.groupItems.map(this.renderGroups) : "Loading..." }
+              {this.props.loaded ? this.props.groups.map(this.renderGroups) : "Loading..." }
             </ul>
           </div>
         </div>
-        <TeacherGroupInfo 
-          activeGroup={this.props.groups.activeGroup}
-          loaded={this.props.groups.loaded}/>
+        <TeacherGroupInfo />
         <TeacherMessageBox />
       </div>
     )
   }
 }
 
+TeacherGroupList.propTypes = {
+  groups: PropTypes.array.isRequired
+}
+
 const mapStateToProps = (state) => {
   return {
-    groups: state.teacherGroups
+    activeGroup: state.teacherGroups.activeGroup,
+    groups: groupsArraySelector(state),
+    loaded: state.teacherGroups.loaded
   }
 }
 

@@ -1,7 +1,11 @@
 import React from 'react'
 
-import LessonStudentList from './LessonStudentList'
-import LessonDateList from './LessonDateList'
+import { connect } from 'react-redux'
+
+import { lessonStudentsArraySelector, lessonDatesArraySelector } from '../../selectors'
+
+import LessonStudentList from '../../components/LessonList/LessonStudentList'
+import LessonDateList from '../../components/LessonList/LessonDateList'
 
 export class LessonListItem extends React.Component {
   constructor(props) {
@@ -14,7 +18,7 @@ export class LessonListItem extends React.Component {
   renderLessonDates() {
     return (
       <LessonDateList 
-        dates={this.props.lesson.lesson_dates}/>
+        dates={this.props.lessonDates}/>
     )
   }
   renderLessonStudents() {
@@ -31,10 +35,10 @@ export class LessonListItem extends React.Component {
           {this.state.lessonStudentDisplay == 'showGrades' ? "Hide" : "Show grades"}
         </button>
         <LessonStudentList 
-          students={this.props.lesson.students}
+          students={this.props.students}
           display={this.state.lessonStudentDisplay}
-          lessonId={this.props.lesson.id}
           handleStudentDisplay={this.handleStudentDisplay}
+          lessonId={this.props.lesson.id}
         />
       </div>
     )
@@ -65,5 +69,11 @@ export class LessonListItem extends React.Component {
   }
 }
 
-export default LessonListItem
+const mapStateToProps = (state, ownProps) => {
+  return {
+    students: lessonStudentsArraySelector(state, ownProps),
+    lessonDates: lessonDatesArraySelector(state, ownProps)
+  }
+}
 
+export default connect(mapStateToProps, null)(LessonListItem)

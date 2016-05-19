@@ -3,6 +3,11 @@ import MultiGradeForm from '../../forms/GradeForm'
 import IndvGradeForm from '../../forms/IndvGradeForm'
 import EditGradeForm from '../../forms/EditGradeForm'
 
+import { connect } from 'react-redux'
+import * as actions from '../../redux/modules/GroupsReducer'
+
+import { studentLessonGradesArraySelector } from '../../selectors'
+
 class LessonStudentListItem extends Component {
   constructor(props) {
     super(props)
@@ -14,7 +19,6 @@ class LessonStudentListItem extends Component {
     this.resetState = this.resetState.bind(this)
     this.toggleIndvState = this.toggleIndvState.bind(this)
     this.renderEditGrades = this.renderEditGrades.bind(this)
-    this.extractProperGrades = this.extractProperGrades.bind(this)
   }
   renderGradeForm() {
     const id = this.props.student.id
@@ -60,7 +64,7 @@ class LessonStudentListItem extends Component {
     )
   }
   renderShowGrades() {
-    let currentGrades = this.extractProperGrades()
+    const currentGrades = this.props.grades
     let grades = []
     if(currentGrades.length > 0) {
       currentGrades.map((el) => {
@@ -76,16 +80,16 @@ class LessonStudentListItem extends Component {
     }
   }
   renderEditGrades() {
-    let currentGrades = this.extractProperGrades()
+    let { grades } = this.props
     let gradeForms = []
-    currentGrades.map((el, index) => {
+    grades.map((el, index) => {
       gradeForms.push(
         <EditGradeForm
           key={el.id} 
           grade={el}
           formKey={String(el.id)}
           initialValues={{grade: el.grade, description: el.description}}
-          lastItem={currentGrades.length == (index+1) ? true : false}
+          lastItem={grades.length == (index+1) ? true : false}
           firstItem={index == 0 ? true : false}
           resetParent={this.resetState}/>
       )
@@ -122,17 +126,6 @@ class LessonStudentListItem extends Component {
   componentWillReceiveProps(nextProps) {
     this.resetState()
   }
-  extractProperGrades() {
-    const currentLessonId = this.props.lessonId
-    let currentGrades = []
-    this.props.student.student_grades.map(function(el) {
-      const gradeLessonId = el.lesson_id 
-      if(currentLessonId == gradeLessonId) {
-        currentGrades.push(el)
-      }
-    })
-    return currentGrades
-  }
   render() {
     let toRender;
     const {indvGrade, editGrade, sendMessage} = this.state.display
@@ -161,7 +154,7 @@ class LessonStudentListItem extends Component {
         className="list-group-item"
         key={this.props.student.id}
         style={indvGrade || editGrade || sendMessage ? {border: 'solid'} : {}}>
-        <b>{this.props.student.first_name + ' ' + this.props.student.last_name}</b>
+        <b>{this.props.student.firstName + ' ' + this.props.student.lastName}</b>
 
         {toRender()}
       </li>
@@ -169,4 +162,15 @@ class LessonStudentListItem extends Component {
   }
 }
 
-export default LessonStudentListItem
+const makeMapStateToProps = () => {
+  const getStudentLessonGradesArraySelector = studentLessonGradesArraySelector()
+  const mapStateToProps = (state, ownProps) => {
+    return {
+      grades: getStudentLessonGradesArraySelector(state, ownProps)
+    }
+  }
+  return mapStateToProps
+}
+
+
+export default connect(makeMapStateToProps, actions)(LessonStudentListItem)

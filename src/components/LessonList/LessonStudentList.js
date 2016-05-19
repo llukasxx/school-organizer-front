@@ -1,20 +1,17 @@
 import React, { Component } from 'react'
-import LessonStudentListItem from './LessonStudentListItem'
+import LessonStudentListItem from '../../containers/Teacher/LessonStudentListItem'
 
-
-
-import _ from 'lodash'
+//import _ from 'lodash'
 
 class LessonStudentList extends Component {
   constructor(props) {
     super(props)
     this.renderLessonStudentListItem = this.renderLessonStudentListItem.bind(this)
-    this.handleGradeChange = this.handleGradeChange.bind(this)
-    this.resetGrades = this.resetGrades.bind(this)
+    //this.handleGradeChange = this.handleGradeChange.bind(this)
+    //this.resetGrades = this.resetGrades.bind(this)
     this.renderConfirmButton = this.renderConfirmButton.bind(this)
   }
   renderLessonStudentListItem() {
-    console.log(this.props.students)
     const students = this.props.students
     let studentList = []
     if(students.length > 0) {
@@ -23,9 +20,9 @@ class LessonStudentList extends Component {
                             student={el}
                             key={index}
                             display={this.props.display}
-                            lessonId={this.props.lessonId}
-                            handleGradeChange={this.handleGradeChange}
-                            gradesDescription={this.state.gradesDescription}/>)
+                            //handleGradeChange={this.handleGradeChange}
+                            //gradesDescription={this.state.gradesDescription}
+                            lessonId={this.props.lessonId}/>)
       })
       return studentList
     } else {
@@ -34,24 +31,24 @@ class LessonStudentList extends Component {
       )
     }
   }
-  handleGradeChange(student_id, grade) {
-    let newGrades = this.state.grades
-    let gradeIndex = _.findIndex(newGrades, function(o) { return o.student_id == student_id })
-    newGrades[gradeIndex]['grade'] = grade
-    this.setState({grades: newGrades})
-    console.log(this.state)
-  }
-  resetGrades() {
-    let grade = {
-      lesson_id: this.props.lessonId,
-      grade: ''
-    }
-    let grades = []
-    this.props.students.map(function(el) {
-      grades.push(Object.assign({student_id: el.id}, grade))
-    })
-    this.setState({grades: grades})
-  }
+  // handleGradeChange(student_id, grade) {
+  //   let newGrades = this.state.grades
+  //   let gradeIndex = _.findIndex(newGrades, function(o) { return o.student_id == student_id })
+  //   newGrades[gradeIndex]['grade'] = grade
+  //   this.setState({grades: newGrades})
+  //   console.log(this.state)
+  // }
+  // resetGrades() {
+  //   let grade = {
+  //     lesson_id: this.props.lessonId,
+  //     grade: ''
+  //   }
+  //   let grades = []
+  //   this.props.students.map(function(el) {
+  //     grades.push(Object.assign({student_id: el.id}, grade))
+  //   })
+  //   this.setState({grades: grades})
+  // }
   renderConfirmButton() {
     return (
       <div>
@@ -79,12 +76,12 @@ class LessonStudentList extends Component {
       </div>
     )
   }
-  componentWillMount() {
-    this.resetGrades()
-  }
-  componentWillReceiveProps() {
-    this.resetGrades()
-  }
+  // componentWillMount() {
+  //   this.resetGrades()
+  // }
+  // componentWillReceiveProps() {
+  //   this.resetGrades()
+  // }
   render() {
     return (
       <div>
@@ -95,5 +92,6 @@ class LessonStudentList extends Component {
     )
   }
 }
+
 
 export default LessonStudentList

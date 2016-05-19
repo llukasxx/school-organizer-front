@@ -9,7 +9,7 @@ export class TeacherGroupListItem extends React.Component {
   }
   isActive() {
     return (
-      this.props.activeGroup == this.props.group ? true : false
+      this.props.activeGroup.name == this.props.group.name ? true : false
     )
   }
   render () {
