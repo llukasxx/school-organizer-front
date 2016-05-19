@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router'
+import ReduxToastr from 'react-redux-toastr'
 
 export default class Root extends React.Component {
   static propTypes = {
@@ -38,6 +39,7 @@ export default class Root extends React.Component {
         <div style={{ height: '100%' }}>
           {this.content}
           {this.devTools}
+          <ReduxToastr />
         </div>
       </Provider>
     )

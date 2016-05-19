@@ -1,6 +1,8 @@
 import axios from 'axios'
 import { ROOT_URL } from '../ApiConfig'
 
+import {toastr} from 'react-redux-toastr'
+
 //normalizr
 import { normalize, Schema, arrayOf } from 'normalizr'
 import { camelizeKeys } from 'humps'
@@ -62,9 +64,11 @@ export function sendGrade(newGrade) {
         })
         dispatch({ type: FETCH_GRADE, response: normalized})
         dispatch({ type: ADD_GRADE, grade: normalized})
+        toastr.success('Grade', 'Has been successfully added.')
       })
       .catch(function(response) {
         console.log(response)
+        toastr.warning('Warning', 'Something bad happened.')
       })
   }
 }

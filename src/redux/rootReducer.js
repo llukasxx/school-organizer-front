@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
 import { routerReducer as router } from 'react-router-redux'
 import { reducer as form } from 'redux-form';
+import {reducer as toastrReducer} from 'react-redux-toastr'
 import AuthReducer from './modules/AuthReducer'
 import GroupsReducer from './modules/GroupsReducer'
 
@@ -17,6 +18,7 @@ export default combineReducers({
   router,
   form,
   entities,
+  toastr: toastrReducer,
   auth: AuthReducer,
   teacherGroups: GroupsReducer
 })
