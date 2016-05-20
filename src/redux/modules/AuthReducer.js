@@ -2,6 +2,7 @@ import axios from 'axios'
 import { push } from 'react-router-redux';
 
 import { ROOT_URL } from '../ApiConfig'
+import {toastr} from 'react-redux-toastr'
 // Constants
 // export const constants = { }
 export const START_AUTH = 'school-organizer/auth/START_AUTH'
@@ -21,6 +22,7 @@ export function signInUser(email, password) {
           dispatch({ type: FINISH_AUTH, payload: response})
           setLocalStorage(response.data.auth_token, response.data.user, response.data.accountType)
           dispatch(push('/' + response.data.accountType))
+          toastr.success(`Welcome ${response.data.user}!`, 'You have successfully logged in.')
         })
         .catch(function (response) {
           dispatch({ type: AUTH_ERROR, payload: response.data.error})
@@ -41,6 +43,7 @@ function removeLocalStorage() {
 
 // signout user
 export function signOutUser() {
+  toastr.success(`Goodbye!`, 'You have successfully logged out.')
   removeLocalStorage()
   return function(dispatch) {
     return (

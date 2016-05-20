@@ -1,5 +1,6 @@
 import React from 'react'
 import { reduxForm, reset } from 'redux-form'
+import * as actions from '../../redux/modules/GroupsReducer'
 
 export const fields = ['grade', 'description']
 
@@ -39,6 +40,7 @@ export class EditGrade extends React.Component {
           <span className="input-group-addon" id="basic-addon1">Description:</span>
           <input type="text" 
             placeholder="eg. test"
+            autocomplete="off"
             className="form-control input-sm"
             style={{width: '10em', height: '2.5em'}} {...description}/>
         </div>
@@ -46,10 +48,25 @@ export class EditGrade extends React.Component {
           <span style={{width: '7.1em'}}className="input-group-addon" id="basic-addon1">Grade:</span>
           <input type="text" 
             placeholder="eg. 5"
+            autocomplete="off"
             className="form-control input-sm"
             style={{width: '10em', height: '2.5em'}} {...grade}/>
         </div>
-        <button disabled={this.handleButtonDisable()} style={{marginRight: '10px'}} className="btn btn-success">Update</button> 
+        <button disabled={this.handleButtonDisable()} 
+                style={{marginRight: '10px'}} 
+                className="btn btn-success"
+                onClick={(e) => {
+                  e.preventDefault()
+                  let updatedGrade = {
+                    grade: this.props.fields.grade.value, 
+                    description: this.props.fields.description.value,
+                    student_id: this.props.studentId,
+                    lesson_id: this.props.lessonId,
+                  }
+                  this.props.updateGrade(updatedGrade, this.props.grade.id)
+                }}>
+                Update
+        </button> 
         <button className="btn btn-warning"
                 onClick={(e) => {
                   e.preventDefault()
@@ -71,6 +88,6 @@ EditGrade = reduxForm({
   form: 'EditGrade',
   fields,
   validate
-})(EditGrade)
+}, null, actions)(EditGrade)
 
 export default EditGrade

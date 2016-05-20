@@ -13,10 +13,10 @@ export const START_TEACHER_GROUPS_FETCH = 'school-organizer/groups/START_TEACHER
 export const FETCH_TEACHER_GROUPS = 'school-organizer/groups/FETCH_TEACHER_GROUPS'
 export const FETCH_TEACHER_GROUPS_ERROR = 'school-organizer/groups/FETCH_TEACHER_GROUPS_ERROR'
 export const SET_ACTIVE_GROUP = 'school-organizer/groups/SET_ACTIVE_GROUP'
-export const ADD_GRADE = 'school-organizer/groups/ADD_GRADE'
 // Grades actions
 export const FETCH_GRADE = 'school-organizer/groups/FETCH_GRADE'
-
+export const ADD_GRADE = 'school-organizer/groups/ADD_GRADE'
+export const UPDATE_GRADE = 'school-organizer/groups/UPDATE_GRADE'
 
 // Action Creators
 // GROUPS
@@ -27,7 +27,6 @@ export function fetchTeacherGroups() {
       headers: { authorization: localStorage.getItem('token') }
     })
       .then(function(response) {
-        console.log(response)
         const camelized = camelizeKeys(response.data)
         const normalizedResponse = normalize(camelized, { groups: arrayOf(group) })
         const firstGroup = Object.keys(normalizedResponse.entities.groups)[0]
@@ -41,6 +40,7 @@ export function fetchTeacherGroups() {
       .catch(function(response) {
         console.log(response)
         dispatch({ type: FETCH_TEACHER_GROUPS_ERROR, payload: response.data})
+        toastr.warning('Warning', 'Something bad happened, try to re-log')
       })
   }
 }
@@ -72,6 +72,28 @@ export function sendGrade(newGrade) {
       })
   }
 }
+export function updateGrade(newGrade, id) {
+  return function(dispatch) {
+    axios.patch(`${ROOT_URL}/api/v1/students/grades/${id}`, {grade: newGrade}, {
+      headers: { authorization: localStorage.getItem('token') }
+    })
+      .then(function(response) {
+        let camelized = camelizeKeys(response.data)
+        let normalized = normalize(camelized, { 
+          student: student
+        })
+        dispatch({ type: FETCH_GRADE, response: normalized})
+        dispatch({ type: UPDATE_GRADE, grade: normalized})
+        toastr.success('Grade', 'Has been successfully updated.')
+      })
+      .catch(function(response) {
+        console.log(response)
+        toastr.warning('Warning', 'Something bad happened.')
+      })
+  }
+}
+
+
 
 
 // Reducer
@@ -87,6 +109,8 @@ export default function (state = initialState, action) {
     case SET_ACTIVE_GROUP:
       return {...state, activeGroup: action.payload, loaded: true}
     case ADD_GRADE:
+      return {...state}
+    case UPDATE_GRADE:
       return {...state}
     default:
       return state

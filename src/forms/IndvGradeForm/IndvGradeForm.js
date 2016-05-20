@@ -32,6 +32,7 @@ export class IndvGrade extends React.Component {
         <div className="input-group">
           <span className="input-group-addon" id="basic-addon1">Description:</span>
           <input type="text" 
+            autocomplete="off"
             placeholder="eg. test"
             className="form-control input-sm"
             style={{width: '10em', height: '2.5em'}}
@@ -41,6 +42,7 @@ export class IndvGrade extends React.Component {
           <span style={{width: '7.1em'}}className="input-group-addon" id="basic-addon1">Grade:</span>
           <input type="text" 
             placeholder="eg. 5"
+            autocomplete="off"
             className="form-control input-sm"
             style={{width: '10em', height: '2.5em'}}
             {...grade}/>

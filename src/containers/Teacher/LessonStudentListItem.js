@@ -93,7 +93,9 @@ class LessonStudentListItem extends Component {
           initialValues={{grade: el.grade, description: el.description}}
           lastItem={grades.length == (index+1) ? true : false}
           firstItem={index == 0 ? true : false}
-          resetParent={this.resetState}/>
+          resetParent={this.resetState}
+          studentId={this.props.student.id}
+          lessonId={this.props.lessonId}/>
       )
     })
     if(gradeForms.length > 0) {
