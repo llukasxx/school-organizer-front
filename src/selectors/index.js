@@ -37,6 +37,9 @@ const getStudentLessonGradesId = (state, props) => {
 const getAllGrades = (state) => {
   return state.entities.studentGrades
 }
+const getLessonId = (state,props) => {
+  return props.lessonId
+}
 
 export const groupsArraySelector = createSelector(
   [getGroups],
@@ -60,12 +63,14 @@ export const lessonDatesArraySelector = createSelector(
 
 export const studentLessonGradesArraySelector = () => {
   return createSelector(
-    [getStudentLessonGradesId, getAllGrades],
-    (gradesIds, grades) => {
+    [getStudentLessonGradesId, getAllGrades, getLessonId],
+    (gradesIds, grades, lessonId) => {
       let gradesArray = []
       if(gradesIds.length > 0) {
         gradesIds.map((id) => {
-          gradesArray.push(grades[id])
+          if(grades[id].lessonId == lessonId) {
+            gradesArray.push(grades[id])
+          }
         })
       }
       return gradesArray

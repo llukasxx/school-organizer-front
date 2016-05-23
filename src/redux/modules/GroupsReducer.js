@@ -17,7 +17,7 @@ export const SET_ACTIVE_GROUP = 'school-organizer/groups/SET_ACTIVE_GROUP'
 export const FETCH_GRADE = 'school-organizer/groups/FETCH_GRADE'
 export const ADD_GRADE = 'school-organizer/groups/ADD_GRADE'
 export const UPDATE_GRADE = 'school-organizer/groups/UPDATE_GRADE'
-
+export const ADD_MULTI_GRADES = 'school-organizer/groups/ADD_MULTI_GRADES'
 // Action Creators
 // GROUPS
 export function fetchTeacherGroups() {
@@ -92,6 +92,27 @@ export function updateGrade(newGrade, id) {
       })
   }
 }
+export function sendMultiGrade(newGrades, handleDisplay) {
+  return function(dispatch) {
+    axios.post(`${ROOT_URL}/api/v1/students/grades`, {grades: newGrades}, {
+      headers: { authorization: localStorage.getItem('token') }
+    })
+      .then(function(response) {
+        let camelized = camelizeKeys(response.data)
+        let normalized = normalize(camelized, { 
+          students: arrayOf(student)
+        })
+        dispatch({ type: FETCH_GRADE, response: normalized})
+        dispatch({ type: ADD_MULTI_GRADES, grade: normalized})
+        toastr.success('Grades', 'Has been successfully updated.')
+        handleDisplay()
+      })
+      .catch(function(response) {
+        console.log(response)
+        toastr.warning('Warning', 'Something bad happened.')
+      })
+  }
+}
 
 
 
@@ -111,6 +132,8 @@ export default function (state = initialState, action) {
     case ADD_GRADE:
       return {...state}
     case UPDATE_GRADE:
+      return {...state}
+    case ADD_MULTI_GRADES:
       return {...state}
     default:
       return state

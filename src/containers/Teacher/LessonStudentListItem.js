@@ -28,7 +28,9 @@ class LessonStudentListItem extends Component {
       <MultiGradeForm 
         key={id}
         formKey={String(id)}
-        gradesDescription={this.props.gradesDescription}
+        lastItem={this.props.lastStudentItem}
+        handleStudentDisplay={this.props.handleStudentDisplay}
+        lessonId={this.props.lessonId}
       />
     )
   }
