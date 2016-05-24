@@ -30,7 +30,7 @@ const getLessonsDatesById = (state, props) => {
   }
   return dates
 }
-const getStudentLessonGradesId = (state, props) => {
+const getStudentGradesId = (state, props) => {
   const gradesIds = props.student.studentGrades
   return gradesIds
 }
@@ -63,7 +63,7 @@ export const lessonDatesArraySelector = createSelector(
 
 export const studentLessonGradesArraySelector = () => {
   return createSelector(
-    [getStudentLessonGradesId, getAllGrades, getLessonId],
+    [getStudentGradesId, getAllGrades, getLessonId],
     (gradesIds, grades, lessonId) => {
       let gradesArray = []
       if(gradesIds.length > 0) {
