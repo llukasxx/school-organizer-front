@@ -6,8 +6,8 @@ import * as actions from '../../redux/modules/GroupsReducer'
 import { groupsArraySelector } from '../../selectors'
 
 import TeacherGroupInfo from './TeacherGroupInfo'
-import TeacherMessageBox from './TeacherMessageBox'
 import TeacherGroupListItem from '../../components/TeacherGroupListItem'
+import MessageBox from '../Common/MessageBox'
 
 
 
@@ -43,7 +43,7 @@ export class TeacherGroupList extends React.Component {
           </div>
         </div>
         <TeacherGroupInfo />
-        <TeacherMessageBox />
+        <MessageBox />
       </div>
     )
   }

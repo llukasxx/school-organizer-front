@@ -1,11 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
+import * as actions from '../../redux/modules/MessagesReducer'
 
 
-export class TeacherMessageBox extends React.Component {
+export class MessageBox extends React.Component {
   constructor(props) {
     super(props)
+  }
+  componentDidMount() {
+    this.props.getInbox()
   }
   render() {
     return (
@@ -15,7 +18,6 @@ export class TeacherMessageBox extends React.Component {
             <h3 className="panel-title">Recent Messages</h3>
           </div>
           <div className="panel-body">
-            
           </div>
         </div>
       </div>
@@ -24,13 +26,12 @@ export class TeacherMessageBox extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  return {}
-}
-const mapDispatchToProps = (dispatch) => {
-  return {}
+  return {
+    messages: state.messages
+  }
 }
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
-)(TeacherMessageBox)
+  actions
+)(MessageBox)

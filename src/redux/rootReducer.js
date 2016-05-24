@@ -4,6 +4,7 @@ import { reducer as form } from 'redux-form';
 import {reducer as toastrReducer} from 'react-redux-toastr'
 import AuthReducer from './modules/AuthReducer'
 import GroupsReducer from './modules/GroupsReducer'
+import MessagesReducer from './modules/MessagesReducer'
 
 import merge from 'lodash/object/merge'
 
@@ -20,5 +21,6 @@ export default combineReducers({
   entities,
   toastr: toastrReducer,
   auth: AuthReducer,
-  teacherGroups: GroupsReducer
+  teacherGroups: GroupsReducer,
+  messages: MessagesReducer
 })
