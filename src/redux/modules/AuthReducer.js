@@ -20,8 +20,12 @@ export function signInUser(email, password) {
       axios.post(`${ROOT_URL}/api/v1/sessions`, {user: {email, password}})
         .then(function (response) {
           dispatch({ type: FINISH_AUTH, payload: response})
-          setLocalStorage(response.data.auth_token, response.data.user, response.data.accountType)
+          setLocalStorage(response.data.auth_token, 
+                          response.data.user, 
+                          response.data.accountType,
+                          response.data.userId)
           dispatch(push('/' + response.data.accountType))
+          console.log(response.data)
           toastr.success(`Welcome ${response.data.user}!`, 'You have successfully logged in.')
         })
         .catch(function (response) {
@@ -30,15 +34,17 @@ export function signInUser(email, password) {
   }
 }
 
-function setLocalStorage(token, currentUser, accountType) {
+function setLocalStorage(token, currentUser, accountType, currentUserId) {
   localStorage.setItem('token', token)
   localStorage.setItem('currentUser', currentUser)
   localStorage.setItem('accountType', accountType)
+  localStorage.setItem('currentUserId', currentUserId)
 }
 function removeLocalStorage() {
   localStorage.removeItem('token')
   localStorage.removeItem('currentUser')
   localStorage.removeItem('accountType')
+  localStorage.removeItem('currentUserId')
 }
 
 // signout user

@@ -13,12 +13,16 @@ export const FINISH_INBOX_FETCH = 'school-organizer/messages/FINISH_INBOX_FETCH'
 export const getInbox = () => {
   return function(dispatch) {
     dispatch({ type: START_INBOX_FETCH })
-    axios.get(`${ROOT_URL}/api/v1/messages/get_inbox`, { 
+    axios.get(`${ROOT_URL}/api/v1/conversations/get_inbox`, { 
       headers: { authorization: localStorage.getItem('token') }
     })
       .then(function(response) {
-        console.log(response)
-        dispatch({type: FINISH_INBOX_FETCH})
+        let camelized = camelizeKeys(response.data)
+        let normalized = normalize(camelized, { 
+          conversations: arrayOf(conversation)
+        })
+        console.log(normalized)
+        dispatch({type: FINISH_INBOX_FETCH, response: normalized})
       })
       .catch(function(response) {
 
@@ -38,3 +42,32 @@ export default function (state = initialState, action) {
       return state
   }
 }
+
+// schemas
+const conversation = new Schema('conversations')
+const message = new Schema('messages')
+const receipt = new Schema('receipts')
+const sender = new Schema('senders')
+const receiver = new Schema('receivers')
+
+
+conversation.define({
+  messages: arrayOf(message)
+})
+
+message.define({
+  receipts: arrayOf(receipt),
+  sender: sender
+})
+
+receipt.define({
+  receiver: receiver
+})
+
+sender.define({
+
+})
+
+receiver.define({
+
+})
