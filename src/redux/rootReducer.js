@@ -8,7 +8,10 @@ import MessagesReducer from './modules/MessagesReducer'
 
 import merge from 'lodash/object/merge'
 
-function entities(state = { groups: {}, lessons: {}, lessonDates: {}, students: {}, studentGrades: {} }, action) {
+function entities(state = { groups: {}, 
+  lessons: {}, lessonDates: {}, students: {}, 
+  studentGrades: {}, messages: {}, conversations: {},
+  receipts: {}, receivers: {} }, action) {
   if (action.response && action.response.entities) {
     return merge({}, state, action.response.entities)
   }

@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import { activeLessonsArraySelector } from '../../selectors'
+import { activeLessonsArraySelector } from '../../selectors/GroupsSelector'
 
 import LessonListItem from './LessonListItem'
 

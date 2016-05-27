@@ -8,7 +8,7 @@ import {toastr} from 'react-redux-toastr'
 import { connect } from 'react-redux'
 import * as actions from '../../redux/modules/GroupsReducer'
 
-import { studentLessonGradesArraySelector } from '../../selectors'
+import { studentLessonGradesArraySelector } from '../../selectors/GroupsSelector'
 
 class LessonStudentListItem extends Component {
   constructor(props) {

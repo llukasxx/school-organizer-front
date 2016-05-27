@@ -1,11 +1,30 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../../redux/modules/MessagesReducer'
+import { inboxMessagesArraySelector } from '../../selectors/MessagesSelector'
+
+import MessageListItem from '../../components/Messages/MessageListItem'
 
 
 export class MessageBox extends React.Component {
   constructor(props) {
     super(props)
+    this.renderMessages = this.renderMessages.bind(this)
+  }
+  renderMessages() {
+    const { messages } = this.props
+    let messageArray = []
+    if(messages.length > 0) {
+      messages.map((m) => {
+        messageArray.push(<MessageListItem 
+                            key={m.id}
+                            message={m}
+                          />)
+      })
+      return messageArray
+    } else {
+      return <p>No messages</p>
+    }
   }
   componentDidMount() {
     this.props.getInbox()
@@ -19,22 +38,7 @@ export class MessageBox extends React.Component {
           </div>
           <div className="panel-body">
             <div className="list-group">
-              <li href="#" className="list-group-item">
-                <div style={{paddingBottom: '10px'}}>
-                  <h4 
-                  className="list-group-item-heading"
-                  style={{display: 'inline'}}>
-                    <strong>Subject</strong>
-                  </h4>
-                  <span className="pull-right"><i>view</i></span>
-                </div>
-                <p className="list-group-item-text">
-                  yoyoy how yo doing buddyy!!!
-                </p>
-                <hr style={{margin: '5px 5px'}}/>
-                <i>Sent by:</i>
-                <i className="pull-right">Sent at:</i>
-              </li>
+              {this.renderMessages()}            
             </div>
           </div>
         </div>
@@ -45,7 +49,7 @@ export class MessageBox extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    messages: state.messages
+    messages: inboxMessagesArraySelector(state)
   }
 }
 

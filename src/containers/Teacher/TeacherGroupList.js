@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import _ from 'lodash'
 import * as actions from '../../redux/modules/GroupsReducer'
 
-import { groupsArraySelector } from '../../selectors'
+import { groupsArraySelector } from '../../selectors/GroupsSelector'
 
 import TeacherGroupInfo from './TeacherGroupInfo'
 import TeacherGroupListItem from '../../components/TeacherGroupListItem'

@@ -2,7 +2,7 @@ import React from 'react'
 
 import { connect } from 'react-redux'
 
-import { lessonStudentsArraySelector, lessonDatesArraySelector } from '../../selectors'
+import { lessonStudentsArraySelector, lessonDatesArraySelector } from '../../selectors/GroupsSelector'
 
 import LessonStudentList from '../../components/LessonList/LessonStudentList'
 import LessonDateList from '../../components/LessonList/LessonDateList'

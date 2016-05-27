@@ -21,7 +21,6 @@ export const getInbox = () => {
         let normalized = normalize(camelized, { 
           conversations: arrayOf(conversation)
         })
-        console.log(normalized)
         dispatch({type: FINISH_INBOX_FETCH, response: normalized})
       })
       .catch(function(response) {
@@ -47,7 +46,6 @@ export default function (state = initialState, action) {
 const conversation = new Schema('conversations')
 const message = new Schema('messages')
 const receipt = new Schema('receipts')
-const sender = new Schema('senders')
 const receiver = new Schema('receivers')
 
 
@@ -57,15 +55,10 @@ conversation.define({
 
 message.define({
   receipts: arrayOf(receipt),
-  sender: sender
 })
 
 receipt.define({
   receiver: receiver
-})
-
-sender.define({
-
 })
 
 receiver.define({
