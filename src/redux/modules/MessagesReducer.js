@@ -8,6 +8,7 @@ import { camelizeKeys } from 'humps'
 // export const constants = { }
 export const START_INBOX_FETCH = 'school-organizer/messages/START_INBOX_FETCH'
 export const FINISH_INBOX_FETCH = 'school-organizer/messages/FINISH_INBOX_FETCH'
+export const FETCH_CONVERSATION = 'school-organizer/messages/FETCH_CONVERSATION'
 // Action Creators
 // export const actions = { }
 export const getInbox = () => {
@@ -24,11 +25,28 @@ export const getInbox = () => {
         dispatch({type: FINISH_INBOX_FETCH, response: normalized})
       })
       .catch(function(response) {
-
+        toastr.warning('Warning', 'Something bad happened')
       })
   }
 }
 
+// Reply to conversation
+export const replyToConversation = (newConversation) => {
+  return function(dispatch) {
+    axios.post(`${ROOT_URL}/api/v1/conversations/reply/${newConversation.id}`, newConversation, {
+      headers: { authorization: localStorage.getItem('token') }
+    })
+      .then(function(response) {
+        const camelized = camelizeKeys(response.data)
+        const normalizedResponse = normalize(camelized, { conversation: conversation })
+        dispatch({type: FETCH_CONVERSATION, response: normalizedResponse})
+        toastr.success('Message', 'Has been successfully sent.')
+      })
+      .catch(function(response) {
+        toastr.warning('Warning', 'Something bad happened')
+      })
+  }
+}
 // Reducer
 export const initialState = {}
 export default function (state = initialState, action) {

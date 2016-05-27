@@ -9,7 +9,7 @@ export const inboxMessagesArraySelector = createSelector(
     let inboxMessages = []
     const currentUserId = localStorage.getItem('currentUserId')
     Object.keys(messages).map((id) =>{
-      if(String(messages[id].sender) != currentUserId) {
+      if(String(messages[id].sender.id) != currentUserId) {
         inboxMessages.push(messages[id])
       }
     })
