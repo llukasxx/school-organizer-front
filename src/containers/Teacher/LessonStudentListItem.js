@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import MultiGradeForm from '../../forms/GradeForm'
 import IndvGradeForm from '../../forms/IndvGradeForm'
 import EditGradeForm from '../../forms/EditGradeForm'
+import NewConversation from '../../forms/NewConversationForm'
 
-import {toastr} from 'react-redux-toastr'
 
 import { connect } from 'react-redux'
 import * as actions from '../../redux/modules/GroupsReducer'
@@ -21,6 +21,7 @@ class LessonStudentListItem extends Component {
     this.resetState = this.resetState.bind(this)
     this.toggleIndvState = this.toggleIndvState.bind(this)
     this.renderEditGrades = this.renderEditGrades.bind(this)
+    this.renderNewMessage = this.renderNewMessage.bind(this)
   }
   renderGradeForm() {
     const id = this.props.student.id
@@ -116,6 +117,16 @@ class LessonStudentListItem extends Component {
       )
     }
   }
+  renderNewMessage() {
+    return (
+      <NewConversation 
+        resetParent={this.resetState}
+        key={this.props.student.id} 
+        formKey={String(this.props.student.id)}
+        studentId={this.props.student.id}
+      />
+    )
+  }
   resetState() {
     this.setState(
       {display: {
@@ -143,6 +154,8 @@ class LessonStudentListItem extends Component {
             toRender = this.renderIndvGrade
           } else if(editGrade) {
             toRender = this.renderEditGrades
+          } else if(sendMessage) {
+            toRender = this.renderNewMessage
           }
         }
         break;

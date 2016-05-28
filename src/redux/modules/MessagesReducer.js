@@ -47,6 +47,22 @@ export const replyToConversation = (newConversation) => {
       })
   }
 }
+export const startNewConversation = (newConversation) => {
+  return function(dispatch) {
+    axios.post(`${ROOT_URL}/api/v1/conversations/reply`, newConversation, {
+      headers: { authorization: localStorage.getItem('token') }
+    })
+      .then(function(response) {
+        const camelized = camelizeKeys(response.data)
+        const normalizedResponse = normalize(camelized, { conversation: conversation })
+        dispatch({type: FETCH_CONVERSATION, response: normalizedResponse})
+        toastr.success('Message', 'Has been successfully sent.')
+      })
+      .catch(function(response) {
+        toastr.warning('Warning', 'Something bad happened')
+      })
+  }
+}
 // Reducer
 export const initialState = {}
 export default function (state = initialState, action) {

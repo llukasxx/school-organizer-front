@@ -11,7 +11,7 @@ import HomeView from 'views/HomeView/HomeView'
 import TeacherDashboard from 'views/TeacherHome/TeacherDashboard'
 import StudentDashboard from 'views/StudentHome/StudentDashboard'
 import TeacherGroupList from 'containers/Teacher/TeacherGroupList'
-
+import MessagesPage from 'components/Messages/MessagesPage'
 //Authentication
 import RequireAuth from '../containers/Auth/RequireAuth'
 
@@ -22,7 +22,7 @@ export default (store) => (
       <IndexRoute component={TeacherGroupList} />
       <Route path='groups' component={TeacherGroupList} />
       <Route path='events' component={TeacherGroupList} />
-      <Route path='messages' component={TeacherGroupList} />
+      <Route path='messages' component={MessagesPage} />
     </Route>
     <Route path='student' component={StudentDashboard}>
     </Route>
