@@ -27,7 +27,7 @@ export class MessageBox extends React.Component {
     }
   }
   componentDidMount() {
-    this.props.getInbox()
+    this.props.getConversations()
   }
   render() {
     return (

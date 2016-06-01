@@ -6,6 +6,18 @@ const getMessages = (state) => {
 const getConversations = (state) => {
   return state.entities.conversations
 }
+const getSentConversations = (state) => {
+  const currentUserId = localStorage.getItem('currentUserId')
+  const { conversations, messages } = state.entities
+  let sentbox = []
+  Object.keys(conversations).map((id) => {
+    let firstMessageId = conversations[id].messages[0]
+    if(messages[firstMessageId].sender.id == currentUserId) {
+      sentbox.push(conversations[id])
+    }
+  })
+  return sentbox
+}
 const getConversationMessagesArray = (state, props) => {
   let conversationMessages = []
   const { messages } = state.entities 
@@ -15,6 +27,21 @@ const getConversationMessagesArray = (state, props) => {
     }
   })
   return conversationMessages
+}
+const getFirstMessageReceiver = (state, props) => {
+  const { messages, receivers, receipts } = state.entities
+  const firstMessageId = props.conversation.messages[0]
+  const receiptsIds = messages[firstMessageId].receipts
+  let receiver = ""
+  receiptsIds.map((id) => {
+    if(receipts[id].mailboxType == 'inbox') {
+      receiver = receivers[receipts[id].receiver]
+    } else {
+      return false
+    }
+  })
+  return receiver
+
 }
 export const inboxMessagesArraySelector = createSelector(
   [getMessages],
@@ -44,4 +71,14 @@ export const inboxConversationsArraySelector = createSelector(
 export const conversationMessagesArraySelector = createSelector(
   [getConversationMessagesArray],
   messages => messages
+)
+
+export const sentConversationsArraySelector = createSelector(
+  [getSentConversations],
+  conversations => conversations
+)
+
+export const firstMessageReceiverSelector = createSelector(
+  [getFirstMessageReceiver],
+  receiver => receiver
 )

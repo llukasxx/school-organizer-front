@@ -11,10 +11,10 @@ export const FINISH_INBOX_FETCH = 'school-organizer/messages/FINISH_INBOX_FETCH'
 export const FETCH_CONVERSATION = 'school-organizer/messages/FETCH_CONVERSATION'
 // Action Creators
 // export const actions = { }
-export const getInbox = () => {
+export const getConversations = () => {
   return function(dispatch) {
     dispatch({ type: START_INBOX_FETCH })
-    axios.get(`${ROOT_URL}/api/v1/conversations/get_inbox`, { 
+    axios.get(`${ROOT_URL}/api/v1/conversations/get_conversations`, { 
       headers: { authorization: localStorage.getItem('token') }
     })
       .then(function(response) {

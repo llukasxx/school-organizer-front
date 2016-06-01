@@ -11,7 +11,7 @@ class ConversationsList extends Component {
     this.renderConversationListItems = this.renderConversationListItems.bind(this)
   }
   componentDidMount() {
-    this.props.getInbox()
+    this.props.getConversations()
   }
   renderConversationListItems() {
     let conversationListItems = []
@@ -19,6 +19,7 @@ class ConversationsList extends Component {
       conversationListItems.push(<ConversationListItem 
                                   key={el.id}
                                   conversation={el}
+                                  sentbox={false}
                                   />)
     })
     return conversationListItems

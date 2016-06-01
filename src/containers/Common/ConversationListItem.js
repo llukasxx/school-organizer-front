@@ -1,17 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { conversationMessagesArraySelector } from '../../selectors/MessagesSelector'
+import { conversationMessagesArraySelector,
+         firstMessageReceiverSelector } from '../../selectors/MessagesSelector'
 
 import ReplyConversation from '../../forms/ReplyConversationForm'
 import ConversationMessageListItem from '../../components/Messages/ConversationMessageListItem'
 
-/*
-<ReplyConversation 
-              key={conversation.id}
-              formKey={String(conversation.id)}
-              handleReplyForm={this.handleReplyForm}
-              conversationId={conversation.id}/>
-*/
 
 class ConversationListItem extends Component {
   constructor(props) {
@@ -30,6 +24,10 @@ class ConversationListItem extends Component {
     } else {
       return ""
     }
+  }
+  extractFirstReceiver() {
+    const { receiver } = this.props
+    return `${receiver.firstName} ${receiver.lastName}`
   }
   extractLastMessageTime() {
     const { messages } = this.props
@@ -91,10 +89,14 @@ class ConversationListItem extends Component {
           onClick={(e) => {
             this.handleMessagesDisplay()
           }}>
-          <div className="col-md-3" style={{display: 'inline'}}>
-            From: <strong>{this.extractSender()}</strong>
+          <div className="col-md-4" style={{display: 'inline'}}>
+            {this.props.sentbox ? 
+              `To: ${this.extractFirstReceiver()}`
+            : 
+              `Started by: ${this.extractSender()}`
+            }
           </div> 
-          <div className="col-md-offset-2 col-sm-offset-2" style={{display: 'inline'}}>
+          <div className="col-md-offset-1 col-sm-offset-2" style={{display: 'inline'}}>
             Subject: <strong>{conversation.subject}</strong>
           </div>
           <div style={{display: 'inline', marginRight: '2px'}} className="pull-right">
@@ -115,7 +117,8 @@ class ConversationListItem extends Component {
 
 const mapStateToProps = (state, props) => {
   return {
-    messages: conversationMessagesArraySelector(state, props)
+    messages: conversationMessagesArraySelector(state, props),
+    receiver: firstMessageReceiverSelector(state, props)
   }
 }
 
