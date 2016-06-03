@@ -5,13 +5,14 @@ import {reducer as toastrReducer} from 'react-redux-toastr'
 import AuthReducer from './modules/AuthReducer'
 import GroupsReducer from './modules/GroupsReducer'
 import MessagesReducer from './modules/MessagesReducer'
+import ReceiversReducer from './modules/ReceiversReducer'
 
 import merge from 'lodash/object/merge'
 
 function entities(state = { groups: {}, 
   lessons: {}, lessonDates: {}, students: {}, 
   studentGrades: {}, messages: {}, conversations: {},
-  receipts: {}, receivers: {} }, action) {
+  receipts: {}, receivers: {}}, action) {
   if (action.response && action.response.entities) {
     return merge({}, state, action.response.entities)
   }
@@ -25,5 +26,6 @@ export default combineReducers({
   toastr: toastrReducer,
   auth: AuthReducer,
   teacherGroups: GroupsReducer,
-  messages: MessagesReducer
+  messages: MessagesReducer,
+  receivers: ReceiversReducer
 })

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import NewConversationCompose from '../../forms/NewConversationComposeForm'
 
 class ComposeMessage extends Component {
   constructor(props) {
@@ -7,7 +8,7 @@ class ComposeMessage extends Component {
   render() {
     return (
       <div>
-        new message list
+        <NewConversationCompose />
       </div>
     )
   }
