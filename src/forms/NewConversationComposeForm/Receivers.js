@@ -2,10 +2,12 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../../redux/modules/ReceiversReducer'
 import { studentsArraySelector,
-         teachersArraySelector } from '../../selectors/ReceiversSelector'
+         teachersArraySelector,
+         groupsArraySelector } from '../../selectors/ReceiversSelector'
 
 import StudentReceiverListItem from './StudentReceiverListItem'
 import TeacherReceiverListItem from './TeacherReceiverListItem'
+import GroupReceiverListItem from './GroupReceiverListItem'
 import Pagination from './Pagination'
 
 
@@ -16,6 +18,7 @@ class Receivers extends Component {
     this.renderPagination = this.renderPagination.bind(this)
     this.renderStudents = this.renderStudents.bind(this)
     this.renderTeachers = this.renderTeachers.bind(this)
+    this.renderGroups = this.renderGroups.bind(this)
   }
   changeActiveTab(newTab) {
     this.props.changeActiveTab(newTab)
@@ -25,6 +28,9 @@ class Receivers extends Component {
         break;
       case 'teachers':
         this.props.getPaginatedTeachers()
+        break;
+      case 'groups':
+        this.props.getPaginatedGroups()
         break;
     }
   }
@@ -60,12 +66,30 @@ class Receivers extends Component {
       </div>
     )
   }
+  renderGroups() {
+    const { groups, groupsLoaded } = this.props
+    let receiverLI = []
+    if(groupsLoaded) {
+      groups.map((el) => {
+        receiverLI.push(<GroupReceiverListItem 
+                          group={el}
+                          key={el.id}/>)
+      })
+    }
+    return (
+      <div className="list-group">
+        {receiverLI}
+      </div>
+    )
+  }
   renderPagination() {
     const { activeTab, 
             getPaginatedStudents,
             getPaginatedTeachers,
+            getPaginatedGroups,
             studentsCount,
             teachersCount,
+            groupsCount,
             activePage } = this.props
     switch(activeTab) {
       case 'students':
@@ -81,7 +105,10 @@ class Receivers extends Component {
                 currentPage={activePage}/>
         break;
       case 'groups':
-        return <Pagination count={11}/>
+        return <Pagination
+                getData={getPaginatedGroups} 
+                count={groupsCount}
+                currentPage={activePage}/>
         break;
       case 'lessons':
         return <Pagination count={11}/>
@@ -104,6 +131,9 @@ class Receivers extends Component {
         break;
       case 'teachers':
         listToRender = this.renderTeachers
+        break;
+      case 'groups':
+        listToRender = this.renderGroups
         break;
     }
     return (
@@ -156,10 +186,13 @@ const mapStateToProps = (state) => {
     activeTab: state.receivers.activeTab,
     students: studentsArraySelector(state),
     teachers: teachersArraySelector(state),
+    groups: groupsArraySelector(state),
     studentsCount: state.receivers.students.count,
     teachersCount: state.receivers.teachers.count,
+    groupsCount: state.receivers.groups.count,
     studentsLoaded: state.receivers.students.loaded,
     teachersLoaded: state.receivers.teachers.loaded,
+    groupsLoaded: state.receivers.groups.loaded,
     activePage: state.receivers.activePage
   }
 }

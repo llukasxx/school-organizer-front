@@ -12,6 +12,9 @@ export const FINISH_STUDENTS_FETCH = 'school-organizer/receivers/FINISH_STUDENTS
 export const START_TEACHERS_FETCH = 'school-organizer/receivers/START_TEACHERS_FETCH'
 export const FINISH_TEACHERS_FETCH = 'school-organizer/receivers/FINISH_TEACHERS_FETCH'
 
+export const START_GROUPS_FETCH = 'school-organizer/receivers/START_GROUPS_FETCH'
+export const FINISH_GROUPS_FETCH = 'school-organizer/receivers/FINISH_GROUPS_FETCH'
+
 export const CHANGE_ACTIVE_TAB = 'school-organizer/receivers/CHANGE_ACTIVE_TAB'
 export const PAGINATED_ENTITIES = 'school-organizer/receivers/PAGINATED_ENTITIES'
 
@@ -67,17 +70,25 @@ export const getPaginatedTeachers = (page = 1) => {
   }
 }
 
-export const getAllGroups = () => {
+export const getPaginatedGroups = (page = 1) => {
   return function(dispatch) {
+    dispatch({type: START_GROUPS_FETCH})
     axios.get(`${ROOT_URL}/api/v1/groups/get_groups`, { 
-      headers: { authorization: localStorage.getItem('token') }
+      headers: { authorization: localStorage.getItem('token') },
+      params: { page: page }
     })
       .then(function(response) {
         let camelized = camelizeKeys(response.data)
         let normalized = normalize(camelized, { 
-          groups: arrayOf(groups)
+          groups: arrayOf(group)
         })
-        dispatch({ response: normalized })
+        console.log(response)
+        dispatch({type: FINISH_GROUPS_FETCH, 
+                  paginated: true,
+                  response: normalized, 
+                  count: response.data.count,
+                  page: page
+                })
       })
       .catch(function(response) {
         toastr.warning('Warning', 'Something bad happened')
@@ -126,6 +137,10 @@ export default function (state = initialState, action) {
       return {...state}
     case FINISH_TEACHERS_FETCH:
       return {...state, activePage: action.page, teachers: {loaded: true, count: action.count}}
+    case START_GROUPS_FETCH:
+      return {...state}
+    case FINISH_GROUPS_FETCH:
+      return {...state, activePage: action.page, groups: {loaded: true, count: action.count}}
     case CHANGE_ACTIVE_TAB:
       return {...state, activeTab: action.activeTab}
     default:
