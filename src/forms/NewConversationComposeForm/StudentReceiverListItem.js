@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-class ReceiverListItem extends Component {
+class StudentReceiverListItem extends Component {
   constructor(props) {
     super(props)
   }
@@ -24,4 +24,4 @@ class ReceiverListItem extends Component {
   }
 }
 
-export default ReceiverListItem
+export default StudentReceiverListItem

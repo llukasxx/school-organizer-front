@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import ReceiverListItem from './ReceiverListItem'
 
 class ReceiversBox extends Component {
   constructor(props) {

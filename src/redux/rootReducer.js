@@ -9,10 +9,11 @@ import ReceiversReducer from './modules/ReceiversReducer'
 
 import merge from 'lodash/object/merge'
 
-function entities(state = { groups: {}, 
-  lessons: {}, lessonDates: {}, students: {},
-  studentGrades: {}, messages: {}, conversations: {},
-  receipts: {}, receivers: {}}, action) {
+const initialState = { groups: {}, lessons: {}, lessonDates: {}, students: {},
+                       studentGrades: {}, messages: {}, conversations: {},
+                       receipts: {}, receivers: {}}
+
+function entities(state = initialState, action) {
   if (action.response && action.response.entities && !action.paginated) {
     return merge({}, state, action.response.entities)
   }

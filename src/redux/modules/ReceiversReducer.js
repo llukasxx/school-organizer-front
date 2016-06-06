@@ -8,6 +8,11 @@ import { camelizeKeys } from 'humps'
 // export const constants = { }
 export const START_STUDENTS_FETCH = 'school-organizer/receivers/START_STUDENTS_FETCH'
 export const FINISH_STUDENTS_FETCH = 'school-organizer/receivers/FINISH_STUDENTS_FETCH'
+
+export const START_TEACHERS_FETCH = 'school-organizer/receivers/START_TEACHERS_FETCH'
+export const FINISH_TEACHERS_FETCH = 'school-organizer/receivers/FINISH_TEACHERS_FETCH'
+
+export const CHANGE_ACTIVE_TAB = 'school-organizer/receivers/CHANGE_ACTIVE_TAB'
 export const PAGINATED_ENTITIES = 'school-organizer/receivers/PAGINATED_ENTITIES'
 
 // Action Creators
@@ -17,19 +22,17 @@ export const getPaginatedStudents = (page = 1) => {
     dispatch({type: START_STUDENTS_FETCH})
     axios.get(`${ROOT_URL}/api/v1/students/get_students`, { 
       headers: { authorization: localStorage.getItem('token') },
-      params: {page: page}
+      params: { page: page }
     })
       .then(function(response) {
         let camelized = camelizeKeys(response.data)
         let normalized = normalize(camelized, { 
           students: arrayOf(student)
         })
-        console.log(response)
         dispatch({type: FINISH_STUDENTS_FETCH, 
                   paginated: true,
                   response: normalized, 
-                  count: response.data.count, 
-                  activeTab: 'students',
+                  count: response.data.count,
                   page: page
                 })
       })
@@ -39,17 +42,24 @@ export const getPaginatedStudents = (page = 1) => {
   }
 }
 
-export const getAllTeachers = () => {
+export const getPaginatedTeachers = (page = 1) => {
   return function(dispatch) {
-    axios.get(`${ROOT_URL}/api/v1/users/get_teachers`, { 
-      headers: { authorization: localStorage.getItem('token') }
+    dispatch({type: START_TEACHERS_FETCH})
+    axios.get(`${ROOT_URL}/api/v1/teachers/get_teachers`, { 
+      headers: { authorization: localStorage.getItem('token') },
+      params: { page: page }
     })
       .then(function(response) {
         let camelized = camelizeKeys(response.data)
         let normalized = normalize(camelized, { 
           teachers: arrayOf(teacher)
         })
-        dispatch({ response: normalized })
+        dispatch({type: FINISH_TEACHERS_FETCH, 
+                  paginated: true,
+                  response: normalized, 
+                  count: response.data.count,
+                  page: page
+                })
       })
       .catch(function(response) {
         toastr.warning('Warning', 'Something bad happened')
@@ -93,20 +103,31 @@ export const getAllLessons = () => {
   }
 }
 
+export const changeActiveTab = (activeTab = 'students') => {
+  return function(dispatch) {
+    dispatch({type: CHANGE_ACTIVE_TAB, activeTab: activeTab})
+  }
+}
+
 // Reducer
-export const initialState = { activeTab: 'students', 
-                              students: { loaded: false, count: 0, page: 1 },
-                              teachers: { loaded: false, count: 0, page: 1 },
-                              groups: { loaded: false, count: 0, page: 1 }
+export const initialState = { activeTab: 'students', activePage: 1,
+                              students: { loaded: false, count: 0 },
+                              teachers: { loaded: false, count: 0 },
+                              groups: { loaded: false, count: 0 },
+                              lessons: { loaded: false, count: 0 }
                             }
 export default function (state = initialState, action) {
   switch (action.type) {
     case START_STUDENTS_FETCH:
       return {...state}
     case FINISH_STUDENTS_FETCH:
-      return {...state, 
-              activeTab: action.activeTab, 
-              students: {loaded: true, count: action.count, page: action.page}}
+      return {...state, activePage: action.page, students: {loaded: true, count: action.count}}
+    case START_TEACHERS_FETCH:
+      return {...state}
+    case FINISH_TEACHERS_FETCH:
+      return {...state, activePage: action.page, teachers: {loaded: true, count: action.count}}
+    case CHANGE_ACTIVE_TAB:
+      return {...state, activeTab: action.activeTab}
     default:
       return state
   }
@@ -116,25 +137,16 @@ export default function (state = initialState, action) {
 const group = new Schema('groups')
 const lesson = new Schema('lessons')
 const student = new Schema('students')
-const studentGrade = new Schema('studentGrades')
-const lessonDates = new Schema('lessonDates')
+const teacher = new Schema('teachers')
 
 group.define({
-  lessons: arrayOf(lesson)
 })
 
 lesson.define({
-  students: arrayOf(student),
-  lessonDates: arrayOf(lessonDates)
 })
 
 student.define({
-  studentGrades: arrayOf(studentGrade),
-  lesson: lesson
 })
 
-studentGrade.define({
-})
-
-lessonDates.define({
+teacher.define({
 })
