@@ -12,6 +12,10 @@ const getAllGroups = (state) => {
   return state.paginatedEntities.groups
 }
 
+const getAllLessons = (state) => {
+  return state.paginatedEntities.lessons
+}
+
 
 export const studentsArraySelector = createSelector(
   [getAllStudents],
@@ -43,5 +47,16 @@ export const groupsArraySelector = createSelector(
       groupsArray.push(groups[id])
     })
     return groupsArray
+  }
+)
+
+export const lessonsArraySelector = createSelector(
+  [getAllLessons],
+  (lessons) => {
+    let lessonsArray = []
+    Object.keys(lessons).map((id) => {
+      lessonsArray.push(lessons[id])
+    })
+    return lessonsArray
   }
 )
