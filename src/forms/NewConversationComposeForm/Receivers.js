@@ -39,7 +39,8 @@ class Receivers extends Component {
       case 'students':
         return <Pagination
                 getData={this.props.getPaginatedStudents} 
-                count={this.props.studentsCount}/>
+                count={this.props.studentsCount}
+                currentPage={this.props.studentsPage}/>
         break;
       case 'teachers':
         return <Pagination count={2}/>
@@ -98,7 +99,8 @@ const mapStateToProps = (state) => {
     activeTab: state.receivers.activeTab,
     students: studentsArraySelector(state),
     studentsCount: state.receivers.students.count,
-    loaded: state.receivers.students.loaded
+    loaded: state.receivers.students.loaded,
+    studentsPage: state.receivers.students.page
   }
 }
 
