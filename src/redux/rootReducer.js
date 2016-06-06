@@ -10,11 +10,23 @@ import ReceiversReducer from './modules/ReceiversReducer'
 import merge from 'lodash/object/merge'
 
 function entities(state = { groups: {}, 
-  lessons: {}, lessonDates: {}, students: {}, 
+  lessons: {}, lessonDates: {}, students: {},
   studentGrades: {}, messages: {}, conversations: {},
   receipts: {}, receivers: {}}, action) {
-  if (action.response && action.response.entities) {
+  if (action.response && action.response.entities && !action.paginated) {
     return merge({}, state, action.response.entities)
+  }
+  return state
+}
+
+const initialPaginatedState = { students: {}, 
+                                teachers: {}, 
+                                groups: {}, 
+                                lessons: {}}
+// Resetting whole state just to keep paginated values
+function paginatedEntities(state = initialPaginatedState, action) {
+  if (action.response && action.response.entities && action.paginated) {
+    return merge({}, initialPaginatedState, action.response.entities)
   }
   return state
 }
@@ -23,6 +35,7 @@ export default combineReducers({
   router,
   form,
   entities,
+  paginatedEntities,
   toastr: toastrReducer,
   auth: AuthReducer,
   teacherGroups: GroupsReducer,

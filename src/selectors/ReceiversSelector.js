@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect'
 
 const getAllStudents = (state) => {
-  return state.entities.students
+  return state.paginatedEntities.students
 }
 
 export const studentsArraySelector = createSelector(

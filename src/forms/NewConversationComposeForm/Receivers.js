@@ -1,6 +1,11 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import * as actions from '../../redux/modules/ReceiversReducer'
+import { studentsArraySelector } from '../../selectors/ReceiversSelector'
+
 import ReceiverListItem from './ReceiverListItem'
 import Pagination from './Pagination'
+
 
 class Receivers extends Component {
   constructor(props) {
@@ -13,13 +18,15 @@ class Receivers extends Component {
     this.setState({activeTab: newTab})
   }
   renderStudents() {
-    const { students } = this.props
+    const { students, loaded } = this.props
     let receiverLI = []
-    students.map((el) => {
-      receiverLI.push(<ReceiverListItem 
-                        student={el}
-                        key={el.id}/>)
-    })
+    if(loaded) {
+      students.map((el) => {
+        receiverLI.push(<ReceiverListItem 
+                          student={el}
+                          key={el.id}/>)
+      })
+    }
     return (
       <div className="list-group">
         {receiverLI}
@@ -28,10 +35,11 @@ class Receivers extends Component {
   }
   renderPagination() {
     const { activeTab } = this.state
-    console.log(this.props.studentsCount)
     switch(activeTab) {
       case 'students':
-        return <Pagination count={this.props.studentsCount}/>
+        return <Pagination
+                getData={this.props.getPaginatedStudents} 
+                count={this.props.studentsCount}/>
         break;
       case 'teachers':
         return <Pagination count={2}/>
@@ -39,7 +47,13 @@ class Receivers extends Component {
       case 'groups':
         return <Pagination count={11}/>
         break;
+      default:
+        return <Pagination count={0}/>
+        break;
     }
+  }
+  componentDidMount() {
+    this.props.getPaginatedStudents()
   }
   render() {
     return (
@@ -79,4 +93,13 @@ class Receivers extends Component {
   }
 }
 
-export default Receivers
+const mapStateToProps = (state) => {
+  return {
+    activeTab: state.receivers.activeTab,
+    students: studentsArraySelector(state),
+    studentsCount: state.receivers.students.count,
+    loaded: state.receivers.students.loaded
+  }
+}
+
+export default connect(mapStateToProps, actions)(Receivers)

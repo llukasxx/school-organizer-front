@@ -8,14 +8,16 @@ import { camelizeKeys } from 'humps'
 // export const constants = { }
 export const START_STUDENTS_FETCH = 'school-organizer/receivers/START_STUDENTS_FETCH'
 export const FINISH_STUDENTS_FETCH = 'school-organizer/receivers/FINISH_STUDENTS_FETCH'
+export const PAGINATED_ENTITIES = 'school-organizer/receivers/PAGINATED_ENTITIES'
 
 // Action Creators
 // export const actions = { }
-export const getAllStudents = () => {
+export const getPaginatedStudents = (page = 1) => {
   return function(dispatch) {
     dispatch({type: START_STUDENTS_FETCH})
     axios.get(`${ROOT_URL}/api/v1/students/get_students`, { 
-      headers: { authorization: localStorage.getItem('token') }
+      headers: { authorization: localStorage.getItem('token') },
+      params: {page: page}
     })
       .then(function(response) {
         let camelized = camelizeKeys(response.data)
@@ -23,7 +25,13 @@ export const getAllStudents = () => {
           students: arrayOf(student)
         })
         console.log(response)
-        dispatch({type: FINISH_STUDENTS_FETCH, response: normalized, studentsCount: response.data.count})
+        dispatch({type: FINISH_STUDENTS_FETCH, 
+                  paginated: true,
+                  response: normalized, 
+                  count: response.data.count, 
+                  activeTab: 'students',
+                  page: page
+                })
       })
       .catch(function(response) {
         toastr.warning('Warning', 'Something bad happened')
@@ -86,13 +94,19 @@ export const getAllLessons = () => {
 }
 
 // Reducer
-export const initialState = {}
+export const initialState = { activeTab: 'students', 
+                              students: { loaded: false, count: 0, page: 1 },
+                              teachers: { loaded: false, count: 0, page: 1 },
+                              groups: { loaded: false, count: 0, page: 1 }
+                            }
 export default function (state = initialState, action) {
   switch (action.type) {
     case START_STUDENTS_FETCH:
-      return {...state, loaded: false}
+      return {...state}
     case FINISH_STUDENTS_FETCH:
-      return {...state, studentsCount: action.studentsCount, loaded: true}
+      return {...state, 
+              activeTab: action.activeTab, 
+              students: {loaded: true, count: action.count, page: action.page}}
     default:
       return state
   }

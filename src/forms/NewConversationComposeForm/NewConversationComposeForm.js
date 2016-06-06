@@ -1,8 +1,5 @@
 import React from 'react'
 import { reduxForm } from 'redux-form'
-import * as actions from '../../redux/modules/ReceiversReducer'
-
-import { studentsArraySelector } from '../../selectors/ReceiversSelector'
 
 import Receivers from './Receivers'
 import ReceiversBox from './ReceiversBox' 
@@ -20,9 +17,6 @@ export class NewConversationCompose extends React.Component {
   constructor(props) {
     super(props)
   }
-  componentDidMount() {
-    this.props.getAllStudents()
-  }
   render() {
     const { fields: {subject, body}, handleSubmit } = this.props
     return (
@@ -36,33 +30,20 @@ export class NewConversationCompose extends React.Component {
           <textarea className="form-control" placeholder="Type message..." {...body}>
           </textarea>
         </div>
-        {this.props.loaded ?
-          <div>
-            <Receivers 
-              students={this.props.students}
-              studentsCount={this.props.studentsCount}/>
-            <ReceiversBox />
-          </div>
-          :
-          "Loading..."
-        }
+        <div>
+          <Receivers />
+          <ReceiversBox />
+        </div>
       </form>
     )
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    students: studentsArraySelector(state),
-    loaded: state.receivers.loaded,
-    studentsCount: state.receivers.studentsCount
-  }
-}
 
 NewConversationCompose = reduxForm({
   form: 'NewConversationCompose',
   fields,
   validate
-}, mapStateToProps, actions)(NewConversationCompose)
+}, null)(NewConversationCompose)
 
 export default NewConversationCompose

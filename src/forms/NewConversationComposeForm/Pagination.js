@@ -15,7 +15,12 @@ class Pagination extends Component {
       perPage = parseInt((count/10) + 1)
     }
     for(let i = 0; i < perPage; i++) {
-      pageElements.push(<li key={i}><a href="#">{i+1}</a></li>)
+      pageElements.push(<li key={i}>
+                          <a style={{cursor: 'pointer'}}
+                             onClick={(e) => {
+                              this.props.getData(i+1)
+                             }}>{i+1}</a>
+                        </li>)
     }
     return pageElements
   }
