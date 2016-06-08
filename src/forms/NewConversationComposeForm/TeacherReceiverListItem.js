@@ -3,6 +3,23 @@ import React, { Component } from 'react'
 class TeacherReceiverListItem extends Component {
   constructor(props) {
     super(props)
+    this.renderLessons = this.renderLessons.bind(this)
+  }
+  renderLessons() {
+    const { lessons } = this.props
+    let lessonsNames = []
+    if(lessons && lessons.length > 0) {
+      lessons.map((el, index) => {
+        if(lessons[index] == lessons[lessons.length-1]) {
+          lessonsNames.push(el.name)
+        } else {
+          lessonsNames.push(el.name + ', ')
+        }
+      })
+    } else {
+      return "No lessons"
+    }
+    return lessonsNames
   }
   render() {
     const { teacher } = this.props
@@ -16,7 +33,7 @@ class TeacherReceiverListItem extends Component {
             </div>
             <div className="media-body">
               <h4 className="media-heading">{ teacher.firstName + ' ' + teacher.lastName }</h4>
-              <p>Lessons: to be listed</p>
+              <p>Lessons: {this.renderLessons()}</p>
             </div>
           </div>
         </li>

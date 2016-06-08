@@ -3,6 +3,19 @@ import React, { Component } from 'react'
 class StudentReceiverListItem extends Component {
   constructor(props) {
     super(props)
+    this.renderGroups = this.renderGroups.bind(this) 
+  }
+  renderGroups() { 
+    const { groups } = this.props
+    let groupsNames = []
+    if(groups && groups.length > 0) {
+      groups.map((el) => {
+        groupsNames.push(el.name)
+      })
+    } else {
+      return "No groups"
+    }
+    return groupsNames
   }
   render() {
     const {student} = this.props
@@ -16,7 +29,7 @@ class StudentReceiverListItem extends Component {
             </div>
             <div className="media-body">
               <h4 className="media-heading">{student.firstName + ' ' + student.lastName}</h4>
-              <p>Group: 1k411</p>
+              <p>Group(s): {this.renderGroups()}</p>
             </div>
           </div>
         </li>

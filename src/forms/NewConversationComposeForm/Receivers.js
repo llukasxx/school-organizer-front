@@ -47,7 +47,8 @@ class Receivers extends Component {
       students.map((el) => {
         receiverLI.push(<StudentReceiverListItem 
                           student={el}
-                          key={el.id}/>)
+                          key={el.id}
+                          groups={el.studentGroups}/>)
       })
     }
     return (
@@ -63,7 +64,8 @@ class Receivers extends Component {
       teachers.map((el) => {
         receiverLI.push(<TeacherReceiverListItem 
                           teacher={el}
-                          key={el.id}/>)
+                          key={el.id}
+                          lessons={el.lessons}/>)
       })
     }
     return (
@@ -79,7 +81,9 @@ class Receivers extends Component {
       groups.map((el) => {
         receiverLI.push(<GroupReceiverListItem 
                           group={el}
-                          key={el.id}/>)
+                          key={el.id}
+                          lessons={el.lessons}
+                          totalStudents={el.totalStudents}/>)
       })
     }
     return (
@@ -95,7 +99,9 @@ class Receivers extends Component {
       lessons.map((el) => {
         receiverLI.push(<LessonReceiverListItem 
                           lesson={el}
-                          key={el.id}/>)
+                          key={el.id}
+                          groups={el.groups}
+                          totalStudents={el.totalStudents}/>)
       })
     }
     return (
@@ -136,8 +142,8 @@ class Receivers extends Component {
         break;
       case 'lessons':
         return <Pagination
-                getData={getPaginatedGroups} 
-                count={groupsCount}
+                getData={getPaginatedLessons} 
+                count={lessonsCount}
                 currentPage={activePage}/>
         break;
       default:
