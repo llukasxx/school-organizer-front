@@ -23,12 +23,12 @@ export const PAGINATED_ENTITIES = 'school-organizer/receivers/PAGINATED_ENTITIES
 
 // Action Creators
 // export const actions = { }
-export const getPaginatedStudents = (page = 1) => {
+export const getPaginatedStudents = (page = 1, query = '') => {
   return function(dispatch) {
     dispatch({type: START_STUDENTS_FETCH})
     axios.get(`${ROOT_URL}/api/v1/students/get_students`, { 
       headers: { authorization: localStorage.getItem('token') },
-      params: { page: page }
+      params: { page: page, query: query }
     })
       .then(function(response) {
         let camelized = camelizeKeys(response.data)
@@ -48,12 +48,12 @@ export const getPaginatedStudents = (page = 1) => {
   }
 }
 
-export const getPaginatedTeachers = (page = 1) => {
+export const getPaginatedTeachers = (page = 1, query = '') => {
   return function(dispatch) {
     dispatch({type: START_TEACHERS_FETCH})
     axios.get(`${ROOT_URL}/api/v1/teachers/get_teachers`, { 
       headers: { authorization: localStorage.getItem('token') },
-      params: { page: page }
+      params: { page: page, query: query }
     })
       .then(function(response) {
         let camelized = camelizeKeys(response.data)
@@ -73,12 +73,12 @@ export const getPaginatedTeachers = (page = 1) => {
   }
 }
 
-export const getPaginatedGroups = (page = 1) => {
+export const getPaginatedGroups = (page = 1, query = '') => {
   return function(dispatch) {
     dispatch({type: START_GROUPS_FETCH})
     axios.get(`${ROOT_URL}/api/v1/groups/get_groups`, { 
       headers: { authorization: localStorage.getItem('token') },
-      params: { page: page }
+      params: { page: page, query: query }
     })
       .then(function(response) {
         let camelized = camelizeKeys(response.data)
@@ -98,12 +98,12 @@ export const getPaginatedGroups = (page = 1) => {
   }
 }
 
-export const getPaginatedLessons = (page = 1) => {
+export const getPaginatedLessons = (page = 1, query = '') => {
   return function(dispatch) {
     dispatch({type: START_LESSONS_FETCH})
     axios.get(`${ROOT_URL}/api/v1/lessons/get_lessons`, { 
       headers: { authorization: localStorage.getItem('token') },
-      params: { page: page }
+      params: { page: page, query: query }
     })
       .then(function(response) {
         let camelized = camelizeKeys(response.data)

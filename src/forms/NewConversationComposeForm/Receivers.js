@@ -155,21 +155,29 @@ class Receivers extends Component {
     this.props.getPaginatedStudents()
     this.props.changeActiveTab()
   }
+  handleQuery(query) {
+    console.log(query)
+  }
   render() {
     const { activeTab } = this.props
     let listToRender = this.renderStudents
+    let apiCallback = this.props.getPaginatedStudents
     switch(activeTab) {
       case 'students':
         listToRender = this.renderStudents
+        apiCallback = this.props.getPaginatedStudents
         break;
       case 'teachers':
         listToRender = this.renderTeachers
+        apiCallback = this.props.getPaginatedTeachers
         break;
       case 'groups':
         listToRender = this.renderGroups
+        apiCallback = this.props.getPaginatedGroups
         break;
       case 'lessons':
         listToRender = this.renderLessons
+        apiCallback = this.props.getPaginatedLessons
         break;
     }
     return (
@@ -204,11 +212,6 @@ class Receivers extends Component {
             <a style={{cursor: 'pointer'}}>Lessons</a>
           </li>
         </ul>
-        <br />
-        <div className="input-group input-group-lg">
-          <span className="input-group-addon" id="sizing-addon1">Filter</span>
-          <input type="text" className="form-control" placeholder="Full name" aria-describedby="sizing-addon1"/>
-        </div>
         {this.renderPagination()}
         {listToRender()}
         {this.renderPagination()}
