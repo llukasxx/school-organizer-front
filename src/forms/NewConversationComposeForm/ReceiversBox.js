@@ -14,7 +14,7 @@ class ReceiversBox extends Component {
   }
   render() {
     return (
-      <div>
+      <div style={{display: 'inline-block'}}>
         <h3>Receivers:</h3>
         {this.renderReceivers()}
         <button className="btn btn-lg btn-success">

@@ -56,10 +56,10 @@ export class NewConversationCompose extends React.Component {
                             query={query}
                             handleChange={this.handleQueryChange}/>
         <br />
-        <div>
+        <div className="row">
           <Receivers />
-          <ReceiversBox />
         </div>
+        <ReceiversBox />
       </form>
     )
   }

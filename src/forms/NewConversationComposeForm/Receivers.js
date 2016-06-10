@@ -105,8 +105,10 @@ class Receivers extends Component {
       })
     }
     return (
-      <div className="list-group">
-        {receiverLI}
+      <div className="row">
+        <div className="list-group">
+          {receiverLI}
+        </div>
       </div>
     )
   }
@@ -161,23 +163,18 @@ class Receivers extends Component {
   render() {
     const { activeTab } = this.props
     let listToRender = this.renderStudents
-    let apiCallback = this.props.getPaginatedStudents
     switch(activeTab) {
       case 'students':
         listToRender = this.renderStudents
-        apiCallback = this.props.getPaginatedStudents
         break;
       case 'teachers':
         listToRender = this.renderTeachers
-        apiCallback = this.props.getPaginatedTeachers
         break;
       case 'groups':
         listToRender = this.renderGroups
-        apiCallback = this.props.getPaginatedGroups
         break;
       case 'lessons':
         listToRender = this.renderLessons
-        apiCallback = this.props.getPaginatedLessons
         break;
     }
     return (

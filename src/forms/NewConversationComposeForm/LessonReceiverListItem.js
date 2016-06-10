@@ -1,9 +1,13 @@
 import React, { Component } from 'react'
+import AdditionHighlight from './AdditionHighlight'
 
 class LessonReceiverListItem extends Component {
   constructor(props) {
     super(props)
     this.renderGroups = this.renderGroups.bind(this)
+    this.state = {hovering: false}
+    this.mouseEnter = this.mouseEnter.bind(this)
+    this.mouseLeave = this.mouseLeave.bind(this)
   }
   renderGroups() {
     const { groups } = this.props
@@ -21,10 +25,18 @@ class LessonReceiverListItem extends Component {
     }
     return groupNames
   }
+  mouseEnter() {
+    this.setState({hovering: true})
+  }
+  mouseLeave() {
+    this.setState({hovering: false})
+  }
   render() {
     const {lesson} = this.props
     return (
-        <li className="list-group-item">
+      <div className="col-md-6">
+        <li onMouseEnter={this.mouseEnter} onMouseLeave={this.mouseLeave}
+          className={this.state.hovering ? "list-group-item active" : "list-group-item"}>
           <div className="media" style={{cursor: 'pointer'}}>
             <div className="media-left">
               <a href="#">
@@ -39,7 +51,9 @@ class LessonReceiverListItem extends Component {
               </p>
             </div>
           </div>
+          <AdditionHighlight active={this.state.hovering}/>
         </li>
+      </div>
     )
   }
 }
