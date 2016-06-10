@@ -21,6 +21,11 @@ export const FINISH_LESSONS_FETCH = 'school-organizer/receivers/FINISH_LESSONS_F
 export const CHANGE_ACTIVE_TAB = 'school-organizer/receivers/CHANGE_ACTIVE_TAB'
 export const PAGINATED_ENTITIES = 'school-organizer/receivers/PAGINATED_ENTITIES'
 
+export const ADD_RECEIVER = 'school-organizer/receivers/ADD_RECEIVER'
+export const REMOVE_RECEIVER = 'school-organizer/receivers/REMOVE_RECEIVER'
+
+
+
 // Action Creators
 // export const actions = { }
 export const getPaginatedStudents = (page = 1, query = '') => {
@@ -129,12 +134,25 @@ export const changeActiveTab = (activeTab = 'students') => {
   }
 }
 
+export const addReceiver = (receiver) => {
+  return function(dispatch) {
+    dispatch({type: ADD_RECEIVER, receiver: receiver})
+  }
+}
+
+export const removeReceiver = (receiver, index) => {
+  return function(dispatch) {
+    dispatch({type: REMOVE_RECEIVER, receiverIndex: index})
+  }
+}
+
 // Reducer
 export const initialState = { activeTab: 'students', activePage: 1,
                               students: { loaded: false, count: 0 },
                               teachers: { loaded: false, count: 0 },
                               groups: { loaded: false, count: 0 },
-                              lessons: { loaded: false, count: 0 }
+                              lessons: { loaded: false, count: 0 },
+                              activeReceivers: []
                             }
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -156,6 +174,13 @@ export default function (state = initialState, action) {
       return {...state, activePage: action.page, lessons: {loaded: true, count: action.count}}
     case CHANGE_ACTIVE_TAB:
       return {...state, activeTab: action.activeTab}
+    case ADD_RECEIVER:
+      return {...state, activeReceivers: [...state.activeReceivers, action.receiver]}
+    case REMOVE_RECEIVER:
+      return {...state, activeReceivers: [
+                          ...state.activeReceivers.slice(0, action.receiverIndex), 
+                          ...state.activeReceivers.slice(action.receiverIndex + 1)
+                        ]}
     default:
       return state
   }

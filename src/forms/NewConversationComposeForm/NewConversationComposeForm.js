@@ -1,6 +1,9 @@
 import React from 'react'
 import { reduxForm } from 'redux-form'
 import * as actions from '../../redux/modules/ReceiversReducer'
+
+import { activeReceiversArraySelector } from '../../selectors/ReceiversSelector'
+
 import Receivers from './Receivers'
 import ReceiversBox from './ReceiversBox' 
 import ReceiverSearchForm from './ReceiverSearchForm'
@@ -59,7 +62,11 @@ export class NewConversationCompose extends React.Component {
         <div className="row">
           <Receivers />
         </div>
-        <ReceiversBox />
+        <div className="row">
+          <ReceiversBox 
+            activeReceivers={this.props.activeReceivers}
+            removeReceiver={this.props.removeReceiver}/>
+        </div>
       </form>
     )
   }
@@ -67,7 +74,8 @@ export class NewConversationCompose extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    activeTab: state.receivers.activeTab
+    activeTab: state.receivers.activeTab,
+    activeReceivers: activeReceiversArraySelector(state)
   }
 }
 

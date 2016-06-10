@@ -4,7 +4,8 @@ import * as actions from '../../redux/modules/ReceiversReducer'
 import { studentsArraySelector,
          teachersArraySelector,
          groupsArraySelector,
-         lessonsArraySelector } from '../../selectors/ReceiversSelector'
+         lessonsArraySelector,
+         activeReceiversArraySelector } from '../../selectors/ReceiversSelector'
 
 import StudentReceiverListItem from './StudentReceiverListItem'
 import TeacherReceiverListItem from './TeacherReceiverListItem'
@@ -41,14 +42,15 @@ class Receivers extends Component {
     }
   }
   renderStudents() {
-    const { students, studentsLoaded } = this.props
+    const { students, studentsLoaded, addReceiver } = this.props
     let receiverLI = []
     if(studentsLoaded) {
       students.map((el) => {
         receiverLI.push(<StudentReceiverListItem 
                           student={el}
                           key={el.id}
-                          groups={el.studentGroups}/>)
+                          groups={el.studentGroups}
+                          changeReceiver={addReceiver}/>)
       })
     }
     return (
@@ -58,14 +60,15 @@ class Receivers extends Component {
     )
   }
   renderTeachers() {
-    const { teachers, teachersLoaded } = this.props
+    const { teachers, teachersLoaded, addReceiver } = this.props
     let receiverLI = []
     if(teachersLoaded) {
       teachers.map((el) => {
         receiverLI.push(<TeacherReceiverListItem 
                           teacher={el}
                           key={el.id}
-                          lessons={el.lessons}/>)
+                          lessons={el.lessons}
+                          changeReceiver={addReceiver}/>)
       })
     }
     return (
@@ -75,7 +78,7 @@ class Receivers extends Component {
     )
   }
   renderGroups() {
-    const { groups, groupsLoaded } = this.props
+    const { groups, groupsLoaded, addReceiver } = this.props
     let receiverLI = []
     if(groupsLoaded) {
       groups.map((el) => {
@@ -83,7 +86,8 @@ class Receivers extends Component {
                           group={el}
                           key={el.id}
                           lessons={el.lessons}
-                          totalStudents={el.totalStudents}/>)
+                          totalStudents={el.totalStudents}
+                          changeReceiver={addReceiver}/>)
       })
     }
     return (
@@ -93,7 +97,7 @@ class Receivers extends Component {
     )
   }
   renderLessons() {
-    const { lessons, lessonsLoaded } = this.props
+    const { lessons, lessonsLoaded, addReceiver } = this.props
     let receiverLI = []
     if(lessonsLoaded) {
       lessons.map((el) => {
@@ -101,7 +105,8 @@ class Receivers extends Component {
                           lesson={el}
                           key={el.id}
                           groups={el.groups}
-                          totalStudents={el.totalStudents}/>)
+                          totalStudents={el.totalStudents}
+                          changeReceiver={addReceiver}/>)
       })
     }
     return (

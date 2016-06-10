@@ -16,6 +16,10 @@ const getAllLessons = (state) => {
   return state.paginatedEntities.lessons
 }
 
+const getActiveReceivers = (state) => {
+  return state.receivers.activeReceivers
+}
+
 
 export const studentsArraySelector = createSelector(
   [getAllStudents],
@@ -59,4 +63,9 @@ export const lessonsArraySelector = createSelector(
     })
     return lessonsArray
   }
+)
+
+export const activeReceiversArraySelector = createSelector(
+  [getActiveReceivers],
+  receivers => receivers
 )

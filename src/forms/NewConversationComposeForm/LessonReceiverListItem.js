@@ -36,10 +36,13 @@ class LessonReceiverListItem extends Component {
     return (
       <div className="col-md-6">
         <li onMouseEnter={this.mouseEnter} onMouseLeave={this.mouseLeave}
-          className={this.state.hovering ? "list-group-item active" : "list-group-item"}>
+          className={this.state.hovering ? "list-group-item active" : "list-group-item"}
+          onClick={(e) => {
+            this.props.changeReceiver(Object.assign({}, lesson, {type: 'lesson'}), this.props.index)
+          }}>
           <div className="media" style={{cursor: 'pointer'}}>
             <div className="media-left">
-              <a href="#">
+              <a>
                 <img className="media-object" src="https://media-3.haircrazy.com/avatars/no_avatar.png"/>
               </a>
             </div>

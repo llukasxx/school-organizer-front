@@ -17,7 +17,7 @@ export class TeacherDashboard extends Component {
                 <span className="icon-bar"></span>
                 <span className="icon-bar"></span>
               </button>
-              <Link to={'/teacher'} className="navbar-brand"><b>Home</b></Link>
+              <Link to={'/teacher'} className="navbar-brand"><b>Home <span className="glyphicon glyphicon-education"/></b></Link>
             </div>
             <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul className="nav navbar-nav">
