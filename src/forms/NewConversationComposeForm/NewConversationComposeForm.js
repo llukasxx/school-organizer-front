@@ -22,6 +22,8 @@ export class NewConversationCompose extends React.Component {
     super(props)
     this.handleQueryChange = this.handleQueryChange.bind(this)
     this.handleDisable = this.handleDisable.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
+    this.extractReceivers = this.extractReceivers.bind(this)
   }
   handleQueryChange(query) {
     const { activeTab, 
@@ -52,8 +54,43 @@ export class NewConversationCompose extends React.Component {
       return true
     }
   }
+  handleSubmit() {
+    const { fields: {subject, body}, activeReceivers} = this.props
+    let receivers = this.extractReceivers()
+    let conversation = {
+      subject: subject.value,
+      body: body.value,
+      receivers
+    }
+    this.props.startNewBroadcastConversation(conversation)
+  }
+  extractReceivers() {
+    const { activeReceivers } = this.props
+    let obj = {
+      users: [],
+      groups: [],
+      lessons: []
+    }
+    activeReceivers.map((el) => {
+      switch(el.type) {
+        case 'student':
+          obj.users.push(el.id)
+          break;
+        case 'teacher':
+          obj.users.push(el.id)
+          break;
+        case 'group':
+          obj.groups.push(el.id)
+          break;
+        case 'lesson':
+          obj.lessons.push(el.id)
+          break;
+      }
+    })
+    return obj
+  }
   render() {
-    const { fields: {subject, body, query}, handleSubmit, activeTab } = this.props
+    const { fields: {subject, body, query}, activeTab } = this.props
     return (
       <form>
         <div className="form-group">
@@ -79,7 +116,11 @@ export class NewConversationCompose extends React.Component {
         </div>
         <hr />
         <button className="btn btn-lg btn-success"
-                disabled={this.handleDisable()}>
+                disabled={this.handleDisable()}
+                onClick={(e) => {
+                  e.preventDefault()
+                  this.handleSubmit()
+                }}>
           Send Message <span className="glyphicon glyphicon-send"/>
         </button>
       </form>
