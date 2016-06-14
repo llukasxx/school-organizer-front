@@ -1,6 +1,7 @@
 import React from 'react'
 import { reduxForm } from 'redux-form'
-import * as actions from '../../redux/modules/ReceiversReducer'
+import * as receiversActions from '../../redux/modules/ReceiversReducer'
+import * as messagesActions from '../../redux/modules/MessagesReducer'
 
 import { activeReceiversArraySelector } from '../../selectors/ReceiversSelector'
 
@@ -20,6 +21,7 @@ export class NewConversationCompose extends React.Component {
   constructor(props) {
     super(props)
     this.handleQueryChange = this.handleQueryChange.bind(this)
+    this.handleDisable = this.handleDisable.bind(this)
   }
   handleQueryChange(query) {
     const { activeTab, 
@@ -40,6 +42,14 @@ export class NewConversationCompose extends React.Component {
       case 'lessons':
         getPaginatedLessons(1, query)
         break;
+    }
+  }
+  handleDisable() {
+    const { fields: {subject, body}, activeReceivers} = this.props
+    if(subject.value.length > 0 && body.value.length > 0 && activeReceivers.length > 0) {
+      return false
+    } else {
+      return true
     }
   }
   render() {
@@ -67,6 +77,11 @@ export class NewConversationCompose extends React.Component {
             activeReceivers={this.props.activeReceivers}
             removeReceiver={this.props.removeReceiver}/>
         </div>
+        <hr />
+        <button className="btn btn-lg btn-success"
+                disabled={this.handleDisable()}>
+          Send Message <span className="glyphicon glyphicon-send"/>
+        </button>
       </form>
     )
   }
@@ -79,10 +94,12 @@ const mapStateToProps = (state) => {
   }
 }
 
+const mapDispatchToProps = 
+
 NewConversationCompose = reduxForm({
   form: 'NewConversationCompose',
   fields,
   validate
-}, mapStateToProps, actions)(NewConversationCompose)
+}, mapStateToProps, Object.assign({}, receiversActions, messagesActions))(NewConversationCompose)
 
 export default NewConversationCompose

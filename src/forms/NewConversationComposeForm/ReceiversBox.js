@@ -63,9 +63,6 @@ class ReceiversBox extends Component {
       <div style={{display: 'inline-block'}}>
         <h3>Receivers:</h3>
         {this.renderReceivers()}
-        <button className="btn btn-lg btn-success">
-          Send Message <span className="glyphicon glyphicon-send"/>
-        </button>
       </div>
     )
   }

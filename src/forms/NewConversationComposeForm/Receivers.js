@@ -23,6 +23,7 @@ class Receivers extends Component {
     this.renderTeachers = this.renderTeachers.bind(this)
     this.renderGroups = this.renderGroups.bind(this)
     this.renderLessons = this.renderLessons.bind(this)
+    this.state = {showList: true}
   }
   changeActiveTab(newTab) {
     this.props.changeActiveTab(newTab)
@@ -213,10 +214,21 @@ class Receivers extends Component {
               }}>
             <a style={{cursor: 'pointer'}}>Lessons</a>
           </li>
+          <li className="pull-right">
+            <a style={{cursor: 'pointer'}}
+              onClick={(e) => {
+                let toggled = !this.state.showList
+                this.setState({showList: toggled})
+              }}>
+              {this.state.showList ? "Hide list" : "Show List"}
+            </a>
+          </li>
         </ul>
-        {this.renderPagination()}
-        {listToRender()}
-        {this.renderPagination()}
+        <div className={this.state.showList ? "" : "hidden"}>
+          {this.renderPagination()}
+          {listToRender()}
+          {this.renderPagination()}
+        </div>
       </div>
     )
   }
