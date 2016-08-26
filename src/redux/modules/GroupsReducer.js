@@ -1,4 +1,6 @@
 import axios from 'axios'
+import { push } from 'react-router-redux'
+
 import { ROOT_URL } from '../ApiConfig'
 
 import {toastr} from 'react-redux-toastr'
@@ -6,6 +8,9 @@ import {toastr} from 'react-redux-toastr'
 //normalizr
 import { normalize, Schema, arrayOf } from 'normalizr'
 import { camelizeKeys } from 'humps'
+
+// force sign out
+import { UNAUTH_USER } from './AuthReducer'
 
 // Constants
 // export const constants = { }
@@ -38,9 +43,12 @@ export function fetchTeacherGroups() {
                  })
       })
       .catch(function(response) {
-        console.log(response)
+        if(response.status == 401) {
+          dispatch({ type: UNAUTH_USER })
+          dispatch(push('/'))
+        }
         dispatch({ type: FETCH_TEACHER_GROUPS_ERROR, payload: response.data})
-        toastr.warning('Warning', 'Something bad happened, try to re-log')
+        toastr.warning('Warning', 'Something bad happened')
       })
   }
 }
@@ -68,6 +76,10 @@ export function sendGrade(newGrade) {
       })
       .catch(function(response) {
         console.log(response)
+        if(response.status == 401) {
+          dispatch({ type: UNAUTH_USER })
+          dispatch(push('/'))
+        }
         toastr.warning('Warning', 'Something bad happened.')
       })
   }
@@ -88,6 +100,10 @@ export function updateGrade(newGrade, id) {
       })
       .catch(function(response) {
         console.log(response)
+        if(response.status == 401) {
+          dispatch({ type: UNAUTH_USER })
+          dispatch(push('/'))
+        }
         toastr.warning('Warning', 'Something bad happened.')
       })
   }
@@ -109,6 +125,10 @@ export function sendMultiGrade(newGrades, handleDisplay) {
       })
       .catch(function(response) {
         console.log(response)
+        if(response.status == 401) {
+          dispatch({ type: UNAUTH_USER })
+          dispatch(push('/'))
+        }
         toastr.warning('Warning', 'Something bad happened.')
       })
   }

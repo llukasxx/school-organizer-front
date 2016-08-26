@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { push } from 'react-router-redux';
+import { push } from 'react-router-redux'
 
 import { ROOT_URL } from '../ApiConfig'
 import {toastr} from 'react-redux-toastr'
@@ -52,6 +52,19 @@ export function signOutUser() {
   toastr.success(`Goodbye!`, 'You have successfully logged out.')
   removeLocalStorage()
   return function(dispatch) {
+    return (
+      dispatch({ type: UNAUTH_USER })
+    )
+  }
+}
+
+//force signout
+export function forceSignOutUser(dispatch) {
+  toastr.warning(`Warning`, 'You have been logged out due to inactivity.')
+  removeLocalStorage()
+  console.log(dispatch)
+  return function(dispatch) {
+    dispatch(push('/'))
     return (
       dispatch({ type: UNAUTH_USER })
     )

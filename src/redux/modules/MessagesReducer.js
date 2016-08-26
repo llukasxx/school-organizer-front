@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { UNAUTH_USER } from './AuthReducer'
 import { ROOT_URL } from '../ApiConfig'
 import {toastr} from 'react-redux-toastr'
 import { normalize, Schema, arrayOf } from 'normalizr'
@@ -25,6 +26,10 @@ export const getConversations = () => {
         dispatch({type: FINISH_INBOX_FETCH, response: normalized})
       })
       .catch(function(response) {
+        if(response.status == 401) {
+          dispatch({ type: UNAUTH_USER })
+          dispatch(push('/'))
+        }
         toastr.warning('Warning', 'Something bad happened')
       })
   }
@@ -43,6 +48,10 @@ export const replyToConversation = (newConversation) => {
         toastr.success('Message', 'Has been successfully sent.')
       })
       .catch(function(response) {
+        if(response.status == 401) {
+          dispatch({ type: UNAUTH_USER })
+          dispatch(push('/'))
+        }
         toastr.warning('Warning', 'Something bad happened')
       })
   }
@@ -59,6 +68,10 @@ export const startNewConversation = (newConversation) => {
         toastr.success('Message', 'Has been successfully sent.')
       })
       .catch(function(response) {
+        if(response.status == 401) {
+          dispatch({ type: UNAUTH_USER })
+          dispatch(push('/'))
+        }
         toastr.warning('Warning', 'Something bad happened')
       })
   }
@@ -77,6 +90,10 @@ export const startNewBroadcastConversation = (newConversation) => {
         toastr.success('Message', 'Has been successfully sent.')
       })
       .catch(function(response) {
+        if(response.status == 401) {
+          dispatch({ type: UNAUTH_USER })
+          dispatch(push('/'))
+        }
         toastr.warning('Warning', 'Something bad happened')
       })
   }

@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { ROOT_URL } from '../ApiConfig'
+import { UNAUTH_USER } from './AuthReducer'
 import {toastr} from 'react-redux-toastr'
 import { normalize, Schema, arrayOf } from 'normalizr'
 import { camelizeKeys } from 'humps'
@@ -48,6 +49,10 @@ export const getPaginatedStudents = (page = 1, query = '') => {
                 })
       })
       .catch(function(response) {
+        if(response.status == 401) {
+          dispatch({ type: UNAUTH_USER })
+          dispatch(push('/'))
+        }
         toastr.warning('Warning', 'Something bad happened')
       })
   }
@@ -73,6 +78,10 @@ export const getPaginatedTeachers = (page = 1, query = '') => {
                 })
       })
       .catch(function(response) {
+        if(response.status == 401) {
+          dispatch({ type: UNAUTH_USER })
+          dispatch(push('/'))
+        }
         toastr.warning('Warning', 'Something bad happened')
       })
   }
@@ -98,6 +107,10 @@ export const getPaginatedGroups = (page = 1, query = '') => {
                 })
       })
       .catch(function(response) {
+        if(response.status == 401) {
+          dispatch({ type: UNAUTH_USER })
+          dispatch(push('/'))
+        }
         toastr.warning('Warning', 'Something bad happened')
       })
   }
@@ -123,6 +136,10 @@ export const getPaginatedLessons = (page = 1, query = '') => {
                 })
       })
       .catch(function(response) {
+        if(response.status == 401) {
+          dispatch({ type: UNAUTH_USER })
+          dispatch(push('/'))
+        }
         toastr.warning('Warning', 'Something bad happened')
       })
   }
