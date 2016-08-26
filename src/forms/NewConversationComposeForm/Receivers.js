@@ -55,8 +55,10 @@ class Receivers extends Component {
       })
     }
     return (
-      <div className="list-group">
-        {receiverLI}
+      <div className="row">
+        <div className="list-group">
+          {receiverLI}
+        </div>
       </div>
     )
   }
@@ -73,8 +75,10 @@ class Receivers extends Component {
       })
     }
     return (
-      <div className="list-group">
-        {receiverLI}
+      <div className="row">
+        <div className="list-group">
+          {receiverLI}
+        </div>
       </div>
     )
   }
@@ -92,8 +96,10 @@ class Receivers extends Component {
       })
     }
     return (
-      <div className="list-group">
-        {receiverLI}
+      <div className="row">
+        <div className="list-group">
+          {receiverLI}
+        </div>
       </div>
     )
   }
