@@ -19,7 +19,7 @@ class ReceiversBox extends Component {
                                 key={index}
                                 index={index}
                                 student={el}
-                                groups={el.groups}
+                                groups={el.studentGroups}
                                 changeReceiver={removeReceiver}/>)
           break;
         case 'teacher':
