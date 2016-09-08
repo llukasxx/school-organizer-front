@@ -17,7 +17,6 @@ export class TeacherEvents extends React.Component {
     this.props.fetchEvents()
   }
   render () {
-    console.log(this.props.events)
     return (
       <div>
         <UpcomingEvents events={ this.props.events }/>
