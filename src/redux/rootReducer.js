@@ -23,7 +23,9 @@ function entities(state = initialState, action) {
 const initialPaginatedState = { students: {}, 
                                 teachers: {}, 
                                 groups: {}, 
-                                lessons: {}}
+                                lessons: {},
+                                events: {}
+                              }
 // Resetting whole state just to keep paginated values
 function paginatedEntities(state = initialPaginatedState, action) {
   if (action.response && action.response.entities && action.paginated) {
