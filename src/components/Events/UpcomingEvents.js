@@ -13,7 +13,9 @@ export class UpcomingEvents extends React.Component {
         <div className="panel panel-primary">
           <div className="panel-heading"><b>Upcoming Events</b></div>
           <EventFilter />
-          <EventsList events={this.props.events}/>
+          <EventsList 
+            events = { this.props.events }
+            getEvents = { this.props.getEvents }/>
         </div>
       </div>
     )

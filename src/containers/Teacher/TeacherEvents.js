@@ -19,7 +19,9 @@ export class TeacherEvents extends React.Component {
   render () {
     return (
       <div>
-        <UpcomingEvents events={ this.props.events }/>
+        <UpcomingEvents 
+          events={ this.props.events }
+          getEvents= { this.props.fetchEvents }/>
         <EventCreator />
         <PastEvents />
       </div>

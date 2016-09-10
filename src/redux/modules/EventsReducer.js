@@ -13,11 +13,12 @@ export const FINISH_EVENTS_FETCH = 'school-organizer/events/FINISH_EVENTS_FETCH'
 
 //Actions
 
-export function fetchEvents() {
+export function fetchEvents(page = 1) {
   return function(dispatch) {
     dispatch( { type: START_EVENTS_FETCH } )
     axios.get(`${ROOT_URL}/api/v1/events/get_events`, { 
-      headers: { authorization: localStorage.getItem('token') }
+      headers: { authorization: localStorage.getItem('token') },
+      params: { page: page }
     })
     .then(function(response) {
         console.log(response)
