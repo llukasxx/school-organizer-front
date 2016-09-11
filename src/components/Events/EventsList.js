@@ -34,7 +34,7 @@ export class EventsList extends React.Component {
     return (
         <li className="list-group-item">
           <ReactPaginate previousLabel={"<"}
-                         pageNum={this.props.count/10 + 1}
+                         pageNum={this.props.count/5}
                          nextLabel={">"}
                          breakLabel={<a>...</a>}
                          breakClassName={"break-me"}
