@@ -22,7 +22,9 @@ export class TeacherEvents extends React.Component {
         <UpcomingEvents 
           events={ this.props.events }
           getEvents= { this.props.fetchUpcomingEvents }
-          count = { this.props.upcomingEventsCount }/>
+          count = { this.props.upcomingEventsCount }
+          activeFilter = { this.props.activeFilter }
+          changeActiveFilter = { this.props.changeActiveFilter }/>
         <EventCreator />
         <PastEvents />
       </div>
@@ -33,7 +35,8 @@ export class TeacherEvents extends React.Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     events: allEventsArraySelector(state, ownProps),
-    upcomingEventsCount: state.events.upcomingEventsCount
+    upcomingEventsCount: state.events.upcomingEventsCount,
+    activeFilter: state.events.activeFilter
   }
 }
 export default connect(mapStateToProps, actions)(TeacherEvents)

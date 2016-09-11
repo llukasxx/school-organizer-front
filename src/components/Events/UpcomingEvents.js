@@ -12,7 +12,9 @@ export class UpcomingEvents extends React.Component {
       <div className="col-md-4">
         <div className="panel panel-primary">
           <div className="panel-heading"><b>Upcoming Events</b></div>
-          <EventFilter />
+          <EventFilter 
+            activeFilter = { this.props.activeFilter }
+            changeActiveFilter = { this.props.changeActiveFilter }/>
           <EventsList 
             events = { this.props.events }
             getEvents = { this.props.getEvents }

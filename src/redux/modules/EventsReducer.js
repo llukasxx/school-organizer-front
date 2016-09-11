@@ -10,6 +10,7 @@ import { camelizeKeys } from 'humps'
 
 export const START_EVENTS_FETCH = 'school-organizer/events/START_EVENTS_FETCH'
 export const FINISH_UPCOMING_EVENTS_FETCH = 'school-organizer/events/FINISH_UPCOMING_EVENTS_FETCH'
+export const CHANGE_ACTIVE_FILTER = 'school-organizer/events/CHANGE_ACTIVE_FILTER'
 
 //Actions
 
@@ -39,7 +40,13 @@ export function fetchUpcomingEvents(page = 1) {
         toastr.warning('Warning', 'Something bad happened')
       })
   }
-} 
+}
+
+export function changeActiveFilter(filter) {
+  return function(dispatch) {
+    dispatch( { type: CHANGE_ACTIVE_FILTER, filter: filter } )
+  }
+}
 
 // Reducer
 export const initialState = {}
@@ -48,7 +55,9 @@ export default function (state = initialState, action) {
     case START_EVENTS_FETCH:
       return { ...state, loaded: false}
     case FINISH_UPCOMING_EVENTS_FETCH:
-      return {...state, loaded: true, upcomingEventsCount: action.count}
+      return {...state, loaded: true, upcomingEventsCount: action.count, activeFilter: 'all'}
+    case CHANGE_ACTIVE_FILTER:
+      return {...state, activeFilter: action.filter}
     default:
       return state
   }
