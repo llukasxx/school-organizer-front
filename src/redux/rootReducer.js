@@ -6,6 +6,7 @@ import AuthReducer from './modules/AuthReducer'
 import GroupsReducer from './modules/GroupsReducer'
 import MessagesReducer from './modules/MessagesReducer'
 import ReceiversReducer from './modules/ReceiversReducer'
+import EventsReducer from './modules/EventsReducer'
 
 import merge from 'lodash/object/merge'
 
@@ -43,5 +44,6 @@ export default combineReducers({
   auth: AuthReducer,
   teacherGroups: GroupsReducer,
   messages: MessagesReducer,
-  receivers: ReceiversReducer
+  receivers: ReceiversReducer,
+  events: EventsReducer
 })

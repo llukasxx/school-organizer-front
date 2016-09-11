@@ -15,7 +15,8 @@ export class UpcomingEvents extends React.Component {
           <EventFilter />
           <EventsList 
             events = { this.props.events }
-            getEvents = { this.props.getEvents }/>
+            getEvents = { this.props.getEvents }
+            count = { this.props.count } />
         </div>
       </div>
     )

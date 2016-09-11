@@ -8,8 +8,10 @@ export class EventsList extends React.Component {
     super(props)
     this.renderEventListItems = this.renderEventListItems.bind(this)
     this.handlePageClick = this.handlePageClick.bind(this)
+    this.renderPagination = this.renderPagination.bind(this)
   }
   renderEventListItems() {
+    const { events } = this.props
     let eventsList = []
     const sortFunction = function(a,b) {
       if(Date.parse(a.date) < Date.parse(b.date))
@@ -18,8 +20,7 @@ export class EventsList extends React.Component {
         return 1
       return 0
     }
-
-    this.props.events.sort(sortFunction).map((event) => {
+    events.sort(sortFunction).map((event) => {
       eventsList.push(<EventListItem 
                         event={event}
                         key={event.id}/>)
@@ -33,6 +34,7 @@ export class EventsList extends React.Component {
     return (
         <li className="list-group-item">
           <ReactPaginate previousLabel={"<"}
+                         pageNum={this.props.count/10 + 1}
                          nextLabel={">"}
                          breakLabel={<a>...</a>}
                          breakClassName={"break-me"}

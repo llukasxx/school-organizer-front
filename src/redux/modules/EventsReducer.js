@@ -9,11 +9,11 @@ import { camelizeKeys } from 'humps'
 // Constants
 
 export const START_EVENTS_FETCH = 'school-organizer/events/START_EVENTS_FETCH'
-export const FINISH_EVENTS_FETCH = 'school-organizer/events/FINISH_EVENTS_FETCH'
+export const FINISH_UPCOMING_EVENTS_FETCH = 'school-organizer/events/FINISH_UPCOMING_EVENTS_FETCH'
 
 //Actions
 
-export function fetchEvents(page = 1) {
+export function fetchUpcomingEvents(page = 1) {
   return function(dispatch) {
     dispatch( { type: START_EVENTS_FETCH } )
     axios.get(`${ROOT_URL}/api/v1/events/get_events`, { 
@@ -24,9 +24,10 @@ export function fetchEvents(page = 1) {
         console.log(response)
         const camelized = camelizeKeys(response.data)
         const normalizedResponse = normalize(camelized, { events: arrayOf(event) })
-        dispatch({ type: FINISH_EVENTS_FETCH,
+        dispatch({ type: FINISH_UPCOMING_EVENTS_FETCH,
                    paginated: true,
-                   response: normalizedResponse
+                   response: normalizedResponse,
+                   count: response.data.count
                  })
       })
       .catch(function(response) {
@@ -46,8 +47,8 @@ export default function (state = initialState, action) {
   switch (action.type) {
     case START_EVENTS_FETCH:
       return { ...state, loaded: false}
-    case FINISH_EVENTS_FETCH:
-      return {...state, loaded: true}
+    case FINISH_UPCOMING_EVENTS_FETCH:
+      return {...state, loaded: true, upcomingEventsCount: action.count}
     default:
       return state
   }

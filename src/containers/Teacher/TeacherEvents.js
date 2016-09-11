@@ -14,14 +14,15 @@ export class TeacherEvents extends React.Component {
     super(props)
   }
   componentDidMount() {
-    this.props.fetchEvents()
+    this.props.fetchUpcomingEvents()
   }
   render () {
     return (
       <div>
         <UpcomingEvents 
           events={ this.props.events }
-          getEvents= { this.props.fetchEvents }/>
+          getEvents= { this.props.fetchUpcomingEvents }
+          count = { this.props.upcomingEventsCount }/>
         <EventCreator />
         <PastEvents />
       </div>
@@ -31,7 +32,8 @@ export class TeacherEvents extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    events: allEventsArraySelector(state, ownProps)
+    events: allEventsArraySelector(state, ownProps),
+    upcomingEventsCount: state.events.upcomingEventsCount
   }
 }
 export default connect(mapStateToProps, actions)(TeacherEvents)
