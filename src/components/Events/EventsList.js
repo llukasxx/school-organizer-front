@@ -9,6 +9,7 @@ export class EventsList extends React.Component {
     this.renderEventListItems = this.renderEventListItems.bind(this)
     this.handlePageClick = this.handlePageClick.bind(this)
     this.renderPagination = this.renderPagination.bind(this)
+    this.state = {currentPage: 0}
   }
   renderEventListItems() {
     const { events } = this.props
@@ -28,6 +29,7 @@ export class EventsList extends React.Component {
     return eventsList
   }
   handlePageClick(data) {
+    this.setState({currentPage: data.selected})
     this.props.getEvents(data.selected + 1)
   }
   renderPagination() {
@@ -43,9 +45,16 @@ export class EventsList extends React.Component {
                          pageRangeDisplayed={2}
                          containerClassName={"pagination"}
                          subContainerClassName={"pages pagination"}
-                         activeClassName={"active"} />
+                         activeClassName={"active"} 
+                         initialSelected={0}
+                         forceSelected={this.state.currentPage}/>
         </li>
       )
+  }
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.activeFilter != this.props.activeFilter) {
+      this.setState({currentPage: 0})
+    }
   }
   render () {
     return (

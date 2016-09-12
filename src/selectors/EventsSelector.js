@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect'
 
-const getPaginatedEvents = (state) => {
+const getPaginatedUpcomingEvents = (state) => {
   let eventsArray = []
   let events = state.paginatedEntities.events
   Object.keys(events).map((event) => {
@@ -9,7 +9,7 @@ const getPaginatedEvents = (state) => {
   return eventsArray
 }
 
-export const allEventsArraySelector = createSelector(
-  [getPaginatedEvents],
+export const allUpcomingEventsArraySelector = createSelector(
+  [getPaginatedUpcomingEvents],
   events => events
 )

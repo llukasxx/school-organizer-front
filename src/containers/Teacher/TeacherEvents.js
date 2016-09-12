@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import * as actions from '../../redux/modules/EventsReducer'
 
-import { allEventsArraySelector } from '../../selectors/EventsSelector'
+import { allUpcomingEventsArraySelector } from '../../selectors/EventsSelector'
 
 import UpcomingEvents from '../../components/Events/UpcomingEvents'
 import PastEvents from '../../components/Events/PastEvents'
@@ -16,11 +16,29 @@ export class TeacherEvents extends React.Component {
   componentDidMount() {
     this.props.fetchUpcomingEvents()
   }
+  componentWillReceiveProps(nextProps) {
+    if(this.props.activeFilter != nextProps.activeFilter) {
+      switch(nextProps.activeFilter) {
+        case 'all':
+          this.props.fetchUpcomingEvents()
+          break;
+        case 'connected':
+          console.log('connected called')
+          break;
+        case 'created':
+          console.log('created called')
+          break;
+        default:
+          this.props.fetchUpcomingEvents()
+          break;
+      }
+    }
+  }
   render () {
     return (
       <div>
         <UpcomingEvents 
-          events={ this.props.events }
+          events={ this.props.upcomingEvents }
           getEvents= { this.props.fetchUpcomingEvents }
           count = { this.props.upcomingEventsCount }
           activeFilter = { this.props.activeFilter }
@@ -34,7 +52,7 @@ export class TeacherEvents extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    events: allEventsArraySelector(state, ownProps),
+    upcomingEvents: allUpcomingEventsArraySelector(state, ownProps),
     upcomingEventsCount: state.events.upcomingEventsCount,
     activeFilter: state.events.activeFilter
   }

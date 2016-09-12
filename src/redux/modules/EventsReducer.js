@@ -42,6 +42,34 @@ export function fetchUpcomingEvents(page = 1) {
   }
 }
 
+export function fetchUpcomingConnectedEvents(page = 1) {
+  return function(dispatch) {
+    dispatch( { type: START_EVENTS_FETCH } )
+    axios.get(`${ROOT_URL}/api/v1/events/get_connected_events`, { 
+      headers: { authorization: localStorage.getItem('token') },
+      params: { page: page }
+    })
+    .then(function(response) {
+        console.log(response)
+        const camelized = camelizeKeys(response.data)
+        const normalizedResponse = normalize(camelized, { events: arrayOf(event) })
+        dispatch({ type: FINISH_UPCOMING_EVENTS_FETCH,
+                   paginated: true,
+                   response: normalizedResponse,
+                   count: response.data.count
+                 })
+      })
+      .catch(function(response) {
+        if(response.status == 401) {
+          dispatch({ type: UNAUTH_USER })
+          dispatch(push('/'))
+        }
+        dispatch({ type: FETCH_TEACHER_GROUPS_ERROR, payload: response.data})
+        toastr.warning('Warning', 'Something bad happened')
+      })
+  }
+}
+
 export function changeActiveFilter(filter) {
   return function(dispatch) {
     dispatch( { type: CHANGE_ACTIVE_FILTER, filter: filter } )
@@ -49,13 +77,13 @@ export function changeActiveFilter(filter) {
 }
 
 // Reducer
-export const initialState = {}
+export const initialState = {loaded: false, activeFilter: 'all'}
 export default function (state = initialState, action) {
   switch (action.type) {
     case START_EVENTS_FETCH:
       return { ...state, loaded: false}
     case FINISH_UPCOMING_EVENTS_FETCH:
-      return {...state, loaded: true, upcomingEventsCount: action.count, activeFilter: 'all'}
+      return {...state, loaded: true, upcomingEventsCount: action.count}
     case CHANGE_ACTIVE_FILTER:
       return {...state, activeFilter: action.filter}
     default:

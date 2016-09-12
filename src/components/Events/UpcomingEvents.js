@@ -18,7 +18,8 @@ export class UpcomingEvents extends React.Component {
           <EventsList 
             events = { this.props.events }
             getEvents = { this.props.getEvents }
-            count = { this.props.count } />
+            count = { this.props.count } 
+            activeFilter = { this.props.activeFilter }/>
         </div>
       </div>
     )
