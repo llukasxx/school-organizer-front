@@ -23,10 +23,10 @@ export class TeacherEvents extends React.Component {
           this.props.fetchUpcomingEvents()
           break;
         case 'connected':
-          console.log('connected called')
+          this.props.fetchUpcomingConnectedEvents()
           break;
         case 'created':
-          console.log('created called')
+          this.props.fetchUpcomingCreatedEvents()
           break;
         default:
           this.props.fetchUpcomingEvents()
@@ -35,11 +35,26 @@ export class TeacherEvents extends React.Component {
     }
   }
   render () {
+    let currentGetEvent = this.props.fetchUpcomingEvents
+    switch(this.props.activeFilter) {
+      case 'all':
+        currentGetEvent = this.props.fetchUpcomingEvents
+        break;
+      case 'connected':
+        currentGetEvent = this.props.fetchUpcomingConnectedEvents
+        break;
+      case 'created':
+        currentGetEvent = this.props.fetchUpcomingCreatedEvents
+        break;
+      default:
+        currentGetEvent = this.props.fetchUpcomingEvents
+        break;
+    }
     return (
       <div>
         <UpcomingEvents 
           events={ this.props.upcomingEvents }
-          getEvents= { this.props.fetchUpcomingEvents }
+          getEvents= { currentGetEvent }
           count = { this.props.upcomingEventsCount }
           activeFilter = { this.props.activeFilter }
           changeActiveFilter = { this.props.changeActiveFilter }/>
