@@ -1,4 +1,5 @@
 import React from 'react'
+import NewEventCreator from '../../forms/EventCreatorForm'
 
 export class EventCreator extends React.Component {
   constructor(props) {
@@ -10,11 +11,8 @@ export class EventCreator extends React.Component {
         <div className="panel panel-success">
           <div className="panel-heading"><b>Event Creator</b></div>
           <div className="panel-body">
-            <p></p>
+            <NewEventCreator />
           </div>
-          <table className="table">
-            ...
-          </table>
         </div>
       </div>
     )

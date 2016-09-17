@@ -10,7 +10,7 @@ import EventsReducer from './modules/EventsReducer'
 
 import merge from 'lodash/object/merge'
 
-const initialState = { groups: {}, lessons: {}, lessonDates: {}, students: {},
+const initialState = { groups: {}, simpleGroups: {}, lessons: {}, lessonDates: {}, students: {},
                        studentGrades: {}, messages: {}, conversations: {},
                        receipts: {}, receivers: {}}
 

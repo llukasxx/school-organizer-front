@@ -41,6 +41,10 @@ const getLessonId = (state,props) => {
   return props.lessonId
 }
 
+const getSimpleGroups = (state) => {
+  return state.entities.simpleGroups
+}
+
 export const groupsArraySelector = createSelector(
   [getGroups],
   groups => Object.keys(groups).map(id => groups[id])
@@ -77,3 +81,8 @@ export const studentLessonGradesArraySelector = () => {
     }
   )
 }
+
+export const simpleGroupsArraySelector = createSelector(
+  [getSimpleGroups],
+  groups => Object.keys(groups).map(id => groups[id])
+)

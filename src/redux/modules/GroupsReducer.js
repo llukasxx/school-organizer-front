@@ -14,6 +14,9 @@ import { UNAUTH_USER } from './AuthReducer'
 
 // Constants
 // export const constants = { }
+
+export const START_ALL_GROUPS_FETCH = 'school-organizer/groups/START_ALL_GROUPS_FETCH'
+export const FETCH_ALL_GROUPS = 'school-organizer/groups/FETCH_ALL_GROUPS'
 export const START_TEACHER_GROUPS_FETCH = 'school-organizer/groups/START_TEACHER_GROUPS_FETCH'
 export const FETCH_TEACHER_GROUPS = 'school-organizer/groups/FETCH_TEACHER_GROUPS'
 export const FETCH_TEACHER_GROUPS_ERROR = 'school-organizer/groups/FETCH_TEACHER_GROUPS_ERROR'
@@ -25,6 +28,31 @@ export const UPDATE_GRADE = 'school-organizer/groups/UPDATE_GRADE'
 export const ADD_MULTI_GRADES = 'school-organizer/groups/ADD_MULTI_GRADES'
 // Action Creators
 // GROUPS
+export function fetchAllGroups() {
+  return function(dispatch) {
+    dispatch({ type: START_ALL_GROUPS_FETCH})
+    axios.get(`${ROOT_URL}/api/v1/groups/get_all_groups`, { 
+      headers: { authorization: localStorage.getItem('token') }
+    })
+      .then(function(response) {
+        const camelized = camelizeKeys(response.data)
+        const normalizedResponse = normalize(camelized, { groups: arrayOf(simpleGroup) })
+        console.log(normalizedResponse)
+        dispatch({ type: FETCH_ALL_GROUPS,
+                   response: normalizedResponse
+                 })
+      })
+      .catch(function(response) {
+        if(response.status == 401) {
+          dispatch({ type: UNAUTH_USER })
+          dispatch(push('/'))
+        }
+        dispatch({ type: FETCH_TEACHER_GROUPS_ERROR, payload: response.data})
+        toastr.warning('Warning', 'Something bad happened')
+      })
+  }
+}
+
 export function fetchTeacherGroups() {
   return function(dispatch) {
     dispatch({ type: START_TEACHER_GROUPS_FETCH})
@@ -141,6 +169,10 @@ export function sendMultiGrade(newGrades, handleDisplay) {
 export const initialState = {}
 export default function (state = initialState, action) {
   switch (action.type) {
+    case START_ALL_GROUPS_FETCH:
+      return {...state, loaded: false}
+    case FETCH_ALL_GROUPS:
+      return {...state, loaded: true}
     case START_TEACHER_GROUPS_FETCH:
       return { ...state, loaded: false}
     case FETCH_TEACHER_GROUPS:
@@ -163,6 +195,7 @@ export default function (state = initialState, action) {
 
 // Schemas
 const group = new Schema('groups')
+const simpleGroup = new Schema('simpleGroups')
 const lesson = new Schema('lessons')
 const student = new Schema('students')
 const studentGrade = new Schema('studentGrades')
@@ -186,4 +219,8 @@ studentGrade.define({
 })
 
 lessonDates.define({
+})
+
+simpleGroup.define({
+
 })
