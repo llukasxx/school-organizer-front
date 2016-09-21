@@ -29,15 +29,18 @@ export class NewEventCreator extends React.Component {
   getDate(date) {
     this.setState({eventDate: date})
   }
-  renderGroupListItems() {
-    const { groups } = this.props
+  renderGroupListItems(groups = [], addition = true, filter = []) {
     let groupListItems = []
+    const { addGroup, removeGroup } = this.props.actions.eventActions
     if(groups && groups.length > 0) {
       groups.map((el) => {
-        groupListItems.push(<SimpleGroupListItem 
-          group={el} 
-          key={el.id}
-          pickGroup={this.props.actions.eventActions.addGroup}/>)
+        if(!filter.includes(el.id)) {
+          groupListItems.push(<SimpleGroupListItem 
+            group={el} 
+            key={el.id}
+            pickGroup={addition ? addGroup : removeGroup}
+            additionSign={addition}/>)
+        }
       })
     } else {
       return "No groups found."
@@ -57,7 +60,7 @@ export class NewEventCreator extends React.Component {
     this.props.actions.groupActions.fetchAllGroups()
   }
   render() {
-    const { fields: {name, eventDate, groups}, handleSubmit } = this.props
+    const { fields: {name, eventDate, groups}, handleSubmit, invitedGroupsIds } = this.props
     return (
       <form onSubmit={handleSubmit}>
         <div className="input-group" style={{'marginBottom': '7px'}}>
@@ -87,12 +90,14 @@ export class NewEventCreator extends React.Component {
                                               }} className="glyphicon glyphicon-remove" /> : "Turn on filter"}</a>
               </i>
             </p>
-            {this.renderGroupListItems()}
+            {this.renderGroupListItems(this.props.groups, true, invitedGroupsIds)}
           </div>
         </div>
         <hr />
         <p><b>Invited groups:</b></p>
-
+        <div>
+          {this.renderGroupListItems(this.props.invitedGroups, false, [])}
+        </div>
       </form>
     )
   }
@@ -101,7 +106,8 @@ export class NewEventCreator extends React.Component {
 const mapStateToProps = (state, props) => {
   return {
     groups: simpleGroupsArraySelector(state),
-    invitedGroups: simpleGroupsArraySelectorById(state,props) 
+    invitedGroups: simpleGroupsArraySelectorById(state),
+    invitedGroupsIds: state.events.invitedGroupsIds
   }
 }
 

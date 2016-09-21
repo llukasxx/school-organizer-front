@@ -107,6 +107,12 @@ export function addGroup(group) {
   }
 }
 
+export function removeGroup(group) {
+  return function(dispatch) {
+    dispatch( { type: REMOVE_GROUP, group: group } )
+  }
+}
+
 export function changeActiveFilter(filter) {
   return function(dispatch) {
     dispatch( { type: CHANGE_ACTIVE_FILTER, filter: filter } )
@@ -114,7 +120,7 @@ export function changeActiveFilter(filter) {
 }
 
 // Reducer
-export const initialState = {loaded: false, activeFilter: 'all', invitedGroups: []}
+export const initialState = {loaded: false, activeFilter: 'all', invitedGroupsIds: []}
 export default function (state = initialState, action) {
   switch (action.type) {
     case START_EVENTS_FETCH:
@@ -124,10 +130,23 @@ export default function (state = initialState, action) {
     case CHANGE_ACTIVE_FILTER:
       return {...state, activeFilter: action.filter}
     case INVITE_GROUP:
-      return {...state, invitedGroups: [
-        ...state.invitedGroups,
-        action.group
-        ]}
+      if(state.invitedGroupsIds.includes(action.group)) {
+        return state
+      } else {
+        return {...state, invitedGroupsIds: [
+          ...state.invitedGroupsIds,
+          action.group
+          ]}
+      }
+    case REMOVE_GROUP:
+      const { group } = action
+      if(state.invitedGroupsIds.includes(group)) {
+        return {...state, invitedGroupsIds: [
+            ...state.invitedGroupsIds.filter(groupId => group !== groupId)
+          ]}
+      } else {
+        return state
+      }
     default:
       return state
   }

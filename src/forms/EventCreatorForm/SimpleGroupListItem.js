@@ -5,7 +5,7 @@ export class SimpleGroupListItem extends React.Component {
     super(props)
   }
   render () {
-    const { pickGroup, group } = this.props
+    const { pickGroup, group, additionSign } = this.props
     return (
       <button style={{'marginRight': '3px', 'marginBottom': '3px'}} 
               className="btn btn-primary"
@@ -14,7 +14,7 @@ export class SimpleGroupListItem extends React.Component {
                 pickGroup(group.id)
               }}>
         {group.name}
-        <span className="glyphicon glyphicon-plus"/>
+        <span className={`glyphicon glyphicon-${additionSign ? "plus" : "minus"}`}/>
       </button>
     )
   }

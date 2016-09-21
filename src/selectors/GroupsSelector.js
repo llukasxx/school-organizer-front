@@ -45,8 +45,8 @@ const getSimpleGroups = (state, props) => {
   return state.entities.simpleGroups
 }
 
-const getGroupsIds = (props) => {
-  return props.groupsId
+const getInvitedGroupsIds = (state) => {
+  return state.events.invitedGroupsIds
 }
 
 export const groupsArraySelector = createSelector(
@@ -92,7 +92,7 @@ export const simpleGroupsArraySelector = createSelector(
 )
 
 export const simpleGroupsArraySelectorById = createSelector(
-  [getSimpleGroups, getGroupsIds],
+  [getSimpleGroups, getInvitedGroupsIds],
   (groups, groupsIds) => {
     let groupsArray = []
     if(groupsIds && groupsIds.length > 0) {
