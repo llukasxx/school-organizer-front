@@ -21,6 +21,7 @@ export const START_TEACHER_GROUPS_FETCH = 'school-organizer/groups/START_TEACHER
 export const FETCH_TEACHER_GROUPS = 'school-organizer/groups/FETCH_TEACHER_GROUPS'
 export const FETCH_TEACHER_GROUPS_ERROR = 'school-organizer/groups/FETCH_TEACHER_GROUPS_ERROR'
 export const SET_ACTIVE_GROUP = 'school-organizer/groups/SET_ACTIVE_GROUP'
+
 // Grades actions
 export const FETCH_GRADE = 'school-organizer/groups/FETCH_GRADE'
 export const ADD_GRADE = 'school-organizer/groups/ADD_GRADE'

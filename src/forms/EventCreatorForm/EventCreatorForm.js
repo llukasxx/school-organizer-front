@@ -1,14 +1,17 @@
 import React from 'react'
+import { bindActionCreators } from 'redux'
 import DateTimePicker  from 'react-datetime'
 import { reduxForm } from 'redux-form'
 import moment from 'moment'
-import * as actions from '../../redux/modules/GroupsReducer'
+import * as groupActions from '../../redux/modules/GroupsReducer'
+import * as eventActions from '../../redux/modules/EventsReducer'
 
-import { simpleGroupsArraySelector } from '../../selectors/GroupsSelector'
+
+import { simpleGroupsArraySelector, simpleGroupsArraySelectorById } from '../../selectors/GroupsSelector'
 
 import SimpleGroupListItem from './SimpleGroupListItem'
 
-export const fields = ['name', 'eventDate', 'groups']
+export const fields = ['name']
 
 const validate = (values) => {
   const errors = {}
@@ -18,7 +21,7 @@ const validate = (values) => {
 export class NewEventCreator extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {eventDate: new Date(), groupFilter: false, groupFilterValue: ""}
+    this.state = { eventDate: new Date() }
     this.getDate = this.getDate.bind(this)
     this.renderGroupListItems = this.renderGroupListItems.bind(this)
     this.renderFilterInput = this.renderFilterInput.bind(this)
@@ -31,7 +34,10 @@ export class NewEventCreator extends React.Component {
     let groupListItems = []
     if(groups && groups.length > 0) {
       groups.map((el) => {
-        groupListItems.push(<SimpleGroupListItem group={el}/>)
+        groupListItems.push(<SimpleGroupListItem 
+          group={el} 
+          key={el.id}
+          pickGroup={this.props.actions.eventActions.addGroup}/>)
       })
     } else {
       return "No groups found."
@@ -48,18 +54,19 @@ export class NewEventCreator extends React.Component {
     placeholder="Group name..."/>
   }
   componentDidMount() {
-    this.props.fetchAllGroups()
+    this.props.actions.groupActions.fetchAllGroups()
   }
   render() {
     const { fields: {name, eventDate, groups}, handleSubmit } = this.props
     return (
       <form onSubmit={handleSubmit}>
-        <div className="input-group">
+        <div className="input-group" style={{'marginBottom': '7px'}}>
           <span className="input-group-addon" id="basic-addon3">Name:</span>
           <input type="text" className="form-control" id="basic-url" aria-describedby="basic-addon3" {...name}/>
         </div>
         <div className="input-group">
-          <span className="input-group-addon" id="basic-addon3">Date:</span>
+          <span className="input-group-addon" id="basic-addon3" style={{'paddingRight': '20px'}}>Date:</span>
+          
           <DateTimePicker
             value = {this.state.eventDate}
             onChange={this.getDate}
@@ -85,14 +92,25 @@ export class NewEventCreator extends React.Component {
         </div>
         <hr />
         <p><b>Invited groups:</b></p>
+
       </form>
     )
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, props) => {
   return {
-    groups: simpleGroupsArraySelector(state)
+    groups: simpleGroupsArraySelector(state),
+    invitedGroups: simpleGroupsArraySelectorById(state,props) 
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    actions: {
+      groupActions: bindActionCreators(groupActions, dispatch),
+      eventActions: bindActionCreators(eventActions, dispatch)
+    }
   }
 }
 
@@ -100,6 +118,6 @@ NewEventCreator = reduxForm({
   form: 'NewEventCreator',
   fields,
   validate
-}, mapStateToProps, actions)(NewEventCreator)
+}, mapStateToProps, mapDispatchToProps)(NewEventCreator)
 
 export default NewEventCreator

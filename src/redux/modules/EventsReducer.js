@@ -12,6 +12,9 @@ export const START_EVENTS_FETCH = 'school-organizer/events/START_EVENTS_FETCH'
 export const FINISH_UPCOMING_EVENTS_FETCH = 'school-organizer/events/FINISH_UPCOMING_EVENTS_FETCH'
 export const CHANGE_ACTIVE_FILTER = 'school-organizer/events/CHANGE_ACTIVE_FILTER'
 
+
+export const INVITE_GROUP = 'school-organizer/events/INVITE_GROUP'
+export const REMOVE_GROUP = 'school-organizer/events/REMOVE_GROUP'
 //Actions
 
 export function fetchUpcomingEvents(page = 1) {
@@ -98,6 +101,12 @@ export function fetchUpcomingCreatedEvents(page = 1) {
   }
 }
 
+export function addGroup(group) {
+  return function(dispatch) {
+    dispatch( { type: INVITE_GROUP, group: group } )
+  }
+}
+
 export function changeActiveFilter(filter) {
   return function(dispatch) {
     dispatch( { type: CHANGE_ACTIVE_FILTER, filter: filter } )
@@ -105,7 +114,7 @@ export function changeActiveFilter(filter) {
 }
 
 // Reducer
-export const initialState = {loaded: false, activeFilter: 'all'}
+export const initialState = {loaded: false, activeFilter: 'all', invitedGroups: []}
 export default function (state = initialState, action) {
   switch (action.type) {
     case START_EVENTS_FETCH:
@@ -114,6 +123,11 @@ export default function (state = initialState, action) {
       return {...state, loaded: true, upcomingEventsCount: action.count}
     case CHANGE_ACTIVE_FILTER:
       return {...state, activeFilter: action.filter}
+    case INVITE_GROUP:
+      return {...state, invitedGroups: [
+        ...state.invitedGroups,
+        action.group
+        ]}
     default:
       return state
   }
