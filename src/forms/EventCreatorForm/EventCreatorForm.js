@@ -25,6 +25,7 @@ export class NewEventCreator extends React.Component {
     this.getDate = this.getDate.bind(this)
     this.renderGroupListItems = this.renderGroupListItems.bind(this)
     this.renderFilterInput = this.renderFilterInput.bind(this)
+    this.validateEvent = this.validateEvent.bind(this)
   }
   getDate(date) {
     this.setState({eventDate: date})
@@ -43,7 +44,12 @@ export class NewEventCreator extends React.Component {
         }
       })
     } else {
-      return "No groups found."
+      return (
+        <div>
+          <p>No groups found.</p>
+          <i><small>*at least one group must be invited</small></i>
+        </div>
+      )
     }
     return groupListItems
   }
@@ -53,6 +59,15 @@ export class NewEventCreator extends React.Component {
             autofocus
             placeholder="Group name..."
             {...groupNameFilter}/>)
+  }
+  validateEvent() {
+    const { fields: { name }, invitedGroups } = this.props
+    //console.log(name, invitedGroups)
+    if(name.value.length > 0 && invitedGroups.length > 0) {
+      return false
+    } else {
+      return true
+    }
   }
   componentDidMount() {
     this.props.actions.groupActions.fetchAllGroups()
@@ -97,6 +112,10 @@ export class NewEventCreator extends React.Component {
         <div>
           {this.renderGroupListItems(this.props.invitedGroups, false)}
         </div>
+        <hr />
+        <button className="btn btn-lg btn-success" disabled={this.validateEvent()}>
+          Create event <span className="glyphicon glyphicon-list-alt"/>
+        </button>
       </form>
     )
   }
