@@ -62,7 +62,6 @@ export class NewEventCreator extends React.Component {
   }
   validateEvent() {
     const { fields: { name }, invitedGroups } = this.props
-    //console.log(name, invitedGroups)
     if(name.value.length > 0 && invitedGroups.length > 0) {
       return false
     } else {
