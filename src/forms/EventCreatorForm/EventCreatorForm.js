@@ -11,7 +11,7 @@ import { simpleGroupsArraySelector, simpleGroupsArraySelectorById } from '../../
 
 import SimpleGroupListItem from './SimpleGroupListItem'
 
-export const fields = ['name']
+export const fields = ['name', 'groupNameFilter']
 
 const validate = (values) => {
   const errors = {}
@@ -21,7 +21,7 @@ const validate = (values) => {
 export class NewEventCreator extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { eventDate: new Date() }
+    this.state = { eventDate: new Date(), groupFilter: false }
     this.getDate = this.getDate.bind(this)
     this.renderGroupListItems = this.renderGroupListItems.bind(this)
     this.renderFilterInput = this.renderFilterInput.bind(this)
@@ -29,12 +29,12 @@ export class NewEventCreator extends React.Component {
   getDate(date) {
     this.setState({eventDate: date})
   }
-  renderGroupListItems(groups = [], addition = true, filter = []) {
+  renderGroupListItems(groups = [], addition = true, IDfilter = [], groupNameFilter = "") {
     let groupListItems = []
     const { addGroup, removeGroup } = this.props.actions.eventActions
     if(groups && groups.length > 0) {
       groups.map((el) => {
-        if(!filter.includes(el.id)) {
+        if(!IDfilter.includes(el.id) && (groupNameFilter == "" || el.name.match(groupNameFilter)) !== null) {
           groupListItems.push(<SimpleGroupListItem 
             group={el} 
             key={el.id}
@@ -48,19 +48,18 @@ export class NewEventCreator extends React.Component {
     return groupListItems
   }
   renderFilterInput() {
-    return <input 
-    onChange={(e) => {
-      e.preventDefault()
-      this.setState({groupFilterValue: e.value})
-    }} 
-    autofocus
-    placeholder="Group name..."/>
+    const { fields: { groupNameFilter } } = this.props
+    return (<input 
+            autofocus
+            placeholder="Group name..."
+            {...groupNameFilter}/>)
   }
   componentDidMount() {
     this.props.actions.groupActions.fetchAllGroups()
   }
   render() {
-    const { fields: {name, eventDate, groups}, handleSubmit, invitedGroupsIds } = this.props
+    const { fields: { name }, handleSubmit, invitedGroupsIds } = this.props
+    const groupNameFilter = this.props.fields.groupNameFilter.value || ""
     return (
       <form onSubmit={handleSubmit}>
         <div className="input-group" style={{'marginBottom': '7px'}}>
@@ -86,17 +85,17 @@ export class NewEventCreator extends React.Component {
                   e.preventDefault()
                   this.setState({groupFilter: !this.state.groupFilter})
                 }}>{this.state.groupFilter ? <span onClick={(e) => {
-                                                this.setState({groupFilterValue: ""})
+                                                this.props.fields.groupNameFilter.onChange("")
                                               }} className="glyphicon glyphicon-remove" /> : "Turn on filter"}</a>
               </i>
             </p>
-            {this.renderGroupListItems(this.props.groups, true, invitedGroupsIds)}
+            {this.renderGroupListItems(this.props.groups, true, invitedGroupsIds, groupNameFilter)}
           </div>
         </div>
         <hr />
         <p><b>Invited groups:</b></p>
         <div>
-          {this.renderGroupListItems(this.props.invitedGroups, false, [])}
+          {this.renderGroupListItems(this.props.invitedGroups, false)}
         </div>
       </form>
     )
