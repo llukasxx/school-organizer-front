@@ -3,6 +3,8 @@ import { push } from 'react-router-redux'
 
 import { ROOT_URL } from '../ApiConfig'
 
+import {toastr} from 'react-redux-toastr'
+
 import { normalize, Schema, arrayOf } from 'normalizr'
 import { camelizeKeys } from 'humps'
 
@@ -15,6 +17,7 @@ export const CHANGE_ACTIVE_FILTER = 'school-organizer/events/CHANGE_ACTIVE_FILTE
 
 export const INVITE_GROUP = 'school-organizer/events/INVITE_GROUP'
 export const REMOVE_GROUP = 'school-organizer/events/REMOVE_GROUP'
+export const REMOVE_ALL_GROUPS = 'school-organizer/events/REMOVE_ALL_GROUPS'
 //Actions
 
 export function fetchUpcomingEvents(page = 1) {
@@ -101,6 +104,25 @@ export function fetchUpcomingCreatedEvents(page = 1) {
   }
 }
 
+export function sendEvent(event) {
+  return function(dispatch) {
+    axios.post(`${ROOT_URL}/api/v1/events/new_event`, { event }, {
+      headers: { authorization: localStorage.getItem('token') }
+    })
+      .then(function(response) {
+        console.log(response)
+        toastr.success('Event', 'Has been successfully added.')
+      })
+      .catch(function(response) {
+        console.log(response)
+        if(response.status == 401) {
+          dispatch({ type: UNAUTH_USER })
+          dispatch(push('/'))
+        }
+        toastr.warning('Warning', 'Something bad happened.')
+      })
+  }}
+
 export function addGroup(group) {
   return function(dispatch) {
     dispatch( { type: INVITE_GROUP, group: group } )
@@ -110,6 +132,12 @@ export function addGroup(group) {
 export function removeGroup(group) {
   return function(dispatch) {
     dispatch( { type: REMOVE_GROUP, group: group } )
+  }
+}
+
+export function removeAllGroups() {
+  return function(dispatch) {
+    dispatch( { type: REMOVE_ALL_GROUPS } )
   }
 }
 
@@ -147,6 +175,8 @@ export default function (state = initialState, action) {
       } else {
         return state
       }
+    case REMOVE_ALL_GROUPS:
+      return {...state, invitedGroupsIds: []}
     default:
       return state
   }

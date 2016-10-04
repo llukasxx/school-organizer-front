@@ -1,7 +1,7 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import DateTimePicker  from 'react-datetime'
-import { reduxForm } from 'redux-form'
+import { reduxForm, reset } from 'redux-form'
 import moment from 'moment'
 import * as groupActions from '../../redux/modules/GroupsReducer'
 import * as eventActions from '../../redux/modules/EventsReducer'
@@ -26,6 +26,7 @@ export class NewEventCreator extends React.Component {
     this.renderGroupListItems = this.renderGroupListItems.bind(this)
     this.renderFilterInput = this.renderFilterInput.bind(this)
     this.validateEvent = this.validateEvent.bind(this)
+    this.resetState = this.resetState.bind(this)
   }
   getDate(date) {
     this.setState({eventDate: date})
@@ -71,6 +72,10 @@ export class NewEventCreator extends React.Component {
   componentDidMount() {
     this.props.actions.groupActions.fetchAllGroups()
   }
+  resetState() {
+    this.props.actions.eventActions.removeAllGroups();
+    this.props.dispatch(reset('NewEventCreator'))
+  }
   render() {
     const { fields: { name }, handleSubmit, invitedGroupsIds } = this.props
     const groupNameFilter = this.props.fields.groupNameFilter.value || ""
@@ -112,7 +117,18 @@ export class NewEventCreator extends React.Component {
           {this.renderGroupListItems(this.props.invitedGroups, false)}
         </div>
         <hr />
-        <button className="btn btn-lg btn-success" disabled={this.validateEvent()}>
+        <button className="btn btn-lg btn-success" 
+                disabled={this.validateEvent()}
+                onClick={(e) => {
+                  e.preventDefault()
+                  const event = {
+                    name: this.props.fields.name.value,
+                    date: this.state.eventDate,
+                    group_ids: this.props.invitedGroupsIds
+                  }
+                  this.props.actions.eventActions.sendEvent(event)
+                  this.resetState()
+                }}>
           Create event <span className="glyphicon glyphicon-list-alt"/>
         </button>
       </form>
