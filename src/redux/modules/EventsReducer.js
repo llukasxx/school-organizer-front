@@ -11,8 +11,12 @@ import { camelizeKeys } from 'humps'
 // Constants
 
 export const START_EVENTS_FETCH = 'school-organizer/events/START_EVENTS_FETCH'
-export const FINISH_UPCOMING_EVENTS_FETCH = 'school-organizer/events/FINISH_UPCOMING_EVENTS_FETCH'
+export const FINISH_EVENTS_FETCH = 'school-organizer/events/FINISH_EVENTS_FETCH'
 export const CHANGE_ACTIVE_FILTER = 'school-organizer/events/CHANGE_ACTIVE_FILTER'
+export const CHANGE_EVENTS_TYPE = 'school-organizer/events/CHANGE_EVENTS_TYPE'
+export const FETCH_TEACHER_EVENTS_ERROR = 'school-organizer/events/FETCH_TEACHER_EVENTS_ERROR'
+
+export const FINISH_PAST_EVENTS_FETCH = 'school-organizer/events/FINISH_PAST_EVENTS_FETCH'
 
 
 export const INVITE_GROUP = 'school-organizer/events/INVITE_GROUP'
@@ -23,7 +27,7 @@ export const REMOVE_ALL_GROUPS = 'school-organizer/events/REMOVE_ALL_GROUPS'
 export function fetchUpcomingEvents(page = 1) {
   return function(dispatch) {
     dispatch( { type: START_EVENTS_FETCH } )
-    axios.get(`${ROOT_URL}/api/v1/events/get_events`, { 
+    axios.get(`${ROOT_URL}/api/v1/events/get_upcoming_events`, { 
       headers: { authorization: localStorage.getItem('token') },
       params: { page: page }
     })
@@ -31,7 +35,7 @@ export function fetchUpcomingEvents(page = 1) {
         console.log(response)
         const camelized = camelizeKeys(response.data)
         const normalizedResponse = normalize(camelized, { events: arrayOf(event) })
-        dispatch({ type: FINISH_UPCOMING_EVENTS_FETCH,
+        dispatch({ type: FINISH_EVENTS_FETCH,
                    paginated: true,
                    response: normalizedResponse,
                    count: response.data.count
@@ -42,7 +46,7 @@ export function fetchUpcomingEvents(page = 1) {
           dispatch({ type: UNAUTH_USER })
           dispatch(push('/'))
         }
-        dispatch({ type: FETCH_TEACHER_GROUPS_ERROR, payload: response.data})
+        dispatch({ type: FETCH_TEACHER_EVENTS_ERROR, payload: response.data})
         toastr.warning('Warning', 'Something bad happened')
       })
   }
@@ -51,7 +55,7 @@ export function fetchUpcomingEvents(page = 1) {
 export function fetchUpcomingConnectedEvents(page = 1) {
   return function(dispatch) {
     dispatch( { type: START_EVENTS_FETCH } )
-    axios.get(`${ROOT_URL}/api/v1/events/get_connected_events`, { 
+    axios.get(`${ROOT_URL}/api/v1/events/get_upcoming_connected_events`, { 
       headers: { authorization: localStorage.getItem('token') },
       params: { page: page }
     })
@@ -59,7 +63,7 @@ export function fetchUpcomingConnectedEvents(page = 1) {
         console.log(response)
         const camelized = camelizeKeys(response.data)
         const normalizedResponse = normalize(camelized, { events: arrayOf(event) })
-        dispatch({ type: FINISH_UPCOMING_EVENTS_FETCH,
+        dispatch({ type: FINISH_EVENTS_FETCH,
                    paginated: true,
                    response: normalizedResponse,
                    count: response.data.count
@@ -70,7 +74,7 @@ export function fetchUpcomingConnectedEvents(page = 1) {
           dispatch({ type: UNAUTH_USER })
           dispatch(push('/'))
         }
-        dispatch({ type: FETCH_TEACHER_GROUPS_ERROR, payload: response.data})
+        dispatch({ type: FETCH_TEACHER_EVENTS_ERROR, payload: response.data})
         toastr.warning('Warning', 'Something bad happened')
       })
   }
@@ -79,7 +83,7 @@ export function fetchUpcomingConnectedEvents(page = 1) {
 export function fetchUpcomingCreatedEvents(page = 1) {
   return function(dispatch) {
     dispatch( { type: START_EVENTS_FETCH } )
-    axios.get(`${ROOT_URL}/api/v1/events/get_created_events`, { 
+    axios.get(`${ROOT_URL}/api/v1/events/get_upcoming_created_events`, { 
       headers: { authorization: localStorage.getItem('token') },
       params: { page: page }
     })
@@ -87,7 +91,7 @@ export function fetchUpcomingCreatedEvents(page = 1) {
         console.log(response)
         const camelized = camelizeKeys(response.data)
         const normalizedResponse = normalize(camelized, { events: arrayOf(event) })
-        dispatch({ type: FINISH_UPCOMING_EVENTS_FETCH,
+        dispatch({ type: FINISH_EVENTS_FETCH,
                    paginated: true,
                    response: normalizedResponse,
                    count: response.data.count
@@ -98,7 +102,91 @@ export function fetchUpcomingCreatedEvents(page = 1) {
           dispatch({ type: UNAUTH_USER })
           dispatch(push('/'))
         }
-        dispatch({ type: FETCH_TEACHER_GROUPS_ERROR, payload: response.data})
+        dispatch({ type: FETCH_TEACHER_EVENTS_ERROR, payload: response.data})
+        toastr.warning('Warning', 'Something bad happened')
+      })
+  }
+}
+
+export function fetchPastEvents(page = 1) {
+  return function(dispatch) {
+    dispatch( { type: START_EVENTS_FETCH } )
+    axios.get(`${ROOT_URL}/api/v1/events/get_past_events`, { 
+      headers: { authorization: localStorage.getItem('token') },
+      params: { page: page }
+    })
+    .then(function(response) {
+        console.log(response)
+        const camelized = camelizeKeys(response.data)
+        const normalizedResponse = normalize(camelized, { events: arrayOf(event) })
+        dispatch({ type: FINISH_EVENTS_FETCH,
+                   paginated: true,
+                   response: normalizedResponse,
+                   count: response.data.count
+                 })
+      })
+      .catch(function(response) {
+        if(response.status == 401) {
+          dispatch({ type: UNAUTH_USER })
+          dispatch(push('/'))
+        }
+        dispatch({ type: FETCH_TEACHER_EVENTS_ERROR, payload: response.data})
+        toastr.warning('Warning', 'Something bad happened')
+      })
+  }
+}
+
+export function fetchPastConnectedEvents(page = 1) {
+  return function(dispatch) {
+    dispatch( { type: START_EVENTS_FETCH } )
+    axios.get(`${ROOT_URL}/api/v1/events/get_past_connected_events`, { 
+      headers: { authorization: localStorage.getItem('token') },
+      params: { page: page }
+    })
+    .then(function(response) {
+        console.log(response)
+        const camelized = camelizeKeys(response.data)
+        const normalizedResponse = normalize(camelized, { events: arrayOf(event) })
+        dispatch({ type: FINISH_EVENTS_FETCH,
+                   paginated: true,
+                   response: normalizedResponse,
+                   count: response.data.count
+                 })
+      })
+      .catch(function(response) {
+        if(response.status == 401) {
+          dispatch({ type: UNAUTH_USER })
+          dispatch(push('/'))
+        }
+        dispatch({ type: FETCH_TEACHER_EVENTS_ERROR, payload: response.data})
+        toastr.warning('Warning', 'Something bad happened')
+      })
+  }
+}
+
+export function fetchPastCreatedEvents(page = 1) {
+  return function(dispatch) {
+    dispatch( { type: START_EVENTS_FETCH } )
+    axios.get(`${ROOT_URL}/api/v1/events/get_past_created_events`, { 
+      headers: { authorization: localStorage.getItem('token') },
+      params: { page: page }
+    })
+    .then(function(response) {
+        console.log(response)
+        const camelized = camelizeKeys(response.data)
+        const normalizedResponse = normalize(camelized, { events: arrayOf(event) })
+        dispatch({ type: FINISH_EVENTS_FETCH,
+                   paginated: true,
+                   response: normalizedResponse,
+                   count: response.data.count
+                 })
+      })
+      .catch(function(response) {
+        if(response.status == 401) {
+          dispatch({ type: UNAUTH_USER })
+          dispatch(push('/'))
+        }
+        dispatch({ type: FETCH_TEACHER_EVENTS_ERROR, payload: response.data})
         toastr.warning('Warning', 'Something bad happened')
       })
   }
@@ -143,20 +231,34 @@ export function removeAllGroups() {
 
 export function changeActiveFilter(filter) {
   return function(dispatch) {
-    dispatch( { type: CHANGE_ACTIVE_FILTER, filter: filter } )
+    dispatch( { type: CHANGE_ACTIVE_FILTER, filter } )
+  }
+}
+
+export function changeEventsType(eventsType = 'upcoming') {
+  return function(dispatch) {
+    dispatch( { type: CHANGE_EVENTS_TYPE, eventsType } )
   }
 }
 
 // Reducer
-export const initialState = {loaded: false, activeFilter: 'all', invitedGroupsIds: []}
+export const initialState = {
+  loaded: false, 
+  eventsType: 'upcoming',
+  eventsActiveFilter: 'all',
+  invitedGroupsIds: [],
+  eventsCount: 0
+}
 export default function (state = initialState, action) {
   switch (action.type) {
     case START_EVENTS_FETCH:
       return { ...state, loaded: false}
-    case FINISH_UPCOMING_EVENTS_FETCH:
-      return {...state, loaded: true, upcomingEventsCount: action.count}
+    case FINISH_EVENTS_FETCH:
+      return {...state, loaded: true, eventsCount: action.count}
     case CHANGE_ACTIVE_FILTER:
-      return {...state, activeFilter: action.filter}
+      return {...state, eventsActiveFilter: action.filter}
+    case CHANGE_EVENTS_TYPE:
+      return {...state, eventsType: action.eventsType}
     case INVITE_GROUP:
       if(state.invitedGroupsIds.includes(action.group)) {
         return state

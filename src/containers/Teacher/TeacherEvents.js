@@ -3,10 +3,9 @@ import { connect } from 'react-redux'
 
 import * as actions from '../../redux/modules/EventsReducer'
 
-import { allUpcomingEventsArraySelector } from '../../selectors/EventsSelector'
+import { allEventsArraySelector } from '../../selectors/EventsSelector'
 
-import UpcomingEvents from '../../components/Events/UpcomingEvents'
-import PastEvents from '../../components/Events/PastEvents'
+import EventsPanel from '../../components/Events/EventsPanel'
 import EventCreator from '../../components/Events/EventCreator'
 
 export class TeacherEvents extends React.Component {
@@ -14,52 +13,65 @@ export class TeacherEvents extends React.Component {
     super(props)
   }
   componentDidMount() {
-    this.props.fetchUpcomingEvents()
+    const { eventsType, fetchUpcomingEvents, fetchPastEvents } = this.props
+    eventsType == 'upcoming' ? fetchUpcomingEvents() : fetchPastEvents()
   }
   componentWillReceiveProps(nextProps) {
-    if(this.props.activeFilter != nextProps.activeFilter) {
-      switch(nextProps.activeFilter) {
+    const { eventsType, eventsActiveFilter, 
+            fetchUpcomingEvents, fetchUpcomingConnectedEvents,
+            fetchUpcomingCreatedEvents, fetchPastEvents,
+            fetchPastConnectedEvents, fetchPastCreatedEvents } = this.props
+    const upcoming = nextProps.eventsType == 'upcoming' ? true : false
+    if(eventsActiveFilter != nextProps.eventsActiveFilter || eventsType != nextProps.eventsType) {
+      switch(nextProps.eventsActiveFilter) {
         case 'all':
-          this.props.fetchUpcomingEvents()
+          upcoming ? fetchUpcomingEvents() : fetchPastEvents()
+          console.log(upcoming)
           break;
         case 'connected':
-          this.props.fetchUpcomingConnectedEvents()
+          upcoming ? fetchUpcomingConnectedEvents() : fetchPastConnectedEvents()
           break;
         case 'created':
-          this.props.fetchUpcomingCreatedEvents()
+          upcoming ? fetchUpcomingCreatedEvents() : fetchPastCreatedEvents()
           break;
         default:
-          this.props.fetchUpcomingEvents()
+          upcoming ? fetchUpcomingEvents() : fetchPastEvents()
           break;
       }
     }
   }
   render () {
-    let currentGetEvent = this.props.fetchUpcomingEvents
-    switch(this.props.activeFilter) {
+    const { eventsType, eventsActiveFilter, 
+            fetchUpcomingEvents, fetchUpcomingConnectedEvents,
+            fetchUpcomingCreatedEvents, fetchPastEvents,
+            fetchPastConnectedEvents, fetchPastCreatedEvents } = this.props
+    let currentGetEvents = this.props.fetchUpcomingEvents
+    const upcoming = eventsType == 'upcoming' ? true : false
+    switch(eventsActiveFilter) {
       case 'all':
-        currentGetEvent = this.props.fetchUpcomingEvents
+        currentGetEvents = upcoming ? fetchUpcomingEvents : fetchPastEvents
         break;
       case 'connected':
-        currentGetEvent = this.props.fetchUpcomingConnectedEvents
+        currentGetEvents = upcoming ? fetchUpcomingConnectedEvents : fetchPastConnectedEvents
         break;
       case 'created':
-        currentGetEvent = this.props.fetchUpcomingCreatedEvents
+        currentGetEvents = upcoming ? fetchUpcomingCreatedEvents : fetchPastCreatedEvents
         break;
       default:
-        currentGetEvent = this.props.fetchUpcomingEvents
+        currentGetEvents = upcoming ? fetchUpcomingEvents : fetchPastEvents
         break;
     }
     return (
       <div>
-        <UpcomingEvents 
-          events={ this.props.upcomingEvents }
-          getEvents= { currentGetEvent }
-          count = { this.props.upcomingEventsCount }
-          activeFilter = { this.props.activeFilter }
-          changeActiveFilter = { this.props.changeActiveFilter }/>
+        <EventsPanel 
+          events={ this.props.events }
+          getEvents= { currentGetEvents }
+          count = { this.props.eventsCount }
+          activeFilter = { this.props.eventsActiveFilter }
+          changeActiveFilter = { this.props.changeActiveFilter }
+          changeEventsType = { this.props.changeEventsType }
+          eventsType = { this.props.eventsType }/>
         <EventCreator />
-        <PastEvents />
       </div>
     )
   }
@@ -67,9 +79,10 @@ export class TeacherEvents extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    upcomingEvents: allUpcomingEventsArraySelector(state, ownProps),
-    upcomingEventsCount: state.events.upcomingEventsCount,
-    activeFilter: state.events.activeFilter
+    events: allEventsArraySelector(state, ownProps),
+    eventsCount: state.events.eventsCount,
+    eventsActiveFilter: state.events.eventsActiveFilter,
+    eventsType: state.events.eventsType
   }
 }
 export default connect(mapStateToProps, actions)(TeacherEvents)
