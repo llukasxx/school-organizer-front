@@ -13,10 +13,14 @@ export class StudentLessons extends React.Component {
     this.renderLessonsListItems = this.renderLessonsListItems.bind(this)
   }
   renderLessonsListItems() {
-    const { studentLessons } = this.props
+    const { studentLessons, changeActiveLesson, activeLesson } = this.props
     let lessonListItemArray = []
     studentLessons.map((el) => {
-      lessonListItemArray.push(<LessonListItem lesson={el} key={el.id}/>)
+      lessonListItemArray.push(<LessonListItem 
+                                  lesson={el} 
+                                  key={el.id}
+                                  changeActiveLesson={changeActiveLesson}
+                                  activeLesson={activeLesson}/>)
     })
     return lessonListItemArray
   }
@@ -48,7 +52,8 @@ export class StudentLessons extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    studentLessons: allStudentLessonsArraySelector(state)
+    studentLessons: allStudentLessonsArraySelector(state),
+    activeLesson: state.lessons.activeLesson
   }
 }
 

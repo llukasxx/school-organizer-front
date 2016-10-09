@@ -12,6 +12,7 @@ import { camelizeKeys } from 'humps'
 
 export const START_STUDENT_LESSONS_FETCH =  'school-organizer/lessons/START_STUDENT_LESSONS_FETCH'
 export const FINISH_STUDENT_LESSONS_FETCH =  'school-organizer/lessons/FINISH_STUDENT_LESSONS_FETCH'
+export const SET_ACTIVE_LESSON = 'school-organizer/lessons/SET_ACTIVE_LESSON'
 export const FETCH_STUDENT_LESSONS_ERROR =  'school-organizer/lessons/FETCH_STUDENT_LESSONS_ERROR'
 
 // Action Creators
@@ -22,10 +23,12 @@ export function fetchStudentLessons() {
     dispatch({ type: START_STUDENT_LESSONS_FETCH })
     axios.get(`${ROOT_URL}/api/v1/lessons/get_student_lessons`, authHeader)
       .then(function(response) {
-        console.log(response)
         const camelized = camelizeKeys(response.data)
         const normalizedResponse = normalize({studentLessons: camelized.lessons} , { studentLessons: arrayOf(studentLesson) })
-        console.log(normalizedResponse)
+        const firstLesson = Object.keys(normalizedResponse.entities.studentLessons)[0]
+        if(firstLesson) {
+          dispatch({ type: SET_ACTIVE_LESSON, activeLesson: normalizedResponse.entities.studentLessons[firstLesson]})
+        }
         dispatch({ type: FINISH_STUDENT_LESSONS_FETCH,
                    response: normalizedResponse
                  })
@@ -42,9 +45,15 @@ export function fetchStudentLessons() {
   }
 }
 
+export function changeActiveLesson(activeLesson) {
+  return function(dispatch) {
+    dispatch({type: SET_ACTIVE_LESSON, activeLesson})
+  }
+}
+
 // Reducer
 export const initialState = { 
-  loaded: false 
+  loaded: false
 }
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -52,6 +61,8 @@ export default function (state = initialState, action) {
       return { ...state, loaded: false }
     case FINISH_STUDENT_LESSONS_FETCH:
       return { ...state, loaded: true }
+    case SET_ACTIVE_LESSON:
+      return {...state, activeLesson: action.activeLesson}
     default:
       return state
   }
