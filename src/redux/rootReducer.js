@@ -7,12 +7,13 @@ import GroupsReducer from './modules/GroupsReducer'
 import MessagesReducer from './modules/MessagesReducer'
 import ReceiversReducer from './modules/ReceiversReducer'
 import EventsReducer from './modules/EventsReducer'
+import LessonsReducer from './modules/LessonsReducer'
 
 import merge from 'lodash/object/merge'
 
 const initialState = { groups: {}, simpleGroups: {}, lessons: {}, lessonDates: {}, students: {},
                        studentGrades: {}, messages: {}, conversations: {},
-                       receipts: {}, receivers: {}}
+                       receipts: {}, receivers: {}, studentLessons: {}}
 
 function entities(state = initialState, action) {
   if (action.response && action.response.entities && !action.paginated) {
@@ -45,5 +46,6 @@ export default combineReducers({
   teacherGroups: GroupsReducer,
   messages: MessagesReducer,
   receivers: ReceiversReducer,
-  events: EventsReducer
+  events: EventsReducer,
+  lessons: LessonsReducer
 })

@@ -6,9 +6,8 @@ import * as actions from '../../redux/modules/EventsReducer'
 import { allEventsArraySelector } from '../../selectors/EventsSelector'
 
 import EventsPanel from '../../components/Events/EventsPanel'
-import EventCreator from '../../components/Events/EventCreator'
 
-export class TeacherEvents extends React.Component {
+export class StudentEvents extends React.Component {
   constructor(props) {
     super(props)
   }
@@ -70,7 +69,6 @@ export class TeacherEvents extends React.Component {
           changeActiveFilter = { this.props.changeActiveFilter }
           changeEventsType = { this.props.changeEventsType }
           eventsType = { this.props.eventsType }/>
-        <EventCreator />
       </div>
     )
   }
@@ -84,5 +82,5 @@ const mapStateToProps = (state, ownProps) => {
     eventsType: state.events.eventsType
   }
 }
-export default connect(mapStateToProps, actions)(TeacherEvents)
+export default connect(mapStateToProps, actions)(StudentEvents)
 

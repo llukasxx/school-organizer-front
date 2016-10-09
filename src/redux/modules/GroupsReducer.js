@@ -38,7 +38,6 @@ export function fetchAllGroups() {
       .then(function(response) {
         const camelized = camelizeKeys(response.data)
         const normalizedResponse = normalize(camelized, { groups: arrayOf(simpleGroup) })
-        console.log(normalizedResponse)
         dispatch({ type: FETCH_ALL_GROUPS,
                    response: normalizedResponse
                  })
@@ -81,6 +80,34 @@ export function fetchTeacherGroups() {
       })
   }
 }
+
+// export function fetchStudentGroups() {
+//     return function(dispatch) {
+//       dispatch({ type: START_TEACHER_GROUPS_FETCH})
+//       axios.get(`${ROOT_URL}/api/v1/groups/teacher_groups`, { 
+//         headers: { authorization: localStorage.getItem('token') }
+//       })
+//         .then(function(response) {
+//           const camelized = camelizeKeys(response.data)
+//           const normalizedResponse = normalize(camelized, { groups: arrayOf(group) })
+//           const firstGroup = Object.keys(normalizedResponse.entities.groups)[0]
+//           if(firstGroup) {
+//             dispatch({ type: SET_ACTIVE_GROUP, payload: normalizedResponse.entities.groups[firstGroup]})
+//           }
+//           dispatch({ type: FETCH_TEACHER_GROUPS,
+//                      response: normalizedResponse
+//                    })
+//         })
+//         .catch(function(response) {
+//           if(response.status == 401) {
+//             dispatch({ type: UNAUTH_USER })
+//             dispatch(push('/'))
+//           }
+//           dispatch({ type: FETCH_TEACHER_GROUPS_ERROR, payload: response.data})
+//           toastr.warning('Warning', 'Something bad happened')
+//         })
+//     }
+// }
 
 export function setActiveGroup(group) {
   return function(dispatch) {

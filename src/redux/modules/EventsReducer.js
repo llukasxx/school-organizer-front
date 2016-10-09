@@ -32,7 +32,6 @@ export function fetchUpcomingEvents(page = 1) {
       params: { page: page }
     })
     .then(function(response) {
-        console.log(response)
         const camelized = camelizeKeys(response.data)
         const normalizedResponse = normalize(camelized, { events: arrayOf(event) })
         dispatch({ type: FINISH_EVENTS_FETCH,
@@ -60,7 +59,6 @@ export function fetchUpcomingConnectedEvents(page = 1) {
       params: { page: page }
     })
     .then(function(response) {
-        console.log(response)
         const camelized = camelizeKeys(response.data)
         const normalizedResponse = normalize(camelized, { events: arrayOf(event) })
         dispatch({ type: FINISH_EVENTS_FETCH,
@@ -88,7 +86,6 @@ export function fetchUpcomingCreatedEvents(page = 1) {
       params: { page: page }
     })
     .then(function(response) {
-        console.log(response)
         const camelized = camelizeKeys(response.data)
         const normalizedResponse = normalize(camelized, { events: arrayOf(event) })
         dispatch({ type: FINISH_EVENTS_FETCH,
@@ -116,7 +113,6 @@ export function fetchPastEvents(page = 1) {
       params: { page: page }
     })
     .then(function(response) {
-        console.log(response)
         const camelized = camelizeKeys(response.data)
         const normalizedResponse = normalize(camelized, { events: arrayOf(event) })
         dispatch({ type: FINISH_EVENTS_FETCH,
@@ -144,7 +140,6 @@ export function fetchPastConnectedEvents(page = 1) {
       params: { page: page }
     })
     .then(function(response) {
-        console.log(response)
         const camelized = camelizeKeys(response.data)
         const normalizedResponse = normalize(camelized, { events: arrayOf(event) })
         dispatch({ type: FINISH_EVENTS_FETCH,
@@ -172,7 +167,6 @@ export function fetchPastCreatedEvents(page = 1) {
       params: { page: page }
     })
     .then(function(response) {
-        console.log(response)
         const camelized = camelizeKeys(response.data)
         const normalizedResponse = normalize(camelized, { events: arrayOf(event) })
         dispatch({ type: FINISH_EVENTS_FETCH,
@@ -198,11 +192,9 @@ export function sendEvent(event) {
       headers: { authorization: localStorage.getItem('token') }
     })
       .then(function(response) {
-        console.log(response)
         toastr.success('Event', 'Has been successfully added.')
       })
       .catch(function(response) {
-        console.log(response)
         if(response.status == 401) {
           dispatch({ type: UNAUTH_USER })
           dispatch(push('/'))
