@@ -6,7 +6,6 @@ export class LessonListItem extends React.Component {
   }
   render () {
     const { lesson, changeActiveLesson, activeLesson } = this.props
-    console.log(lesson, activeLesson)
     return (
       <li className={`list-group-item ${lesson.id == activeLesson.id ? 'active': ''}`} 
           style={{cursor: 'pointer'}}
@@ -14,7 +13,7 @@ export class LessonListItem extends React.Component {
             e.preventDefault()
             changeActiveLesson(lesson)
           }}>
-        {lesson.name}<span className="glyphicon glyphicon-chevron-right pull-right"/>
+        {lesson.name}
       </li>
     )
   }

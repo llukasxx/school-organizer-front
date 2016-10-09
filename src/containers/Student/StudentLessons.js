@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../../redux/modules/LessonsReducer'
 import MessageBox from '../Common/MessageBox'
+import StudentLessonInfo from './StudentLessonInfo'
 import LessonListItem from '../../components/LessonListItem'
 
 import { allStudentLessonsArraySelector } from '../../selectors/StudentLessonsSelector'
@@ -22,7 +23,11 @@ export class StudentLessons extends React.Component {
                                   changeActiveLesson={changeActiveLesson}
                                   activeLesson={activeLesson}/>)
     })
-    return lessonListItemArray
+    if(lessonListItemArray.length > 0) {
+      return lessonListItemArray
+    } else {
+      return 'No lesson assignment.'
+    }
   }
   componentDidMount() {
     this.props.fetchStudentLessons()
@@ -41,9 +46,7 @@ export class StudentLessons extends React.Component {
             </ul>
           </div>
         </div>
-        <div className="col-md-5">
-          LessonInfo
-        </div>
+        <StudentLessonInfo />
         <MessageBox />
       </div>
     )
