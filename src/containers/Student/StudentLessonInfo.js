@@ -2,6 +2,8 @@ import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import * as actions from '../../redux/modules/LessonsReducer'
 
+import StudentLessonMenu from '../../components/StudentLessonMenu'
+
 
 
 export class StudentLessonInfo extends React.Component {
@@ -9,9 +11,31 @@ export class StudentLessonInfo extends React.Component {
     super(props)
     this.state = {activeTab: 'lessonDates'}
     this.changeTab = this.changeTab.bind(this)
+    this.renderItems = this.renderItems.bind(this)
   }
   changeTab(tab) {
     this.setState({activeTab: tab})
+  }
+  renderLessonDates() {
+
+  }
+  renderGrades() {
+
+  }
+  renderClassmates() {
+    
+  }
+  renderItems() {
+    switch(this.state.activeTab) {
+      case 'lessonDates':
+        return this.renderLessonDates()
+      case 'grades':
+        return this.renderGrades()
+      case 'classmates':
+        return this.renderClassmates()
+      default:
+        return this.renderLessonDates()
+    }
   }
   render() {
     const { activeLesson, loaded } = this.props
@@ -23,23 +47,10 @@ export class StudentLessonInfo extends React.Component {
           <div className="panel-body">
             <p className="text-center"><b>{loaded ? activeLesson.name : 'Loading...'}</b></p>
           </div>
-          <ul className="nav nav-tabs">
-            <li role="presentation" 
-                className={this.state.activeTab == 'lessonDates' ? 'active' : ''}
-                onClick={() => {this.changeTab('lessonDates')}}>
-              <a>Lesson Dates</a>
-            </li>
-            <li role="presentation"
-                className={this.state.activeTab == 'grades' ? 'active' : ''}
-                onClick={() => {this.changeTab('grades')}}>
-              <a>Grades</a>
-            </li>
-            <li role="presentation"
-                className={this.state.activeTab == 'classmates' ? 'active' : ''}
-                onClick={() => {this.changeTab('classmates')}}>
-              <a>Classmates</a>
-            </li>
-          </ul>
+          <StudentLessonMenu 
+            activeTab = {this.state.activeTab}
+            changeTab = {this.changeTab}/>
+          {this.renderItems()}
         </div>
       </div>
     )

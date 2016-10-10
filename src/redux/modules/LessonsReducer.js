@@ -70,11 +70,17 @@ export default function (state = initialState, action) {
 
 const studentLesson = new Schema('studentLessons')
 const studentGrade = new Schema('studentGrades')
+const lessonDate = new Schema('lessonDates')
 
 studentLesson.define({
-  studentGrades: arrayOf(studentGrade)
+  studentGrades: arrayOf(studentGrade),
+  lessonDates: arrayOf(lessonDate)
 })
 
 studentGrade.define({
 
+})
+
+lessonDate.define({
+  
 })
