@@ -6,6 +6,8 @@ export const authHeader = {
   headers: { authorization: localStorage.getItem('token') }
 }
 
+export const currentUserId = localStorage.getItem('currentUserId')
+
 
 export const ROOT_URL = currentUrl
 

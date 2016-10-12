@@ -12,12 +12,28 @@ export class StudentLessonInfo extends React.Component {
     this.state = {activeTab: 'lessonDates'}
     this.changeTab = this.changeTab.bind(this)
     this.renderItems = this.renderItems.bind(this)
+    this.renderLessonDates = this.renderLessonDates.bind(this)
+    this.renderGrades = this.renderGrades.bind(this)
+    this.renderClassmates = this.renderClassmates.bind(this)
   }
   changeTab(tab) {
     this.setState({activeTab: tab})
   }
   renderLessonDates() {
-
+    const { lessonDates } = this.props
+    let ldArrayElements = []
+    lessonDates.map((el) => {
+      console.log(lessonDates)
+      ldArrayElements.push(<li className="list-group-item"
+                               key={el.id}>
+                             {el.date}
+                           </li>)
+    })
+    return (
+      <ul className="list-group">
+        {ldArrayElements}
+      </ul>
+    )
   }
   renderGrades() {
 

@@ -118,7 +118,7 @@ export function setActiveGroup(group) {
 //GRADES
 export function sendGrade(newGrade) {
   return function(dispatch) {
-    axios.post(`${ROOT_URL}/api/v1/students/grades`, {grade: newGrade}, {
+    axios.post(`${ROOT_URL}/api/v1/grades`, {grade: newGrade}, {
       headers: { authorization: localStorage.getItem('token') }
     })
       .then(function(response) {
@@ -142,7 +142,7 @@ export function sendGrade(newGrade) {
 }
 export function updateGrade(newGrade, id) {
   return function(dispatch) {
-    axios.patch(`${ROOT_URL}/api/v1/students/grades/${id}`, {grade: newGrade}, {
+    axios.patch(`${ROOT_URL}/api/v1/grades/${id}`, {grade: newGrade}, {
       headers: { authorization: localStorage.getItem('token') }
     })
       .then(function(response) {
@@ -166,7 +166,7 @@ export function updateGrade(newGrade, id) {
 }
 export function sendMultiGrade(newGrades, handleDisplay) {
   return function(dispatch) {
-    axios.post(`${ROOT_URL}/api/v1/students/grades`, {grades: newGrades}, {
+    axios.post(`${ROOT_URL}/api/v1/grades`, {grades: newGrades}, {
       headers: { authorization: localStorage.getItem('token') }
     })
       .then(function(response) {

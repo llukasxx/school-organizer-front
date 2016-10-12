@@ -1,7 +1,7 @@
 import axios from 'axios'
 import {toastr} from 'react-redux-toastr'
 
-import { ROOT_URL, authHeader } from '../ApiConfig'
+import { ROOT_URL, authHeader, currentUserId } from '../ApiConfig'
 
 import { UNAUTH_USER } from './AuthReducer'
 
@@ -21,7 +21,7 @@ export const FETCH_STUDENT_LESSONS_ERROR =  'school-organizer/lessons/FETCH_STUD
 export function fetchStudentLessons() {
   return function(dispatch) {
     dispatch({ type: START_STUDENT_LESSONS_FETCH })
-    axios.get(`${ROOT_URL}/api/v1/lessons/get_student_lessons`, authHeader)
+    axios.get(`${ROOT_URL}/api/v1/students/${currentUserId}/lessons`, authHeader)
       .then(function(response) {
         const camelized = camelizeKeys(response.data)
         const normalizedResponse = normalize({studentLessons: camelized.lessons} , { studentLessons: arrayOf(studentLesson) })
