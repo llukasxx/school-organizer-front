@@ -15,7 +15,7 @@ export const FETCH_CONVERSATION = 'school-organizer/messages/FETCH_CONVERSATION'
 export const getConversations = () => {
   return function(dispatch) {
     dispatch({ type: START_INBOX_FETCH })
-    axios.get(`${ROOT_URL}/api/v1/conversations/get_conversations`, { 
+    axios.get(`${ROOT_URL}/api/v1/conversations`, { 
       headers: { authorization: localStorage.getItem('token') }
     })
       .then(function(response) {
@@ -38,7 +38,7 @@ export const getConversations = () => {
 // Reply to conversation
 export const replyToConversation = (newConversation) => {
   return function(dispatch) {
-    axios.post(`${ROOT_URL}/api/v1/conversations/reply/${newConversation.id}`, newConversation, {
+    axios.patch(`${ROOT_URL}/api/v1/conversations/${newConversation.id}`, newConversation, {
       headers: { authorization: localStorage.getItem('token') }
     })
       .then(function(response) {
@@ -58,8 +58,9 @@ export const replyToConversation = (newConversation) => {
 }
 export const startNewConversation = (newConversation) => {
   return function(dispatch) {
-    axios.post(`${ROOT_URL}/api/v1/conversations/reply`, newConversation, {
-      headers: { authorization: localStorage.getItem('token') }
+    axios.post(`${ROOT_URL}/api/v1/conversations`, newConversation, {
+      headers: { authorization: localStorage.getItem('token') },
+      params: { type: 'new_conversation' }
     })
       .then(function(response) {
         const camelized = camelizeKeys(response.data)
@@ -79,8 +80,9 @@ export const startNewConversation = (newConversation) => {
 
 export const startNewBroadcastConversation = (newConversation) => {
   return function(dispatch) {
-    axios.post(`${ROOT_URL}/api/v1/conversations/new_broadcast_conversation`, newConversation, {
-      headers: { authorization: localStorage.getItem('token') }
+    axios.post(`${ROOT_URL}/api/v1/conversations`, newConversation, {
+      headers: { authorization: localStorage.getItem('token') },
+      params: { type: 'new_broadcast_conversation' }
     })
       .then(function(response) {
         console.log(response)

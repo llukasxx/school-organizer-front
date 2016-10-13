@@ -27,9 +27,9 @@ export const REMOVE_ALL_GROUPS = 'school-organizer/events/REMOVE_ALL_GROUPS'
 export function fetchUpcomingEvents(page = 1) {
   return function(dispatch) {
     dispatch( { type: START_EVENTS_FETCH } )
-    axios.get(`${ROOT_URL}/api/v1/events/get_upcoming_events`, { 
+    axios.get(`${ROOT_URL}/api/v1/events`, { 
       headers: { authorization: localStorage.getItem('token') },
-      params: { page: page }
+      params: { page: page, filter: 'upcoming' }
     })
     .then(function(response) {
         const camelized = camelizeKeys(response.data)
@@ -37,7 +37,7 @@ export function fetchUpcomingEvents(page = 1) {
         dispatch({ type: FINISH_EVENTS_FETCH,
                    paginated: true,
                    response: normalizedResponse,
-                   count: response.data.count
+                   count: response.data.meta.count
                  })
       })
       .catch(function(response) {
@@ -54,9 +54,9 @@ export function fetchUpcomingEvents(page = 1) {
 export function fetchUpcomingConnectedEvents(page = 1) {
   return function(dispatch) {
     dispatch( { type: START_EVENTS_FETCH } )
-    axios.get(`${ROOT_URL}/api/v1/events/get_upcoming_connected_events`, { 
+    axios.get(`${ROOT_URL}/api/v1/events`, { 
       headers: { authorization: localStorage.getItem('token') },
-      params: { page: page }
+      params: { page: page, filter: 'upcoming', kind: 'connected' }
     })
     .then(function(response) {
         const camelized = camelizeKeys(response.data)
@@ -64,7 +64,7 @@ export function fetchUpcomingConnectedEvents(page = 1) {
         dispatch({ type: FINISH_EVENTS_FETCH,
                    paginated: true,
                    response: normalizedResponse,
-                   count: response.data.count
+                   count: response.data.meta.count
                  })
       })
       .catch(function(response) {
@@ -81,9 +81,9 @@ export function fetchUpcomingConnectedEvents(page = 1) {
 export function fetchUpcomingCreatedEvents(page = 1) {
   return function(dispatch) {
     dispatch( { type: START_EVENTS_FETCH } )
-    axios.get(`${ROOT_URL}/api/v1/events/get_upcoming_created_events`, { 
+    axios.get(`${ROOT_URL}/api/v1/events`, { 
       headers: { authorization: localStorage.getItem('token') },
-      params: { page: page }
+      params: { page: page, filter: 'upcoming', kind: 'created' }
     })
     .then(function(response) {
         const camelized = camelizeKeys(response.data)
@@ -91,7 +91,7 @@ export function fetchUpcomingCreatedEvents(page = 1) {
         dispatch({ type: FINISH_EVENTS_FETCH,
                    paginated: true,
                    response: normalizedResponse,
-                   count: response.data.count
+                   count: response.data.meta.count
                  })
       })
       .catch(function(response) {
@@ -108,9 +108,9 @@ export function fetchUpcomingCreatedEvents(page = 1) {
 export function fetchPastEvents(page = 1) {
   return function(dispatch) {
     dispatch( { type: START_EVENTS_FETCH } )
-    axios.get(`${ROOT_URL}/api/v1/events/get_past_events`, { 
+    axios.get(`${ROOT_URL}/api/v1/events`, { 
       headers: { authorization: localStorage.getItem('token') },
-      params: { page: page }
+      params: { page: page, filter: 'past' }
     })
     .then(function(response) {
         const camelized = camelizeKeys(response.data)
@@ -118,7 +118,7 @@ export function fetchPastEvents(page = 1) {
         dispatch({ type: FINISH_EVENTS_FETCH,
                    paginated: true,
                    response: normalizedResponse,
-                   count: response.data.count
+                   count: response.data.meta.count
                  })
       })
       .catch(function(response) {
@@ -135,9 +135,9 @@ export function fetchPastEvents(page = 1) {
 export function fetchPastConnectedEvents(page = 1) {
   return function(dispatch) {
     dispatch( { type: START_EVENTS_FETCH } )
-    axios.get(`${ROOT_URL}/api/v1/events/get_past_connected_events`, { 
+    axios.get(`${ROOT_URL}/api/v1/events`, { 
       headers: { authorization: localStorage.getItem('token') },
-      params: { page: page }
+      params: { page: page, filter: 'past', kind: 'connected' }
     })
     .then(function(response) {
         const camelized = camelizeKeys(response.data)
@@ -145,7 +145,7 @@ export function fetchPastConnectedEvents(page = 1) {
         dispatch({ type: FINISH_EVENTS_FETCH,
                    paginated: true,
                    response: normalizedResponse,
-                   count: response.data.count
+                   count: response.data.meta.count
                  })
       })
       .catch(function(response) {
@@ -162,9 +162,9 @@ export function fetchPastConnectedEvents(page = 1) {
 export function fetchPastCreatedEvents(page = 1) {
   return function(dispatch) {
     dispatch( { type: START_EVENTS_FETCH } )
-    axios.get(`${ROOT_URL}/api/v1/events/get_past_created_events`, { 
+    axios.get(`${ROOT_URL}/api/v1/events`, { 
       headers: { authorization: localStorage.getItem('token') },
-      params: { page: page }
+      params: { page: page, filter: 'past', kind: 'created' }
     })
     .then(function(response) {
         const camelized = camelizeKeys(response.data)
@@ -172,7 +172,7 @@ export function fetchPastCreatedEvents(page = 1) {
         dispatch({ type: FINISH_EVENTS_FETCH,
                    paginated: true,
                    response: normalizedResponse,
-                   count: response.data.count
+                   count: response.data.meta.count
                  })
       })
       .catch(function(response) {
@@ -188,7 +188,7 @@ export function fetchPastCreatedEvents(page = 1) {
 
 export function sendEvent(event) {
   return function(dispatch) {
-    axios.post(`${ROOT_URL}/api/v1/events/new_event`, { event }, {
+    axios.post(`${ROOT_URL}/api/v1/events`, { event }, {
       headers: { authorization: localStorage.getItem('token') }
     })
       .then(function(response) {

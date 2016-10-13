@@ -91,7 +91,7 @@ export const getPaginatedTeachers = (page = 1, query = '') => {
 export const getPaginatedGroups = (page = 1, query = '') => {
   return function(dispatch) {
     dispatch({type: START_GROUPS_FETCH})
-    axios.get(`${ROOT_URL}/api/v1/groups/get_groups`, { 
+    axios.get(`${ROOT_URL}/api/v1/groups`, { 
       headers: { authorization: localStorage.getItem('token') },
       params: { page: page, query: query }
     })
@@ -103,7 +103,7 @@ export const getPaginatedGroups = (page = 1, query = '') => {
         dispatch({type: FINISH_GROUPS_FETCH, 
                   paginated: true,
                   response: normalized, 
-                  count: response.data.count,
+                  count: response.data.meta.count,
                   page: page
                 })
       })
