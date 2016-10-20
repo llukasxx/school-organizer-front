@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { push } from 'react-router-redux'
 
-import { ROOT_URL, currentUserId } from '../ApiConfig'
+import { ROOT_URL } from '../ApiConfig'
 
 import {toastr} from 'react-redux-toastr'
 
@@ -56,7 +56,7 @@ export function fetchAllGroups() {
 export function fetchTeacherGroups() {
   return function(dispatch) {
     dispatch({ type: START_TEACHER_GROUPS_FETCH})
-    axios.get(`${ROOT_URL}/api/v1/teachers/${currentUserId}/groups`, { 
+    axios.get(`${ROOT_URL}/api/v1/teachers/${localStorage.getItem('currentUserId')}/groups`, { 
       headers: { authorization: localStorage.getItem('token') }
     })
       .then(function(response) {

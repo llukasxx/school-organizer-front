@@ -19,17 +19,18 @@ export function signInUser(email, password) {
     return (
       axios.post(`${ROOT_URL}/api/v1/sessions`, {user: {email, password}})
         .then(function (response) {
-          dispatch({ type: FINISH_AUTH, payload: response})
           setLocalStorage(response.data.auth_token, 
                           response.data.user, 
                           response.data.accountType,
                           response.data.userId)
+          dispatch({ type: FINISH_AUTH, payload: response})
           dispatch(push('/' + response.data.accountType))
           console.log(response.data)
           toastr.success(`Welcome ${response.data.user}!`, 'You have successfully logged in.')
         })
         .catch(function (response) {
-          dispatch({ type: AUTH_ERROR, payload: response.data.error})
+          console.log(response)
+          dispatch({ type: AUTH_ERROR, payload: response.data})
         }))
   }
 }

@@ -32,7 +32,7 @@ export const REMOVE_RECEIVER = 'school-organizer/receivers/REMOVE_RECEIVER'
 export const getPaginatedStudents = (page = 1, query = '') => {
   return function(dispatch) {
     dispatch({type: START_STUDENTS_FETCH})
-    axios.get(`${ROOT_URL}/api/v1/students`, { 
+    axios.get(`${ROOT_URL}/api/v1/receivers_students`, { 
       headers: { authorization: localStorage.getItem('token') },
       params: { page: page, query: query }
     })
@@ -61,12 +61,11 @@ export const getPaginatedStudents = (page = 1, query = '') => {
 export const getPaginatedTeachers = (page = 1, query = '') => {
   return function(dispatch) {
     dispatch({type: START_TEACHERS_FETCH})
-    axios.get(`${ROOT_URL}/api/v1/teachers`, { 
+    axios.get(`${ROOT_URL}/api/v1/receivers_teachers`, { 
       headers: { authorization: localStorage.getItem('token') },
       params: { page: page, query: query }
     })
       .then(function(response) {
-        console.log(response)
         let camelized = camelizeKeys(response.data)
         let normalized = normalize(camelized, { 
           teachers: arrayOf(teacher)
@@ -91,7 +90,7 @@ export const getPaginatedTeachers = (page = 1, query = '') => {
 export const getPaginatedGroups = (page = 1, query = '') => {
   return function(dispatch) {
     dispatch({type: START_GROUPS_FETCH})
-    axios.get(`${ROOT_URL}/api/v1/groups`, { 
+    axios.get(`${ROOT_URL}/api/v1/receivers_groups`, { 
       headers: { authorization: localStorage.getItem('token') },
       params: { page: page, query: query }
     })
@@ -120,7 +119,7 @@ export const getPaginatedGroups = (page = 1, query = '') => {
 export const getPaginatedLessons = (page = 1, query = '') => {
   return function(dispatch) {
     dispatch({type: START_LESSONS_FETCH})
-    axios.get(`${ROOT_URL}/api/v1/lessons`, { 
+    axios.get(`${ROOT_URL}/api/v1/receivers_lessons`, { 
       headers: { authorization: localStorage.getItem('token') },
       params: { page: page, query: query }
     })

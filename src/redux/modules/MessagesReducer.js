@@ -58,11 +58,12 @@ export const replyToConversation = (newConversation) => {
 }
 export const startNewConversation = (newConversation) => {
   return function(dispatch) {
-    axios.post(`${ROOT_URL}/api/v1/conversations`, newConversation, {
+    axios.post(`${ROOT_URL}/api/v1/conversations`, {conversation: newConversation}, {
       headers: { authorization: localStorage.getItem('token') },
       params: { type: 'new_conversation' }
     })
       .then(function(response) {
+        console.log(response)
         const camelized = camelizeKeys(response.data)
         const normalizedResponse = normalize(camelized, { conversation: conversation })
         dispatch({type: FETCH_CONVERSATION, response: normalizedResponse})
@@ -80,7 +81,7 @@ export const startNewConversation = (newConversation) => {
 
 export const startNewBroadcastConversation = (newConversation) => {
   return function(dispatch) {
-    axios.post(`${ROOT_URL}/api/v1/conversations`, newConversation, {
+    axios.post(`${ROOT_URL}/api/v1/conversations`, {conversation: newConversation}, {
       headers: { authorization: localStorage.getItem('token') },
       params: { type: 'new_broadcast_conversation' }
     })
