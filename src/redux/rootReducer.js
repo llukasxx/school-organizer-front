@@ -18,6 +18,8 @@ const initialState = { groups: {}, simpleGroups: {}, lessons: {}, lessonDates: {
 function entities(state = initialState, action) {
   if (action.response && action.response.entities && !action.paginated) {
     return merge({}, state, action.response.entities)
+  } else if(action.flushState == true) {
+    return initialState
   }
   return state
 }

@@ -54,7 +54,7 @@ export function signOutUser() {
   removeLocalStorage()
   return function(dispatch) {
     return (
-      dispatch({ type: UNAUTH_USER })
+      dispatch({ type: UNAUTH_USER, flushState: true })
     )
   }
 }
