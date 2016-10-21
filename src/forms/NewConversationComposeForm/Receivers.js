@@ -169,9 +169,6 @@ class Receivers extends Component {
     this.props.getPaginatedStudents()
     this.props.changeActiveTab()
   }
-  handleQuery(query) {
-    console.log(query)
-  }
   render() {
     const { activeTab } = this.props
     let listToRender = this.renderStudents

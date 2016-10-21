@@ -37,7 +37,17 @@ export class StudentLessonInfo extends React.Component {
     )
   }
   renderGrades() {
-
+    const { studentGrades } = this.props
+    let gradesLiArray = []
+    if(studentGrades.length > 0) {
+      studentGrades.map((el) => {
+        gradesLiArray.push(<li className="list-group-item"
+                               key={el.id}>{el.grade}, {el.description}</li>)
+      })
+    } else {
+      return 'No grades yet.'
+    }
+    return gradesLiArray
   }
   renderClassmates() {
     

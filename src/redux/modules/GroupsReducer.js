@@ -104,7 +104,6 @@ export function sendGrade(newGrade) {
         toastr.success('Grade', 'Has been successfully added.')
       })
       .catch(function(response) {
-        console.log(response)
         if(response.status == 401) {
           dispatch({ type: UNAUTH_USER })
           dispatch(push('/'))
@@ -128,7 +127,6 @@ export function updateGrade(newGrade, id) {
         toastr.success('Grade', 'Has been successfully updated.')
       })
       .catch(function(response) {
-        console.log(response)
         if(response.status == 401) {
           dispatch({ type: UNAUTH_USER })
           dispatch(push('/'))
@@ -153,7 +151,6 @@ export function sendMultiGrade(newGrades, handleDisplay) {
         handleDisplay()
       })
       .catch(function(response) {
-        console.log(response)
         if(response.status == 401) {
           dispatch({ type: UNAUTH_USER })
           dispatch(push('/'))

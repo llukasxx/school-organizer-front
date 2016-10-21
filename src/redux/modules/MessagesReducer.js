@@ -63,7 +63,6 @@ export const startNewConversation = (newConversation) => {
       params: { type: 'new_conversation' }
     })
       .then(function(response) {
-        console.log(response)
         const camelized = camelizeKeys(response.data)
         const normalizedResponse = normalize(camelized, { conversation: conversation })
         dispatch({type: FETCH_CONVERSATION, response: normalizedResponse})
@@ -86,7 +85,6 @@ export const startNewBroadcastConversation = (newConversation) => {
       params: { type: 'new_broadcast_conversation' }
     })
       .then(function(response) {
-        console.log(response)
         const camelized = camelizeKeys(response.data)
         const normalizedResponse = normalize(camelized, { conversation: conversation })
         dispatch({type: FETCH_CONVERSATION, response: normalizedResponse})

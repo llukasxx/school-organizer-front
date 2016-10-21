@@ -4,7 +4,7 @@ const getStudentLessons = (state) => {
   return state.entities.studentLessons
 }
 
-const getStudentLessonGrades = (state, ownProps) => {
+const getStudentGrades = (state, ownProps) => {
   return state.entities.studentGrades
 }
 
@@ -40,5 +40,18 @@ export const activeLessonLessonDatesArraySelector = createSelector(
       })
     }
     return lessonDatesArray
+  }
+)
+
+export const activeLessonGradesArraySelector = createSelector(
+  [getActiveLesson, getStudentGrades],
+  (activeLesson, grades) => {
+    let gradesArray = []
+    Object.keys(grades).map((el) => {
+      if(grades[el].lessonId == activeLesson.id) {
+        gradesArray.push(grades[el])
+      }
+    })
+    return gradesArray
   }
 )

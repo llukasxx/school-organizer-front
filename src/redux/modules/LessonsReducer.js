@@ -18,6 +18,8 @@ export const FETCH_STUDENT_LESSONS_ERROR =  'school-organizer/lessons/FETCH_STUD
 // Action Creators
 // export const actions = { }
 
+
+//it also fetches student grades
 export function fetchStudentLessons() {
   return function(dispatch) {
     dispatch({ type: START_STUDENT_LESSONS_FETCH })

@@ -6,7 +6,8 @@ import StudentLessonInfo from './StudentLessonInfo'
 import LessonListItem from '../../components/LessonListItem'
 
 import { allStudentLessonsArraySelector,
-         activeLessonLessonDatesArraySelector } from '../../selectors/StudentLessonsSelector'
+         activeLessonLessonDatesArraySelector,
+         activeLessonGradesArraySelector } from '../../selectors/StudentLessonsSelector'
 
 
 export class StudentLessons extends React.Component {
@@ -34,7 +35,8 @@ export class StudentLessons extends React.Component {
     this.props.fetchStudentLessons()
   }
   render() {
-    const { activeLessonLessonDates } = this.props
+    console.log(this.props.activeLessonGrades)
+    const { activeLessonLessonDates, activeLessonGrades } = this.props
     return (
       <div>
         <div className="col-md-2 col-sm-4">
@@ -49,7 +51,8 @@ export class StudentLessons extends React.Component {
           </div>
         </div>
         <StudentLessonInfo 
-          lessonDates={activeLessonLessonDates}/>
+          lessonDates={activeLessonLessonDates}
+          studentGrades={activeLessonGrades}/>
         <MessageBox />
       </div>
     )
@@ -61,7 +64,7 @@ const mapStateToProps = (state) => {
     studentLessons: allStudentLessonsArraySelector(state),
     activeLesson: state.lessons.activeLesson,
     activeLessonLessonDates: activeLessonLessonDatesArraySelector(state),
-    activeLessonGrades: [],
+    activeLessonGrades: activeLessonGradesArraySelector(state),
     activeLessonClassmates: []
   }
 }

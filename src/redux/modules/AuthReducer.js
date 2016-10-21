@@ -25,11 +25,9 @@ export function signInUser(email, password) {
                           response.data.userId)
           dispatch({ type: FINISH_AUTH, payload: response})
           dispatch(push('/' + response.data.accountType))
-          console.log(response.data)
           toastr.success(`Welcome ${response.data.user}!`, 'You have successfully logged in.')
         })
         .catch(function (response) {
-          console.log(response)
           dispatch({ type: AUTH_ERROR, payload: response.data})
         }))
   }
@@ -63,7 +61,6 @@ export function signOutUser() {
 export function forceSignOutUser(dispatch) {
   toastr.warning(`Warning`, 'You have been logged out due to inactivity.')
   removeLocalStorage()
-  console.log(dispatch)
   return function(dispatch) {
     dispatch(push('/'))
     return (
