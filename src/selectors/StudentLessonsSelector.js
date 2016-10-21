@@ -32,8 +32,9 @@ export const activeLessonLessonDatesArraySelector = createSelector(
   [getActiveLesson, getStudentLessonLessonDates],
   (activeLesson, lessonDates) => {
     let lessonDatesArray = []
-    console.log(activeLesson)
-    if(activeLesson !== undefined && activeLesson.lessonDates.length > 0) {
+    if(activeLesson !== undefined 
+        && activeLesson.lessonDates.length > 0
+        && Object.keys(lessonDates).length > 0) {
       activeLesson.lessonDates.map((el) => {
         lessonDatesArray.push(lessonDates[el])
       })

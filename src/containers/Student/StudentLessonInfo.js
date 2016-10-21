@@ -22,13 +22,14 @@ export class StudentLessonInfo extends React.Component {
   renderLessonDates() {
     const { lessonDates } = this.props
     let ldArrayElements = []
-    lessonDates.map((el) => {
-      console.log(lessonDates)
-      ldArrayElements.push(<li className="list-group-item"
-                               key={el.id}>
-                             {el.date}
-                           </li>)
-    })
+    if(lessonDates && lessonDates.length > 0) {
+      lessonDates.map((el) => {
+        ldArrayElements.push(<li className="list-group-item"
+                                 key={el.id}>
+                               {el.date}
+                             </li>)
+      })
+    }
     return (
       <ul className="list-group">
         {ldArrayElements}
