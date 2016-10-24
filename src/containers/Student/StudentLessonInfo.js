@@ -29,6 +29,8 @@ export class StudentLessonInfo extends React.Component {
                                {el.date}
                              </li>)
       })
+    } else {
+      return 'No lesson dates.'
     }
     return (
       <ul className="list-group">
@@ -42,7 +44,7 @@ export class StudentLessonInfo extends React.Component {
     if(studentGrades.length > 0) {
       studentGrades.map((el) => {
         gradesLiArray.push(<li className="list-group-item"
-                               key={el.id}>{el.grade}, {el.description}</li>)
+                               key={el.id}><b>Grade:</b> {el.grade}, {el.description}</li>)
       })
     } else {
       return 'No grades yet.'
@@ -50,7 +52,28 @@ export class StudentLessonInfo extends React.Component {
     return gradesLiArray
   }
   renderClassmates() {
-    
+    const { students, teachers } = this.props
+    let teachersLI = []
+    let studentsLI = []
+    teachers.map((teacher) => {
+      teachersLI.push(<li className="list-group-item" key={teacher.id}>
+                        {`${teacher.firstName} ${teacher.lastName}`}
+                      </li>)
+    })
+    students.map((student) => {
+      studentsLI.push(<li className="list-group-item" key={student.id}>
+                        {`${student.firstName} ${student.lastName}`}
+                      </li>)
+    })
+    return (
+      <div>
+        <h4><p style={{marginLeft: '5px'}}>Teacher(s):</p></h4>
+        {teachersLI}
+        <hr />
+        <h4><p style={{marginLeft: '5px'}}>Students:</p></h4>
+        {studentsLI}
+      </div>
+    )
   }
   renderItems() {
     switch(this.state.activeTab) {
@@ -72,7 +95,11 @@ export class StudentLessonInfo extends React.Component {
         <div className="panel panel-primary">
           <div className="panel-heading">Lesson Info</div>
           <div className="panel-body">
-            <p className="text-center"><b>{loaded ? activeLesson.name : 'Loading...'}</b></p>
+            <h3>
+              <p className="text-center">
+                <b>{loaded ? activeLesson.name : 'Loading...'}</b>
+              </p>
+            </h3>
           </div>
           <StudentLessonMenu 
             activeTab = {this.state.activeTab}

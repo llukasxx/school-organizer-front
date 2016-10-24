@@ -17,6 +17,18 @@ const getStudentLessonLessonDates = (state) => {
   return state.entities.lessonDates
 }
 
+const getStudentLessonStudents = (state) => {
+  return state.entities.students
+}
+
+const getStudentLessonTeachers = (state) => {
+  return state.entities.teachers
+}
+
+const areEntitiesLoaded = (state) => {
+  return state.lessons.loaded
+}
+
 export const allStudentLessonsArraySelector = createSelector(
   [getStudentLessons],
   (studentLessons) => {
@@ -29,29 +41,57 @@ export const allStudentLessonsArraySelector = createSelector(
 )
 
 export const activeLessonLessonDatesArraySelector = createSelector(
-  [getActiveLesson, getStudentLessonLessonDates],
-  (activeLesson, lessonDates) => {
-    let lessonDatesArray = []
-    if(activeLesson !== undefined 
-        && activeLesson.lessonDates.length > 0
-        && Object.keys(lessonDates).length > 0) {
-      activeLesson.lessonDates.map((el) => {
-        lessonDatesArray.push(lessonDates[el])
-      })
+  [getActiveLesson, getStudentLessonLessonDates, areEntitiesLoaded],
+  (activeLesson, lessonDates, loaded) => {
+    if(!loaded) {
+      return []
     }
+    let lessonDatesArray = []
+    activeLesson.lessonDates.map((el) => {
+      lessonDatesArray.push(lessonDates[el])
+    })
     return lessonDatesArray
   }
 )
 
 export const activeLessonGradesArraySelector = createSelector(
-  [getActiveLesson, getStudentGrades],
-  (activeLesson, grades) => {
+  [getActiveLesson, getStudentGrades, areEntitiesLoaded],
+  (activeLesson, grades, loaded) => {
+    if(!loaded) {
+      return []
+    }
     let gradesArray = []
-    Object.keys(grades).map((el) => {
-      if(grades[el].lessonId == activeLesson.id) {
-        gradesArray.push(grades[el])
-      }
+    activeLesson.studentGrades.map((id) => {
+      gradesArray.push(grades[id])
     })
     return gradesArray
+  }
+)
+
+export const activeLessonStudentsArraySelector = createSelector(
+  [getActiveLesson, getStudentLessonStudents, areEntitiesLoaded],
+  (activeLesson, students, loaded) => {
+    if(!loaded) {
+      return []
+    }
+    let studentArray = []
+    activeLesson.students.map((id) => {
+      studentArray.push(students[id])
+    })
+    return studentArray
+  }
+)
+
+export const activeLessonTeachersArraySelector = createSelector(
+  [getActiveLesson, getStudentLessonTeachers, areEntitiesLoaded],
+  (activeLesson, teachers, loaded) => {
+    if(!loaded) {
+      return []
+    }
+    let teachersArray = []
+    activeLesson.teachers.map((el) => {
+      teachersArray.push(teachers[el])
+    })
+    return teachersArray
   }
 )

@@ -75,10 +75,14 @@ export default function (state = initialState, action) {
 const studentLesson = new Schema('studentLessons')
 const studentGrade = new Schema('studentGrades')
 const lessonDate = new Schema('lessonDates')
+const student = new Schema('students')
+const teacher = new Schema('teachers')
 
 studentLesson.define({
   studentGrades: arrayOf(studentGrade),
-  lessonDates: arrayOf(lessonDate)
+  lessonDates: arrayOf(lessonDate),
+  students: arrayOf(student),
+  teachers: arrayOf(teacher)
 })
 
 studentGrade.define({
@@ -87,4 +91,12 @@ studentGrade.define({
 
 lessonDate.define({
   
+})
+
+student.define({
+
+})
+
+teacher.define({
+
 })
