@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import * as actions from '../../redux/modules/LessonsReducer'
 
 import StudentLessonMenu from '../../components/StudentLessonMenu'
+import StudentTeacherListItem from '../../components/StudentLessons/StudentTeacherListItem'
 
 
 
@@ -56,14 +57,14 @@ export class StudentLessonInfo extends React.Component {
     let teachersLI = []
     let studentsLI = []
     teachers.map((teacher) => {
-      teachersLI.push(<li className="list-group-item" key={teacher.id}>
-                        {`${teacher.firstName} ${teacher.lastName}`}
-                      </li>)
+      teachersLI.push(<StudentTeacherListItem 
+                        key={teacher.id}
+                        user={teacher}/>)
     })
     students.map((student) => {
-      studentsLI.push(<li className="list-group-item" key={student.id}>
-                        {`${student.firstName} ${student.lastName}`}
-                      </li>)
+      studentsLI.push(<StudentTeacherListItem 
+                        key={student.id}
+                        user={student}/>)
     })
     return (
       <div>
