@@ -69,7 +69,6 @@ export class StudentLessonInfo extends React.Component {
       <div>
         <h4><p style={{marginLeft: '5px'}}>Teacher(s):</p></h4>
         {teachersLI}
-        <hr />
         <h4><p style={{marginLeft: '5px'}}>Students:</p></h4>
         {studentsLI}
       </div>
