@@ -38,7 +38,7 @@ export const getConversations = () => {
 // Reply to conversation
 export const replyToConversation = (newConversation) => {
   return function(dispatch) {
-    axios.patch(`${ROOT_URL}/api/v1/conversations/${newConversation.id}`, newConversation, {
+    axios.patch(`${ROOT_URL}/api/v1/conversations/${newConversation.id}`, {conversation: newConversation}, {
       headers: { authorization: localStorage.getItem('token') }
     })
       .then(function(response) {
