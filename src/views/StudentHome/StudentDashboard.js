@@ -24,9 +24,6 @@ export class StudentDashboard extends Component {
                   <Link to={'/student/lessons'}>Lessons</Link>
                 </li>
                 <li>
-                  <Link to={'/student/classes'}>Classes</Link>
-                </li>  
-                <li>
                   <Link to={'/student/events'}>Events</Link>
                 </li>
                 <li>

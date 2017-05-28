@@ -14,7 +14,6 @@ import TeacherGroupList from 'containers/Teacher/TeacherGroupList'
 import TeacherEvents from 'containers/Teacher/TeacherEvents'
 import StudentEvents from 'containers/Student/StudentEvents'
 import StudentLessons from 'containers/Student/StudentLessons'
-import StudentClasses from 'containers/Student/StudentClasses'
 import MessagesPage from 'components/Messages/MessagesPage'
 //Authentication
 import RequireAuth from '../containers/Auth/RequireAuth'
@@ -31,7 +30,6 @@ export default (store) => (
     <Route path='student' component={RequireAuth(StudentDashboard, 'student')}>
       <IndexRoute component={StudentLessons} />
       <Route path='lessons' component={StudentLessons} />
-      <Route path='classes' component={StudentClasses} />
       <Route path='messages' component={MessagesPage} />
       <Route path='events' component={StudentEvents} />
     </Route>
